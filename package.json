@@ -1,0 +1,58 @@
+{
+  "name": "coocre_frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/bootstrap": "^5.0.0",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-bootstrap": "^0.32.24",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.6",
+    "axios": "^0.21.0",
+    "bootstrap": "^4.5.3",
+    "react": "^17.0.0",
+    "react-bootstrap": "^1.4.0",
+    "react-dom": "^17.0.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.0",
+    "typescript": "^4.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "lint": "eslint . --ext .tsx --ext .ts",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "@typescript-eslint/parser": "^4.5.0",
+    "css-loader": "^5.0.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.21.5",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.2"
+  }
+}
