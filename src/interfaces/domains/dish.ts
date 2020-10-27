@@ -1,7 +1,12 @@
 export interface Dish {
   id: number;
   name: string;
-  genre: number | null;
+  genre: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface DishHandleAttribute {
+  name: string;
+  genre: string;
 }
