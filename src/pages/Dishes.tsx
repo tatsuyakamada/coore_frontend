@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
-import { AiFillPlusCircle } from 'react-icons/ai';
-import styled from 'styled-components';
-import { withRouter } from 'react-router';
-import ContentHeader from '../components/ContentHeader';
+import useDidMount from '../utils/effect';
 import DishList from '../components/DishList';
-import { Dish } from '../interfaces/domains/dish';
 
 const Dishes: React.FC = () => {
-  const [dishes, setDishes] = useState<Dish[]>([]);
+  const [dishes, setDishes] = useState([]);
 
-  useEffect(() => {
+  useDidMount(() => {
     axios.get('http://localhost:3100/api/v1/dishes')
       .then((results) => {
         setDishes(results.data);
@@ -20,28 +15,25 @@ const Dishes: React.FC = () => {
       .catch((data) => {
         console.log(data);
       });
-  }, []);
+  });
 
   return (
     <div>
-      <ContentHeader title="Dish">
-        <RightContent>
-          <Link to="/dishes/new">
-            <Button variant="info">
-              <AiFillPlusCircle />
-            </Button>
-          </Link>
-        </RightContent>
-      </ContentHeader>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: 110,
+        }}
+      >
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/dishes">Dishes</Link>
+      </div>
       <DishList dishes={dishes} />
     </div>
   );
 };
 
-const RightContent = styled.div({
-  margin: 'auto',
-  textAlign: 'right',
-  width: '100%',
-});
-
-export default withRouter(Dishes);
+export default Dishes;

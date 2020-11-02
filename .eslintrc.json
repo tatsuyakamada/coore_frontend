@@ -41,6 +41,7 @@
     "react/prop-types": "off",
     "spaced-comment": ["error","always", { "markers": ["/ <reference"] }],
     "no-use-before-define": "off",
+    "no-param-reassign": ["error", { "props": false }],
     "import/extensions": ["error", "ignorePackages", {
       "js": "never",
       "jsx": "never",

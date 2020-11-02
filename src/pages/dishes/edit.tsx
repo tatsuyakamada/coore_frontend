@@ -42,27 +42,27 @@ const EditDish: React.FC<Props> = (props) => {
     return undefined;
   };
 
-  const updateDish = () => {
+  const updateDish = (): void => {
     axios.patch(`http://localhost:3100/api/v1/dishes/${match.params.id}`, {
       dish: dishAttribute,
     });
   };
 
-  const deleteDish = () => {
+  const deleteDish = (): void => {
     axios.delete(`http://localhost:3100/api/v1/dishes/${match.params.id}`)
       .then(() => {
         setRedirect(true);
       });
   };
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: any): void => {
     setDishAttribute({
       name: event.target.value,
       genre: dishAttribute.genre,
     });
   };
 
-  const handleSelect = (event: any) => {
+  const handleSelect = (event: any): void => {
     setDishAttribute(
       {
         name: dishAttribute.name,

@@ -6,7 +6,7 @@ const Layout: React.FC = (props) => {
   const { children } = props;
 
   return (
-    <MainContent>
+    <MainContent fluid="true">
       {children}
     </MainContent>
   );
@@ -14,6 +14,7 @@ const Layout: React.FC = (props) => {
 
 const MainContent = styled(Container)({
   marginTop: 20,
+  padding: '0px 72px',
 });
 
 export default Layout;
