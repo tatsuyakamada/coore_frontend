@@ -6,6 +6,7 @@ import {
   Button, Form, InputGroup, Modal,
 } from 'react-bootstrap';
 import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai';
+import { BiImageAdd } from 'react-icons/bi';
 import styled from 'styled-components';
 import FormAlert from '../FormAlert';
 import Selector from '../Selector';
@@ -32,8 +33,9 @@ type draftSchedule = {
 type draftMenu = {
   id: number | null,
   index: number,
-  dish_id: number | null,
+  dish_id: number,
   category: string,
+  image: string | null,
   delete: boolean,
 };
 
@@ -58,6 +60,7 @@ const CreateForm: React.FC<Props> = (props) => {
       index: 0,
       dish_id: 1,
       category: 'main',
+      image: null,
       delete: false,
     },
   ];
@@ -91,7 +94,9 @@ const CreateForm: React.FC<Props> = (props) => {
     if (schedule.image) formData.append('scheduledMenu[schedule][image]', schedule.image);
     const filteredMenus = selectedMenus.filter((menu) => { return menu.delete === false; });
     filteredMenus.forEach((menu) => {
-      formData.append('scheduledMenu[menus][]', JSON.stringify(menu));
+      formData.append(`scheduledMenu[menus][${menu.index}][dish_id]`, menu.dish_id.toString());
+      formData.append(`scheduledMenu[menus][${menu.index}][category]`, menu.category);
+      if (menu.image) formData.append(`scheduledMenu[menus][${menu.index}][image]`, menu.image);
     });
 
     axios.post('http://localhost:3100/api/v1/schedules', formData)
@@ -149,8 +154,9 @@ const CreateForm: React.FC<Props> = (props) => {
     newSelectedMenus[menu.index] = {
       id: menu.id,
       index: menu.index,
-      dish_id: menu.dish_id,
+      dish_id: selectedMenus[menu.index].dish_id,
       category: event.target.value,
+      image: menu.image,
       delete: menu.delete,
     };
     setSelectedMenus(newSelectedMenus);
@@ -164,6 +170,7 @@ const CreateForm: React.FC<Props> = (props) => {
         index: menu.index,
         dish_id: selected[0].id,
         category: selectedMenus[menu.index].category,
+        image: menu.image,
         delete: menu.delete,
       };
       setSelectedMenus(newSelectedMenus);
@@ -186,6 +193,7 @@ const CreateForm: React.FC<Props> = (props) => {
       index: menu.index,
       dish_id: menu.dish_id,
       category: menu.category,
+      image: menu.image,
       delete: true,
     };
     setSelectedMenus(newSelectedMenus);
@@ -215,8 +223,22 @@ const CreateForm: React.FC<Props> = (props) => {
   const addMenu = (): void => {
     const index = selectedMenus.length;
     setSelectedMenus(selectedMenus.concat({
-      id: null, index, dish_id: 1, category: 'main', delete: false,
+      id: null, index, dish_id: 1, category: 'main', image: null, delete: false,
     }));
+  };
+
+  const handleSelectMenuImage = (event: any, menu: draftMenu) => {
+    const newSelectedMenus = selectedMenus;
+    newSelectedMenus[menu.index] = {
+      id: menu.id,
+      index: menu.index,
+      dish_id: menu.dish_id,
+      category: menu.category,
+      image: event.target.files[0],
+      delete: menu.delete,
+    };
+    setSelectedMenus(newSelectedMenus);
+    console.log(newSelectedMenus)
   };
 
   return (
@@ -282,6 +304,22 @@ const CreateForm: React.FC<Props> = (props) => {
                       onChange={(selected) => { handleSelectedMenu(selected, selectMenu); }}
                       options={selectableDish}
                     />
+                    <FileUploadIcon>
+                      <label
+                        htmlFor={`menu-image-${selectMenu.index.toString()}`}
+                        style={{ margin: 0 }}
+                      >
+                        <BiImageAdd style={{ width: '25px', height: '25px' }}/>
+                        <input
+                          type="file"
+                          id={`menu-image-${selectMenu.index.toString()}`}
+                          accept="image/*"
+                          multiple={false}
+                          onChange={(event) => { handleSelectMenuImage(event, selectMenu); }}
+                          hidden
+                        />
+                      </label>
+                    </FileUploadIcon>
                     <DeleteIcon onClick={(event) => { deleteSelectedMenu(event, selectMenu); }}>
                       <AiFillMinusCircle />
                     </DeleteIcon>
@@ -325,6 +363,14 @@ const AddButton = styled(Button)({
   marginLeft: 'auto',
   marginRight: 26,
   height: 25,
+});
+
+const FileUploadIcon = styled.span({
+  display: 'flex',
+  alignItems: 'center',
+  marginLeft: 10,
+  color: '#509aea',
+  cursor: 'pointer',
 });
 
 const DeleteIcon = styled.span({
