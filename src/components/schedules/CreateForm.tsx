@@ -87,6 +87,14 @@ const CreateForm: React.FC<Props> = (props) => {
       });
   }, []);
 
+  const handleSubmit = (): void => {
+    if (validateMenus()) {
+      createSchedule();
+    } else {
+      setErrors({ dish_id: ['duplicated!'] });
+    }
+  };
+
   const createSchedule = (): void => {
     const formData = new FormData();
     formData.append('scheduledMenu[schedule][date]', schedule.date.toLocaleDateString());
@@ -107,8 +115,14 @@ const CreateForm: React.FC<Props> = (props) => {
       .catch((error) => { console.log(error); });
   };
 
+  const validateMenus = (): boolean => {
+    const dishIds = selectedMenus.map((menu) => (menu.dish_id));
+    const uniqueIds = new Set(dishIds);
+    return dishIds.length === uniqueIds.size;
+  };
+
   const handleClose = (): void => {
-    setSchedule(initialSchedule)
+    setSchedule(initialSchedule);
     setSelectedMenus(initialSelectedMenus);
     resetSelectableDish();
     setErrors(null);
@@ -238,7 +252,6 @@ const CreateForm: React.FC<Props> = (props) => {
       delete: menu.delete,
     };
     setSelectedMenus(newSelectedMenus);
-    console.log(newSelectedMenus)
   };
 
   return (
@@ -309,7 +322,7 @@ const CreateForm: React.FC<Props> = (props) => {
                         htmlFor={`menu-image-${selectMenu.index.toString()}`}
                         style={{ margin: 0 }}
                       >
-                        <BiImageAdd style={{ width: '25px', height: '25px' }}/>
+                        <BiImageAdd style={{ width: '25px', height: '25px' }} />
                         <input
                           type="file"
                           id={`menu-image-${selectMenu.index.toString()}`}
@@ -332,7 +345,7 @@ const CreateForm: React.FC<Props> = (props) => {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={createSchedule}>
+            <Button variant="primary" onClick={handleSubmit}>
               Save
             </Button>
           </FormButtons>

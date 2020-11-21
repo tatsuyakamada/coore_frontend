@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { Card, Badge } from 'react-bootstrap';
+import React from 'react';
 import styled from 'styled-components';
-import { ScheduledMenu } from '../interfaces/domains/schedule';
-import ShowSchedule from './schedules/ShowSchedule';
+import {
+  Badge, Carousel, Card, Modal,
+} from 'react-bootstrap';
+import { Menu, ScheduledMenu } from '../../interfaces/domains/schedule';
 
 type Props = {
+  show: boolean;
   scheduledMenu: ScheduledMenu;
+  onHide: () => void;
 }
 
-const ScheduleItem: React.FC<Props> = (props) => {
-  const { scheduledMenu } = props;
-
-  const [showDetail, setShowDetail] = useState<boolean>(false);
+const ShowSchedule: React.FC<Props> = (props) => {
+  const { show, scheduledMenu, onHide } = props;
 
   const scheduleCategolize = (): string => {
     switch (scheduledMenu.schedule.category) {
@@ -43,38 +44,22 @@ const ScheduleItem: React.FC<Props> = (props) => {
     }
   };
 
-  const displayImage = (): string => {
-    if (scheduledMenu.schedule.image) {
-      return scheduledMenu.schedule.image;
-    }
-    return menuImage() || '/logo192.png';
+  const displayImages = (): string[] => {
+    const images = [...menuImages()];
+    if (scheduledMenu.schedule.image) images.unshift(scheduledMenu.schedule.image);
+    return images.length > 0 ? images : ['/logo192.png'];
   };
 
-  const menuImage = (): string | null => {
-    const hasImageMenu = scheduledMenu.menus.find((menu) => (menu.image !== null));
-    return hasImageMenu ? hasImageMenu.image : null;
-  };
-
-  const handleClick = () => {
-    setShowDetail(true);
-  };
-
-  const handleClose = () => {
-    setShowDetail(false);
+  const menuImages = (): string[] => {
+    const hasImageMenus: Menu[] = scheduledMenu.menus.filter((menu) => {
+      return menu.image !== null;
+    });
+    return hasImageMenus.map((menu) => { return menu.image; });
   };
 
   return (
-    <>
-      <ShowSchedule
-        show={showDetail}
-        scheduledMenu={scheduledMenu}
-        onHide={handleClose}
-      />
-      <Card
-        key={scheduledMenu.schedule.id}
-        style={{ minWidth: '13.5rem', maxWidth: '13.5rem' }}
-        onClick={handleClick}
-      >
+    <Modal show={show} onHide={onHide}>
+      <Card>
         <CardHeader>
           <Date>
             {scheduledMenu.schedule.date}
@@ -85,14 +70,23 @@ const ScheduleItem: React.FC<Props> = (props) => {
             </ScheduleCategory>
           </Type>
         </CardHeader>
-        <CardImage>
-          <Card.Img style={{ maxHeight: '100%', maxWidth: '100%' }} src={displayImage()} />
-        </CardImage>
+        <ImageSlide indicators="false">
+          {
+            displayImages().map((img) => {
+              return (
+                <Carousel.Item>
+                  <Img src={img} />
+                </Carousel.Item>
+              );
+            })
+          }
+        </ImageSlide>
         <CardBody>
+          <Card.Title>Menu</Card.Title>
           {
             scheduledMenu.menus.map((menu) => {
               return (
-                <Menu key={menu.id}>
+                <MenuNames key={menu.id}>
                   <div>
                     <MenuCategory
                       pill
@@ -102,13 +96,13 @@ const ScheduleItem: React.FC<Props> = (props) => {
                     </MenuCategory>
                   </div>
                   <DishName>{menu.dishName}</DishName>
-                </Menu>
+                </MenuNames>
               );
             })
           }
         </CardBody>
       </Card>
-    </>
+    </Modal>
   );
 };
 
@@ -125,7 +119,7 @@ const Type = styled.div({
   marginLeft: 'auto',
 });
 
-const Menu = styled.div({
+const MenuNames = styled.div({
   display: 'flex',
 });
 
@@ -145,9 +139,14 @@ const DishName = styled(Card.Text)({
   paddingLeft: 8,
 });
 
-const CardImage = styled.div({
+const ImageSlide = styled(Carousel)({
   width: '100%',
-  height: 150,
+  height: 300,
 });
 
-export default ScheduleItem;
+const Img = styled.img({
+  width: '100%',
+  maxHeight: '300px',
+});
+
+export default ShowSchedule;
