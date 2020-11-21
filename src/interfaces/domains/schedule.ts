@@ -12,9 +12,9 @@ export interface Schedule {
   updatedAt: Date;
 }
 
-interface Menu {
+export interface Menu {
   id: number;
   dishName: string;
   category: string;
-  image: string | null,
+  image: string,
 }
