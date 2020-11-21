@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
-import Dishes from './pages/Dishes';
-import NewDish from './pages/dishes/NewDish';
-import EditDish from './pages/dishes/EditDish';
+import IndexDish from './pages/dishes/index';
+import EditDish from './pages/dishes/edit';
+import IndexSchedule from './pages/schedules/index';
 
 const Router: React.FC = () => {
   return (
@@ -12,9 +12,9 @@ const Router: React.FC = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/about" component={About} />
-        <Route exact path="/dishes" component={Dishes} />
-        <Route exact path="/dishes/new" component={NewDish} />
+        <Route exact path="/dishes" component={IndexDish} />
         <Route exact path="/dishes/edit/:id" component={EditDish} />
+        <Route exact path="/schedules" component={IndexSchedule} />
       </Switch>
     </BrowserRouter>
   );
