@@ -40,13 +40,13 @@ const scheduleReducer = (scheduleState: DraftSchedule, action: ScheduleAction): 
         return { ...scheduleState, category: action.value };
       }
       return scheduleState;
-    case 'image':
-      if (action.value instanceof File) {
-        return { ...scheduleState, image: action.value };
+    case 'images':
+      if (action.value instanceof FileList) {
+        return { ...scheduleState, images: action.value };
       }
       return scheduleState;
     case 'reset':
-      return { date: new Date(), category: 'dinner', image: null };
+      return { date: new Date(), category: 'dinner', images: null };
     default:
       return scheduleState;
   }
@@ -73,8 +73,8 @@ const menusReducer = (selectedMenuState: DraftMenu[], action: menusAction) => {
         }
         return newSelectedMenus;
       case 'image':
-        if (typeof action.value === 'string') {
-          newSelectedMenus[action.index].image = action.value;
+          if (action.value instanceof File) {
+            newSelectedMenus[action.index].image = action.value;
         }
         return newSelectedMenus;
       case 'delete':
@@ -126,7 +126,7 @@ const CreateForm: React.FC<Props> = (props) => {
   const initialSchedule: DraftSchedule = {
     date: new Date(),
     category: 'dinner',
-    image: null,
+    images: null,
   };
 
   const initialSelectedMenus: DraftMenu[] = [
@@ -154,7 +154,11 @@ const CreateForm: React.FC<Props> = (props) => {
     const formData: FormData = new FormData();
     formData.append('scheduledMenu[schedule][date]', schedule.date.toLocaleDateString());
     formData.append('scheduledMenu[schedule][category]', schedule.category);
-    if (schedule.image) formData.append('scheduledMenu[schedule][image]', schedule.image);
+    if (schedule.images !== null) {
+      Array.from(schedule.images).forEach((image) => {
+        formData.append('scheduledMenu[schedule][images][]', image)
+      })
+    }
     const filteredMenus: DraftMenu[] = menus.filter((menu) => (
       menu.dishId && menu.delete === false
     ));

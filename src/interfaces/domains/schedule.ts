@@ -9,13 +9,13 @@ export interface Schedule {
   id: string;
   date: Date;
   category: string;
-  image: string | null;
+  images: string[] | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface DraftSchedule {
-  date: Date,
-  category: string,
-  image: File | string | null,
+  date: Date;
+  category: string;
+  images: FileList | null;
 }
