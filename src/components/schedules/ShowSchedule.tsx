@@ -48,7 +48,7 @@ const ShowSchedule: React.FC<Props> = (props) => {
 
   const displayImages = (): string[] => {
     const images = [...menuImages()];
-    if (scheduledMenu.schedule.image) images.unshift(scheduledMenu.schedule.image);
+    if (scheduledMenu.schedule.images) images.unshift(...scheduledMenu.schedule.images);
     return images.length > 0 ? images : ['/logo192.png'];
   };
 

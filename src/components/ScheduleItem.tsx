@@ -46,8 +46,8 @@ const ScheduleItem: React.FC<Props> = (props) => {
   };
 
   const displayImage = (): string => {
-    if (scheduledMenu.schedule.image) {
-      return scheduledMenu.schedule.image;
+    if (scheduledMenu.schedule.images) {
+      return scheduledMenu.schedule.images[0];
     }
     return menuImage() || '/logo192.png';
   };

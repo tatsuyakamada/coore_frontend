@@ -42,7 +42,7 @@ const ScheduleForm: React.FC = () => {
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null) {
-      scheduleDispatch({ type: 'image', value: event.target.files[0] });
+      scheduleDispatch({ type: 'images', value: event.target.files });
     }
   };
 
@@ -72,7 +72,7 @@ const ScheduleForm: React.FC = () => {
       <input
         type="file"
         accept="image/*"
-        multiple={false}
+        multiple={true}
         onChange={handleImageSelect}
       />
     </Form.Group>

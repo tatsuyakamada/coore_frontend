@@ -10,6 +10,6 @@ export interface DraftMenu {
   index: number,
   dishId: number | null,
   category: string,
-  image: File | string | null,
+  image: File | null,
   delete: boolean,
 }
