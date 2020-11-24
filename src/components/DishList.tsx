@@ -16,7 +16,7 @@ const DishList: React.FC<Props> = (props) => {
         dishes.map((dish) => {
           return (
             <ListGroup.Item as="div">
-              <Item>
+              <Item key={dish.id}>
                 <p>{dish.genre}</p>
                 <Link to={`dishes/edit/${dish.id}`}>
                   {dish.name}

@@ -51,7 +51,7 @@ const ScheduleItem: React.FC<Props> = (props) => {
   };
 
   const menuImage = (): string | null => {
-    const hasImageMenu = scheduledMenu.menus.find((menu) => (menu.image !== null));
+    const hasImageMenu = scheduledMenu.menus.find((menu) => { return (menu.image !== null); });
     return hasImageMenu ? hasImageMenu.image : null;
   };
 
@@ -66,6 +66,7 @@ const ScheduleItem: React.FC<Props> = (props) => {
   return (
     <>
       <ShowSchedule
+        key={`show-${scheduledMenu.schedule.id}`}
         show={showDetail}
         scheduledMenu={scheduledMenu}
         onHide={handleClose}
