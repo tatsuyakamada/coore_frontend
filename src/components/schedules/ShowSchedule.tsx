@@ -4,7 +4,8 @@ import {
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { Menu, ScheduledMenu } from '../../interfaces/domains/schedule';
+import { Menu } from '../../interfaces/domains/menu';
+import { ScheduledMenu } from '../../interfaces/domains/schedule';
 
 type Props = {
   show: boolean;

@@ -1,3 +1,5 @@
+import { Menu } from './menu';
+
 export interface ScheduledMenu {
   schedule: Schedule;
   menus: Menu[];
@@ -12,9 +14,8 @@ export interface Schedule {
   updatedAt: Date;
 }
 
-export interface Menu {
-  id: number;
-  dishName: string;
-  category: string;
-  image: string,
+export interface DraftSchedule {
+  date: Date,
+  category: string,
+  image: File | string | null,
 }

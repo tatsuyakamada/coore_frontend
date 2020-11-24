@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ContentHeader from '../../components/ContentHeader';
-import { DishHandleAttribute } from '../../interfaces/domains/dish';
+import { DraftDish } from '../../interfaces/domains/dish';
 
 type Props = {
   match: {
@@ -32,9 +32,9 @@ const EditDish: React.FC<Props> = (props) => {
       .catch((data) => {
         console.log(data);
       });
-  }, []);
+  }, [match.params.id]);
 
-  const [dishAttribute, setDishAttribute] = useState<DishHandleAttribute>({ name: '', genre: '' });
+  const [dishAttribute, setDishAttribute] = useState<DraftDish>({ name: '', genre: '' });
 
   const renderRedirect = () => {
     if (redirect) {
@@ -56,14 +56,14 @@ const EditDish: React.FC<Props> = (props) => {
       });
   };
 
-  const handleChange = (event: any): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setDishAttribute({
       name: event.target.value,
       genre: dishAttribute.genre,
     });
   };
 
-  const handleSelect = (event: any): void => {
+  const handleSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setDishAttribute(
       {
         name: dishAttribute.name,

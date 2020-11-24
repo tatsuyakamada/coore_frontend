@@ -6,6 +6,8 @@ import {
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import { DraftMenu } from '../../interfaces/domains/menu';
+import { DraftSchedule } from '../../interfaces/domains/schedule';
 import FormAlert from '../FormAlert';
 
 import MenusForm from './MenusForm';
@@ -21,27 +23,12 @@ type errorMessages = {
   [key: string]: string[];
 };
 
-export type draftSchedule = {
-  date: Date,
-  category: string,
-  image: File | string | null,
-};
-
-export type draftMenu = {
-  id: number | null,
-  index: number,
-  dishId: number | null,
-  category: string,
-  image: string | null,
-  delete: boolean,
-};
-
 type ScheduleAction = {
-  type: keyof draftSchedule | 'reset';
-  value: draftSchedule[keyof draftSchedule] | null;
+  type: keyof DraftSchedule | 'reset';
+  value: DraftSchedule[keyof DraftSchedule] | null;
 };
 
-const scheduleReducer = (scheduleState: draftSchedule, action: ScheduleAction): draftSchedule => {
+const scheduleReducer = (scheduleState: DraftSchedule, action: ScheduleAction): DraftSchedule => {
   switch (action.type) {
     case 'date':
       if (action.value instanceof Date) {
@@ -65,13 +52,13 @@ const scheduleReducer = (scheduleState: draftSchedule, action: ScheduleAction): 
   }
 };
 
-type SelectedMenusAction = {
-  type: keyof draftMenu | 'add' | 'delete' |'reset';
+type menusAction = {
+  type: keyof DraftMenu | 'add' | 'delete' |'reset';
   index: number | null;
-  value: draftMenu[keyof draftMenu] | null;
+  value: DraftMenu[keyof DraftMenu] | null;
 };
 
-const menusReducer = (selectedMenuState: draftMenu[], action: SelectedMenusAction) => {
+const menusReducer = (selectedMenuState: DraftMenu[], action: menusAction) => {
   const newSelectedMenus = selectedMenuState;
   if (action.index !== null) {
     switch (action.type) {
@@ -124,25 +111,25 @@ const menusReducer = (selectedMenuState: draftMenu[], action: SelectedMenusActio
 };
 
 export const ScheduleContext = createContext({} as {
-  schedule: draftSchedule;
-  scheduleDispatch: any;
+  schedule: DraftSchedule;
+  scheduleDispatch: React.Dispatch<ScheduleAction>;
 });
 
 export const MenusContext = createContext({} as {
-  menus: draftMenu[];
-  menusDispatch: any;
+  menus: DraftMenu[];
+  menusDispatch: React.Dispatch<menusAction>;
 });
 
 const CreateForm: React.FC<Props> = (props) => {
   const { show, onClose, onCreate } = props;
 
-  const initialSchedule: draftSchedule = {
+  const initialSchedule: DraftSchedule = {
     date: new Date(),
     category: 'dinner',
     image: null,
   };
 
-  const initialSelectedMenus: draftMenu[] = [
+  const initialSelectedMenus: DraftMenu[] = [
     {
       id: null,
       index: 0,
@@ -168,7 +155,7 @@ const CreateForm: React.FC<Props> = (props) => {
     formData.append('scheduledMenu[schedule][date]', schedule.date.toLocaleDateString());
     formData.append('scheduledMenu[schedule][category]', schedule.category);
     if (schedule.image) formData.append('scheduledMenu[schedule][image]', schedule.image);
-    const filteredMenus: draftMenu[] = menus.filter((menu) => (
+    const filteredMenus: DraftMenu[] = menus.filter((menu) => (
       menu.dishId && menu.delete === false
     ));
     filteredMenus.forEach((menu) => {
@@ -216,7 +203,7 @@ const CreateForm: React.FC<Props> = (props) => {
             <MenusForm />
           </MenusContext.Provider>
           <FormButtons>
-            <Button variant="secondary" onClick={() => {}}>
+            <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
             <Button variant="primary" onClick={handleSubmit}>

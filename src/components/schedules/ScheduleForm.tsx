@@ -25,19 +25,25 @@ const ScheduleForm: React.FC = () => {
 
   const [selectedDay, setSelectedDay] = useState<DayValue>(initialDate);
 
-  const renderCustomInput = ({ ref }: any) => (
+  type RefProps = {
+    ref: React.RefObject<HTMLElement>;
+  };
+
+  const renderCustomInput = ({ ref }: RefProps) => (
     <DateSelector
       ref={ref}
       value={schedule.date.toLocaleDateString()}
     />
   );
 
-  const handleCategorySelect = (event: any) => {
+  const handleCategorySelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     scheduleDispatch({ type: 'category', value: event.target.value });
   };
 
-  const handleImageSelect = (event: any) => {
-    if (event.target.files[0]) scheduleDispatch({ type: 'image', value: event.target.files[0] });
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files !== null) {
+      scheduleDispatch({ type: 'image', value: event.target.files[0] });
+    }
   };
 
   return (

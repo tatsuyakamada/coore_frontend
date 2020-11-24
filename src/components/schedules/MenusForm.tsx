@@ -9,46 +9,45 @@ import { BiImageAdd } from 'react-icons/bi';
 import styled from 'styled-components';
 
 import ScheduledMenuCategory from '../../enum/scheduled_menu_category';
+import { DishItem } from '../../interfaces/domains/dish';
+import { DraftMenu } from '../../interfaces/domains/menu';
 import Selector from '../Selector';
 
-import { draftMenu, MenusContext } from './CreateForm';
-
-type Dish = {
-  id: number,
-  label: string,
-  selectable: boolean,
-};
+import { MenusContext } from './CreateForm';
 
 const MenusForm: React.FC = () => {
   const { menus, menusDispatch } = useContext(MenusContext);
-  const [dishList, setDishList] = useState<Dish[]>([]);
+  const [dishList, setDishList] = useState<DishItem[]>([]);
 
-  const handleDishSelect = (selected: any, menu: draftMenu) => {
+  const handleDishSelect = (selected: DishItem[], menu: DraftMenu) => {
     if (selected[0] !== undefined) {
       menusDispatch({ type: 'dishId', index: menu.index, value: selected[0].id });
     }
     reconstructDishList(menu.dishId, false);
   };
 
-  const handleCategorySelect = (event: any, menu: draftMenu) => {
+  const handleCategorySelect = (event: React.ChangeEvent<HTMLInputElement>, menu: DraftMenu) => {
     menusDispatch({ type: 'category', index: menu.index, value: event.target.value });
   };
 
-  const handleImageSelect = (event: any, menu: draftMenu) => {
-    menusDispatch({ type: 'image', index: menu.index, value: event.target.files[0] });
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>, menu: DraftMenu) => {
+    if (event.target.files !== null) {
+      menusDispatch({ type: 'image', index: menu.index, value: event.target.files[0] });
+    }
   };
 
   const handleAdd = () => {
-    menusDispatch({ type: 'add', index: null });
+    menusDispatch({ type: 'add', index: null, value: null });
   };
 
-  const handleDelete = (event: any, menu: draftMenu) => {
-    menusDispatch({ type: 'delete', index: menu.index });
-    event.target.closest(`#menu-${menu.index}`).hidden = true;
+  const handleDelete = (event: React.MouseEvent<HTMLSpanElement>, menu: DraftMenu) => {
+    menusDispatch({ type: 'delete', index: menu.index, value: null });
     reconstructDishList(menu.dishId, true);
+    const targetMenu: HTMLElement | null = event.currentTarget.closest(`#menu-${menu.index}`);
+    if (targetMenu !== null) targetMenu.hidden = true;
   };
 
-  const selectableDish: Dish[] = (
+  const selectableDish: DishItem[] = (
     dishList.filter((dish) => (dish.selectable === true))
   );
 
@@ -81,7 +80,7 @@ const MenusForm: React.FC = () => {
       </MenuFormLabel>
       {
         menus.map((menu) => {
-          const ref: any = React.createRef();
+          const ref: React.RefObject<Typeahead<DishItem>> = React.createRef();
           return (
             <InputGroup key={menu.index} id={`menu-${menu.index.toString()}`}>
               <InputGroup style={{ width: '25%' }}>
