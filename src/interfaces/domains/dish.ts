@@ -6,7 +6,13 @@ export interface Dish {
   updatedAt: Date;
 }
 
-export interface DishHandleAttribute {
+export interface DraftDish {
   name: string;
   genre: string;
+}
+
+export interface DishItem {
+  id: number,
+  label: string,
+  selectable: boolean,
 }

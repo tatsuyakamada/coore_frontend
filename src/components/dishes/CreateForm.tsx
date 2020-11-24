@@ -5,11 +5,12 @@ import {
 } from 'react-bootstrap';
 
 import Genre from '../../enum/genre';
+import { DraftDish } from '../../interfaces/domains/dish';
 import FormAlert from '../FormAlert';
 import Selector from '../Selector';
 
 type Props = {
-  show: Boolean;
+  show: boolean;
   onClose: () => void;
   onCreate: () => void;
 };
@@ -18,14 +19,9 @@ type errorMessages = {
   [key: string]: string[];
 };
 
-type draftDish = {
-  name: string;
-  genre: string;
-};
-
 const CreateForm: React.FC<Props> = (props) => {
   const { show, onClose, onCreate } = props;
-  const [dish, setDish] = useState<draftDish>({ name: '', genre: 'japanese' });
+  const [dish, setDish] = useState<DraftDish>({ name: '', genre: 'japanese' });
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
   const handleClose = (): void => {
@@ -46,11 +42,11 @@ const CreateForm: React.FC<Props> = (props) => {
       });
   };
 
-  const handleChange = (event: any): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setDish({ name: event.target.value, genre: dish.genre });
   };
 
-  const handleSelect = (event: any): void => {
+  const handleSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setDish({ name: dish.name, genre: event.target.value });
   };
 

@@ -11,9 +11,9 @@ import DishList from '../../components/DishList';
 import { Dish } from '../../interfaces/domains/dish';
 
 const IndexDish: React.FC = () => {
-  const [reload, setReload] = useState<Boolean>(false);
+  const [reload, setReload] = useState<boolean>(false);
   const [dishes, setDishes] = useState<Dish[]>([]);
-  const [show, setShow] = useState<Boolean>(false);
+  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get('http://localhost:3100/api/v1/dishes.json')

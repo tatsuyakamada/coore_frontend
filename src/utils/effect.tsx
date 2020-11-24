@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
 
-const useDidMount = (func: Function) => useEffect(() => { func(); }, []);
+const useDidMount = (func: () => void) => useEffect(() => { func(); }, []);
 
 export default useDidMount;
