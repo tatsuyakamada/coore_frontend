@@ -68,7 +68,6 @@ const ScheduleItem: React.FC<Props> = (props) => {
   return (
     <>
       <ShowSchedule
-        key={`show-${scheduledMenu.schedule.id}`}
         show={showDetail}
         scheduledMenu={scheduledMenu}
         onHide={handleClose}

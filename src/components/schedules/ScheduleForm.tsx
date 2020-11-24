@@ -33,6 +33,7 @@ const ScheduleForm: React.FC = () => {
     <DateSelector
       ref={ref}
       value={schedule.date.toLocaleDateString()}
+      readOnly
     />
   );
 
@@ -72,7 +73,7 @@ const ScheduleForm: React.FC = () => {
       <input
         type="file"
         accept="image/*"
-        multiple={true}
+        multiple
         onChange={handleImageSelect}
       />
     </Form.Group>
@@ -85,6 +86,7 @@ const InputLabel = styled(InputGroup.Text)({
 
 const DateSelector = styled(Form.Control)({
   width: '118%',
+  backgroundColor: 'white',
 });
 
 export default ScheduleForm;

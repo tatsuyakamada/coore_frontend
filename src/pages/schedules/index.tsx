@@ -41,7 +41,10 @@ const IndexSchedule: React.FC = () => {
       <CardGroup>
         {
           scheduledMenus.map((scheduledMenu) => (
-            <ScheduleItem scheduledMenu={scheduledMenu} />
+            <ScheduleItem
+              key={scheduledMenu.schedule.id}
+              scheduledMenu={scheduledMenu}
+            />
           ))
         }
       </CardGroup>

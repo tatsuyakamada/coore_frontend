@@ -73,8 +73,8 @@ const menusReducer = (selectedMenuState: DraftMenu[], action: menusAction) => {
         }
         return newSelectedMenus;
       case 'image':
-          if (action.value instanceof File) {
-            newSelectedMenus[action.index].image = action.value;
+        if (action.value instanceof File) {
+          newSelectedMenus[action.index].image = action.value;
         }
         return newSelectedMenus;
       case 'delete':
@@ -156,8 +156,8 @@ const CreateForm: React.FC<Props> = (props) => {
     formData.append('scheduledMenu[schedule][category]', schedule.category);
     if (schedule.images !== null) {
       Array.from(schedule.images).forEach((image) => {
-        formData.append('scheduledMenu[schedule][images][]', image)
-      })
+        formData.append('scheduledMenu[schedule][images][]', image);
+      });
     }
     const filteredMenus: DraftMenu[] = menus.filter((menu) => (
       menu.dishId && menu.delete === false

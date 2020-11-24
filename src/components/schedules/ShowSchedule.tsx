@@ -72,10 +72,10 @@ const ShowSchedule: React.FC<Props> = (props) => {
             </ScheduleCategory>
           </Type>
         </CardHeader>
-        <ImageSlide indicators="false">
+        <ImageSlide indicators={false}>
           {
             displayImages().map((img) => (
-              <Carousel.Item>
+              <Carousel.Item key={img}>
                 <Img src={img} />
               </Carousel.Item>
             ))
