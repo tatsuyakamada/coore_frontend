@@ -1,8 +1,9 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import useDidMount from '../utils/effect';
+
 import DishList from '../components/DishList';
+import useDidMount from '../utils/effect';
 
 const Dishes: React.FC = () => {
   const [dishes, setDishes] = useState([]);

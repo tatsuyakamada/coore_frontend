@@ -17,9 +17,9 @@ const Selector: React.FC<Props> = (props) => {
   return (
     <Form.Control as="select" onChange={onChange}>
       {
-        options.map((option) => {
-          return <option key={option.value} value={option.value}>{option.label}</option>;
-        })
+        options.map((option) => (
+          <option key={option.value} value={option.value}>{option.label}</option>
+        ))
       }
     </Form.Control>
   );

@@ -1,13 +1,15 @@
-import React, { useReducer, useState, createContext } from 'react';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import axios from 'axios';
+import React, { useReducer, useState, createContext } from 'react';
 import {
   Button, Form, Modal,
 } from 'react-bootstrap';
 import styled from 'styled-components';
+
 import FormAlert from '../FormAlert';
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
-import ScheduleForm from './ScheduleForm';
+
 import MenusForm from './MenusForm';
+import ScheduleForm from './ScheduleForm';
 
 type Props = {
   show: boolean;
@@ -166,9 +168,9 @@ const CreateForm: React.FC<Props> = (props) => {
     formData.append('scheduledMenu[schedule][date]', schedule.date.toLocaleDateString());
     formData.append('scheduledMenu[schedule][category]', schedule.category);
     if (schedule.image) formData.append('scheduledMenu[schedule][image]', schedule.image);
-    const filteredMenus: draftMenu[] = menus.filter((menu) => {
-      return menu.dishId && menu.delete === false;
-    });
+    const filteredMenus: draftMenu[] = menus.filter((menu) => (
+      menu.dishId && menu.delete === false
+    ));
     filteredMenus.forEach((menu) => {
       if (menu.dishId) formData.append(`scheduledMenu[menus][${menu.index}][dish_id]`, menu.dishId.toString());
       formData.append(`scheduledMenu[menus][${menu.index}][category]`, menu.category);
@@ -184,8 +186,8 @@ const CreateForm: React.FC<Props> = (props) => {
   };
 
   const validateMenus = (): boolean => {
-    const filteredMenus = menus.filter((menu) => { return (menu.dishId !== null); });
-    const dishIds = filteredMenus.map((menu) => { return (menu.dishId); });
+    const filteredMenus = menus.filter((menu) => (menu.dishId !== null));
+    const dishIds = filteredMenus.map((menu) => (menu.dishId));
     const uniqueIds = new Set(dishIds);
     return dishIds.length === uniqueIds.size;
   };

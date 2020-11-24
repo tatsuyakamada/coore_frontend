@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Button, CardGroup } from 'react-bootstrap';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import styled from 'styled-components';
-import { Button, CardGroup } from 'react-bootstrap';
+
 import ContentHeader from '../../components/ContentHeader';
-import CreateForm from '../../components/schedules/CreateForm';
 import ScheduleItem from '../../components/ScheduleItem';
+import CreateForm from '../../components/schedules/CreateForm';
 import { ScheduledMenu } from '../../interfaces/domains/schedule';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const IndexSchedule: React.FC = () => {
   const [scheduledMenus, setScheduledMenus] = useState<ScheduledMenu[]>([]);
@@ -39,9 +40,9 @@ const IndexSchedule: React.FC = () => {
       </ContentHeader>
       <CardGroup>
         {
-          scheduledMenus.map((scheduledMenu) => {
-            return <ScheduleItem scheduledMenu={scheduledMenu} />;
-          })
+          scheduledMenus.map((scheduledMenu) => (
+            <ScheduleItem scheduledMenu={scheduledMenu} />
+          ))
         }
       </CardGroup>
     </>

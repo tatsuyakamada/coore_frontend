@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import styled from 'styled-components';
+
 import { ScheduledMenu } from '../interfaces/domains/schedule';
+
 import ShowSchedule from './schedules/ShowSchedule';
 
 type Props = {
@@ -51,7 +53,7 @@ const ScheduleItem: React.FC<Props> = (props) => {
   };
 
   const menuImage = (): string | null => {
-    const hasImageMenu = scheduledMenu.menus.find((menu) => { return (menu.image !== null); });
+    const hasImageMenu = scheduledMenu.menus.find((menu) => (menu.image !== null));
     return hasImageMenu ? hasImageMenu.image : null;
   };
 
@@ -91,21 +93,19 @@ const ScheduleItem: React.FC<Props> = (props) => {
         </CardImage>
         <CardBody>
           {
-            scheduledMenu.menus.map((menu) => {
-              return (
-                <Menu key={menu.id}>
-                  <div>
-                    <MenuCategory
-                      pill
-                      variant={menuCategolize(menu.category)}
-                    >
-                      {menu.category}
-                    </MenuCategory>
-                  </div>
-                  <DishName>{menu.dishName}</DishName>
-                </Menu>
-              );
-            })
+            scheduledMenu.menus.map((menu) => (
+              <Menu key={menu.id}>
+                <div>
+                  <MenuCategory
+                    pill
+                    variant={menuCategolize(menu.category)}
+                  >
+                    {menu.category}
+                  </MenuCategory>
+                </div>
+                <DishName>{menu.dishName}</DishName>
+              </Menu>
+            ))
           }
         </CardBody>
       </Card>

@@ -1,8 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import {
   Badge, Carousel, Card, Modal,
 } from 'react-bootstrap';
+import styled from 'styled-components';
+
 import { Menu, ScheduledMenu } from '../../interfaces/domains/schedule';
 
 type Props = {
@@ -51,10 +52,10 @@ const ShowSchedule: React.FC<Props> = (props) => {
   };
 
   const menuImages = (): string[] => {
-    const hasImageMenus: Menu[] = scheduledMenu.menus.filter((menu) => {
-      return menu.image !== null;
-    });
-    return hasImageMenus.map((menu) => { return menu.image; });
+    const hasImageMenus: Menu[] = scheduledMenu.menus.filter((menu) => (
+      menu.image !== null
+    ));
+    return hasImageMenus.map((menu) => (menu.image));
   };
 
   return (
@@ -72,33 +73,29 @@ const ShowSchedule: React.FC<Props> = (props) => {
         </CardHeader>
         <ImageSlide indicators="false">
           {
-            displayImages().map((img) => {
-              return (
-                <Carousel.Item>
-                  <Img src={img} />
-                </Carousel.Item>
-              );
-            })
+            displayImages().map((img) => (
+              <Carousel.Item>
+                <Img src={img} />
+              </Carousel.Item>
+            ))
           }
         </ImageSlide>
         <CardBody>
           <Card.Title>Menu</Card.Title>
           {
-            scheduledMenu.menus.map((menu) => {
-              return (
-                <MenuNames key={menu.id}>
-                  <div>
-                    <MenuCategory
-                      pill
-                      variant={menuCategolize(menu.category)}
-                    >
-                      {menu.category}
-                    </MenuCategory>
-                  </div>
-                  <DishName>{menu.dishName}</DishName>
-                </MenuNames>
-              );
-            })
+            scheduledMenu.menus.map((menu) => (
+              <MenuNames key={menu.id}>
+                <div>
+                  <MenuCategory
+                    pill
+                    variant={menuCategolize(menu.category)}
+                  >
+                    {menu.category}
+                  </MenuCategory>
+                </div>
+                <DishName>{menu.dishName}</DishName>
+              </MenuNames>
+            ))
           }
         </CardBody>
       </Card>

@@ -1,15 +1,17 @@
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai';
-import { BiImageAdd } from 'react-icons/bi';
 import {
   Button, Form, InputGroup,
 } from 'react-bootstrap';
-import axios from 'axios';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { draftMenu, MenusContext } from './CreateForm';
-import Selector from '../Selector';
+import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai';
+import { BiImageAdd } from 'react-icons/bi';
+import styled from 'styled-components';
+
 import ScheduledMenuCategory from '../../enum/scheduled_menu_category';
+import Selector from '../Selector';
+
+import { draftMenu, MenusContext } from './CreateForm';
 
 type Dish = {
   id: number,
@@ -23,7 +25,7 @@ const MenusForm: React.FC = () => {
 
   const handleDishSelect = (selected: any, menu: draftMenu) => {
     if (selected[0] !== undefined) {
-      menusDispatch({ type: 'dish_id', index: menu.index, value: selected[0].id });
+      menusDispatch({ type: 'dishId', index: menu.index, value: selected[0].id });
     }
     reconstructDishList(menu.dishId, false);
   };
@@ -47,7 +49,7 @@ const MenusForm: React.FC = () => {
   };
 
   const selectableDish: Dish[] = (
-    dishList.filter((dish) => { return dish.selectable === true; })
+    dishList.filter((dish) => (dish.selectable === true))
   );
 
   const reconstructDishList = (targetId: number | null, selectable: boolean): void => {
