@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 import {
   Button, FormControl, InputGroup, Modal,
 } from 'react-bootstrap';
+
+import Genre from '../../enum/genre';
 import FormAlert from '../FormAlert';
 import Selector from '../Selector';
-import Genre from '../../enum/genre';
 
 type Props = {
   show: Boolean;

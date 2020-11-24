@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { AiFillPlusCircle } from 'react-icons/ai';
-import styled from 'styled-components';
 import { withRouter } from 'react-router';
+import styled from 'styled-components';
+
 import ContentHeader from '../../components/ContentHeader';
+import CreateForm from '../../components/dishes/CreateForm';
 import DishList from '../../components/DishList';
 import { Dish } from '../../interfaces/domains/dish';
-import CreateForm from '../../components/dishes/CreateForm';
 
 const IndexDish: React.FC = () => {
   const [reload, setReload] = useState<Boolean>(false);

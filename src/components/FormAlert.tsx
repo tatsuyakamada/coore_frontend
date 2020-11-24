@@ -21,15 +21,11 @@ const FormAlert: React.FC<Props> = (props) => {
           <Alert variant="danger" onClose={onClose} dismissible>
             <Alert.Heading>Creation failed!</Alert.Heading>
             {
-              Object.keys(messages).map((key) => {
-                return (
-                  Object.values(messages[key]).map((value) => {
-                    return (
-                      <p>{`${key}: ${value}`}</p>
-                    );
-                  })
-                );
-              })
+              Object.keys(messages).map((key) => (
+                Object.values(messages[key]).map((value) => (
+                  <p>{`${key}: ${value}`}</p>
+                ))
+              ))
             }
           </Alert>
         )

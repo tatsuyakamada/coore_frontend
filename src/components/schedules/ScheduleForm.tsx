@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
-import styled from 'styled-components';
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker';
+import styled from 'styled-components';
+
 import ScheduleCategory from '../../enum/schedule_category';
 import Selector from '../Selector';
+
 import { ScheduleContext } from './CreateForm';
 
 const ScheduleForm: React.FC = () => {
@@ -23,14 +25,12 @@ const ScheduleForm: React.FC = () => {
 
   const [selectedDay, setSelectedDay] = useState<DayValue>(initialDate);
 
-  const renderCustomInput = ({ ref }: any) => {
-    return (
-      <DateSelector
-        ref={ref}
-        value={schedule.date.toLocaleDateString()}
-      />
-    );
-  };
+  const renderCustomInput = ({ ref }: any) => (
+    <DateSelector
+      ref={ref}
+      value={schedule.date.toLocaleDateString()}
+    />
+  );
 
   const handleCategorySelect = (event: any) => {
     scheduleDispatch({ type: 'category', value: event.target.value });
