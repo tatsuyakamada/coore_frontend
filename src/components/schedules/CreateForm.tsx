@@ -8,6 +8,8 @@ import styled from 'styled-components';
 
 import { DraftMenu } from '../../interfaces/domains/menu';
 import { DraftSchedule } from '../../interfaces/domains/schedule';
+import { initialMenus, MenusAction, menusReducer } from '../../reducers/menu';
+import { initialSchedule, ScheduleAction, scheduleReducer } from '../../reducers/schedule';
 import FormAlert from '../FormAlert';
 
 import MenusForm from './MenusForm';
@@ -23,93 +25,6 @@ type errorMessages = {
   [key: string]: string[];
 };
 
-type ScheduleAction = {
-  type: keyof DraftSchedule | 'reset';
-  value: DraftSchedule[keyof DraftSchedule] | null;
-};
-
-const scheduleReducer = (scheduleState: DraftSchedule, action: ScheduleAction): DraftSchedule => {
-  switch (action.type) {
-    case 'date':
-      if (action.value instanceof Date) {
-        return { ...scheduleState, date: action.value };
-      }
-      return scheduleState;
-    case 'category':
-      if (typeof action.value === 'string') {
-        return { ...scheduleState, category: action.value };
-      }
-      return scheduleState;
-    case 'images':
-      if (action.value instanceof FileList) {
-        return { ...scheduleState, images: action.value };
-      }
-      return scheduleState;
-    case 'reset':
-      return { date: new Date(), category: 'dinner', images: null };
-    default:
-      return scheduleState;
-  }
-};
-
-type menusAction = {
-  type: keyof DraftMenu | 'add' | 'delete' |'reset';
-  index: number | null;
-  value: DraftMenu[keyof DraftMenu] | null;
-};
-
-const menusReducer = (selectedMenuState: DraftMenu[], action: menusAction) => {
-  const newSelectedMenus = selectedMenuState;
-  if (action.index !== null) {
-    switch (action.type) {
-      case 'dishId':
-        if (typeof action.value === 'number') {
-          newSelectedMenus[action.index].dishId = action.value;
-        }
-        return newSelectedMenus;
-      case 'category':
-        if (typeof action.value === 'string') {
-          newSelectedMenus[action.index].category = action.value;
-        }
-        return newSelectedMenus;
-      case 'image':
-        if (action.value instanceof File) {
-          newSelectedMenus[action.index].image = action.value;
-        }
-        return newSelectedMenus;
-      case 'delete':
-        newSelectedMenus[action.index].delete = true;
-
-        return newSelectedMenus;
-      default:
-        return selectedMenuState;
-    }
-  } else {
-    switch (action.type) {
-      case 'add':
-        return newSelectedMenus.concat({
-          id: null,
-          index: selectedMenuState.length,
-          dishId: 1,
-          category: 'main',
-          image: null,
-          delete: false,
-        });
-      case 'reset':
-        return [{
-          id: null,
-          index: 0,
-          dishId: null,
-          category: 'main',
-          image: null,
-          delete: false,
-        }];
-      default:
-        return selectedMenuState;
-    }
-  }
-};
-
 export const ScheduleContext = createContext({} as {
   schedule: DraftSchedule;
   scheduleDispatch: React.Dispatch<ScheduleAction>;
@@ -117,28 +32,11 @@ export const ScheduleContext = createContext({} as {
 
 export const MenusContext = createContext({} as {
   menus: DraftMenu[];
-  menusDispatch: React.Dispatch<menusAction>;
+  menusDispatch: React.Dispatch<MenusAction>;
 });
 
 const CreateForm: React.FC<Props> = (props) => {
   const { show, onClose, onCreate } = props;
-
-  const initialSchedule: DraftSchedule = {
-    date: new Date(),
-    category: 'dinner',
-    images: null,
-  };
-
-  const initialSelectedMenus: DraftMenu[] = [
-    {
-      id: null,
-      index: 0,
-      dishId: 1,
-      category: 'main',
-      image: null,
-      delete: false,
-    },
-  ];
 
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
@@ -184,7 +82,7 @@ const CreateForm: React.FC<Props> = (props) => {
   };
 
   const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
-  const [menus, menusDispatch] = useReducer(menusReducer, initialSelectedMenus);
+  const [menus, menusDispatch] = useReducer(menusReducer, initialMenus);
 
   const handleClose = (): void => {
     menusDispatch({ type: 'reset', index: null, value: null });
