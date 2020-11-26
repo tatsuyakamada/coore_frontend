@@ -1,122 +1,73 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button, Form, InputGroup,
-} from 'react-bootstrap';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai';
-import { BiImageAdd } from 'react-icons/bi';
+import React, { useContext, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai';
+import { BiPencil } from 'react-icons/bi';
+import { BsFillImageFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
-import ScheduledMenuCategory from '../../enum/scheduled_menu_category';
-import { DishItem } from '../../interfaces/domains/dish';
 import { DraftMenu } from '../../interfaces/domains/menu';
-import Selector from '../Selector';
+import MenuItem from '../MenuItem';
 
 import { MenusContext } from './CreateForm';
+import MenuItemForm from './MenuItemForm';
 
 const MenusForm: React.FC = () => {
   const { menus, menusDispatch } = useContext(MenusContext);
-  const [dishList, setDishList] = useState<DishItem[]>([]);
+  const [show, setShow] = useState<boolean>(false);
 
-  const handleDishSelect = (selected: DishItem[], menu: DraftMenu) => {
-    if (selected[0] !== undefined) {
-      menusDispatch({ type: 'dishId', index: menu.index, value: selected[0].id });
-    }
-    reconstructDishList(menu.dishId, false);
+  const [draftMenu, setDraftMenu] = useState<DraftMenu | null>(null);
+
+  const handleAdd = (): void => {
+    setShow(true);
   };
 
-  const handleCategorySelect = (event: React.ChangeEvent<HTMLInputElement>, menu: DraftMenu) => {
-    menusDispatch({ type: 'category', index: menu.index, value: event.target.value });
+  const handleClose = (): void => {
+    setDraftMenu(null);
+    setShow(false);
   };
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>, menu: DraftMenu) => {
-    if (event.target.files !== null) {
-      menusDispatch({ type: 'image', index: menu.index, value: event.target.files[0] });
-    }
+  const handleEdit = (menu: DraftMenu): void => {
+    setDraftMenu(menu);
+    setShow(true);
   };
 
-  const handleAdd = () => {
-    menusDispatch({ type: 'add', index: null, value: null });
-  };
-
-  const handleDelete = (event: React.MouseEvent<HTMLSpanElement>, menu: DraftMenu) => {
-    menusDispatch({ type: 'delete', index: menu.index, value: null });
-    reconstructDishList(menu.dishId, true);
-    const targetMenu: HTMLElement | null = event.currentTarget.closest(`#menu-${menu.index}`);
+  const handleDelete = (event: React.MouseEvent<HTMLSpanElement>, index: number): void => {
+    menusDispatch({ type: 'delete', index, value: null });
+    const targetMenu: HTMLElement | null = event.currentTarget.closest(`#menu-${index}`);
     if (targetMenu !== null) targetMenu.hidden = true;
   };
-
-  const selectableDish: DishItem[] = (
-    dishList.filter((dish) => (dish.selectable === true))
-  );
-
-  const reconstructDishList = (targetId: number | null, selectable: boolean): void => {
-    const newDishList = dishList;
-    newDishList.forEach((dish, index) => {
-      if (dish.id === targetId) {
-        newDishList[index].selectable = selectable;
-      }
-    });
-    setDishList(newDishList);
-  };
-
-  useEffect(() => {
-    axios.get('http://localhost:3100/api/v1/dishes/dish_list.json')
-      .then((results) => {
-        setDishList(results.data);
-      });
-  }, []);
 
   return (
     <MenuForm>
       <MenuFormLabel>
         <div>
-          <Form.Label>Menu</Form.Label>
+          <Form.Label style={{ fontWeight: 'bold' }}>Menu</Form.Label>
         </div>
         <AddButton variant="outline-info" onClick={handleAdd}>
           <AiFillPlusCircle style={{ marginTop: -16 }} />
         </AddButton>
+        <MenuItemForm show={show} menu={draftMenu || undefined} onHide={handleClose} />
       </MenuFormLabel>
       {
-        menus.map((menu) => {
-          const ref: React.RefObject<Typeahead<DishItem>> = React.createRef();
-          return (
-            <InputGroup key={menu.index} id={`menu-${menu.index.toString()}`}>
-              <InputGroup style={{ width: '25%' }}>
-                <Selector
-                  options={ScheduledMenuCategory}
-                  onChange={(event) => { handleCategorySelect(event, menu); }}
-                />
-              </InputGroup>
-              <Typeahead
-                id={menu.index}
-                ref={ref}
-                onChange={(selected) => { handleDishSelect(selected, menu); }}
-                options={selectableDish}
-              />
-              <FileUploadIcon>
-                <label
-                  htmlFor={`menu-image-${menu.index.toString()}`}
-                  style={{ margin: 0 }}
-                >
-                  <BiImageAdd style={{ width: '25px', height: '25px' }} />
-                  <input
-                    type="file"
-                    id={`menu-image-${menu.index.toString()}`}
-                    accept="image/*"
-                    multiple={false}
-                    onChange={(event) => { handleImageSelect(event, menu); }}
-                    hidden
-                  />
-                </label>
-              </FileUploadIcon>
-              <DeleteIcon onClick={(event) => { handleDelete(event, menu); }}>
+        menus.map((menu) => (
+          <MenuItem
+            id={menu.index}
+            category={menu.category}
+            name={menu.dishName}
+          >
+            <MenuItemIcons>
+              {
+                menu.image && <ImageIcon><BsFillImageFill /></ImageIcon>
+              }
+              <EditIcon onClick={() => handleEdit(menu)}>
+                <BiPencil />
+              </EditIcon>
+              <DeleteIcon onClick={(event) => handleDelete(event, menu.index)}>
                 <AiFillMinusCircle />
               </DeleteIcon>
-            </InputGroup>
-          );
-        })
+            </MenuItemIcons>
+          </MenuItem>
+        ))
       }
     </MenuForm>
   );
@@ -132,16 +83,24 @@ const MenuFormLabel = styled.div({
 });
 
 const AddButton = styled(Button)({
-  marginLeft: 'auto',
-  marginRight: 26,
+  marginLeft: 16,
   height: 25,
 });
 
-const FileUploadIcon = styled.span({
+const MenuItemIcons = styled.div({
+  display: 'inherit',
+  marginLeft: 'auto',
+});
+
+const ImageIcon = styled.span({
+  color: '#1e71cc',
+});
+
+const EditIcon = styled.span({
   display: 'flex',
   alignItems: 'center',
   marginLeft: 10,
-  color: '#509aea',
+  color: 'green',
   cursor: 'pointer',
 });
 

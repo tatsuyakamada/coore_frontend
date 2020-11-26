@@ -1,18 +1,22 @@
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import axios from 'axios';
-import React, { useReducer, useState, createContext } from 'react';
+import React, {
+  useEffect, useReducer, useState, createContext,
+} from 'react';
 import {
   Button, Form, Modal,
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import { DishItem } from '../../interfaces/domains/dish';
 import { DraftMenu } from '../../interfaces/domains/menu';
 import { DraftSchedule } from '../../interfaces/domains/schedule';
-import { initialMenus, MenusAction, menusReducer } from '../../reducers/menu';
+import { dishListReducer, DishListAction } from '../../reducers/dish/list';
+import { MenusAction, menusReducer } from '../../reducers/menu';
 import { initialSchedule, ScheduleAction, scheduleReducer } from '../../reducers/schedule';
 import FormAlert from '../FormAlert';
 
-import MenusForm from './MenusForm';
+import MenuForm from './MenusForm';
 import ScheduleForm from './ScheduleForm';
 
 type Props = {
@@ -33,6 +37,8 @@ export const ScheduleContext = createContext({} as {
 export const MenusContext = createContext({} as {
   menus: DraftMenu[];
   menusDispatch: React.Dispatch<MenusAction>;
+  dishList: DishItem[];
+  dishListDispatch: React.Dispatch<DishListAction>;
 });
 
 const CreateForm: React.FC<Props> = (props) => {
@@ -40,26 +46,51 @@ const CreateForm: React.FC<Props> = (props) => {
 
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
-  const handleSubmit = (): void => {
-    if (validateMenus()) {
-      createSchedule();
-    } else {
-      setErrors({ dishId: ['duplicated!'] });
-    }
+  const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
+  const [menus, menusDispatch] = useReducer(menusReducer, []);
+  const [dishList, dishListDispatch] = useReducer(dishListReducer, []);
+
+  useEffect(() => {
+    axios.get('http://localhost:3100/api/v1/dishes/dish_list.json')
+      .then((results) => {
+        dishListDispatch({ type: 'set', value: results.data });
+      });
+  }, []);
+
+  const handleClose = (): void => {
+    scheduleDispatch({ type: 'reset', value: null });
+    menusDispatch({ type: 'reset', index: null, value: null });
+    setErrors(null);
+    onClose();
+  };
+
+  const validateMenus = (): boolean => (
+    duplicateDish()
+  );
+
+  const duplicateDish = (): boolean => {
+    const filteredMenus = menus.filter((menu) => (menu.dishId !== null));
+    const dishIds = filteredMenus.map((menu) => (menu.dishId));
+    const uniqueIds = new Set(dishIds);
+    return dishIds.length === uniqueIds.size;
   };
 
   const createSchedule = (): void => {
     const formData: FormData = new FormData();
     formData.append('scheduledMenu[schedule][date]', schedule.date.toLocaleDateString());
     formData.append('scheduledMenu[schedule][category]', schedule.category);
+    formData.append('scheduledMenu[schedule][memo]', schedule.memo);
+
     if (schedule.images !== null) {
       Array.from(schedule.images).forEach((image) => {
         formData.append('scheduledMenu[schedule][images][]', image);
       });
     }
+
     const filteredMenus: DraftMenu[] = menus.filter((menu) => (
       menu.dishId && menu.delete === false
     ));
+
     filteredMenus.forEach((menu) => {
       if (menu.dishId) formData.append(`scheduledMenu[menus][${menu.index}][dish_id]`, menu.dishId.toString());
       formData.append(`scheduledMenu[menus][${menu.index}][category]`, menu.category);
@@ -74,20 +105,12 @@ const CreateForm: React.FC<Props> = (props) => {
       .catch((error) => { console.log(error); });
   };
 
-  const validateMenus = (): boolean => {
-    const filteredMenus = menus.filter((menu) => (menu.dishId !== null));
-    const dishIds = filteredMenus.map((menu) => (menu.dishId));
-    const uniqueIds = new Set(dishIds);
-    return dishIds.length === uniqueIds.size;
-  };
-
-  const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
-  const [menus, menusDispatch] = useReducer(menusReducer, initialMenus);
-
-  const handleClose = (): void => {
-    menusDispatch({ type: 'reset', index: null, value: null });
-    setErrors(null);
-    onClose();
+  const handleSubmit = (): void => {
+    if (validateMenus()) {
+      createSchedule();
+    } else {
+      setErrors({ dishId: ['duplicated!'] });
+    }
   };
 
   return (
@@ -101,16 +124,20 @@ const CreateForm: React.FC<Props> = (props) => {
           <ScheduleContext.Provider value={{ schedule, scheduleDispatch }}>
             <ScheduleForm />
           </ScheduleContext.Provider>
-          <MenusContext.Provider value={{ menus, menusDispatch }}>
-            <MenusForm />
+          <MenusContext.Provider
+            value={{
+              menus, menusDispatch, dishList, dishListDispatch,
+            }}
+          >
+            <MenuForm />
           </MenusContext.Provider>
           <FormButtons>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleSubmit}>
+            <SaveButton variant="primary" onClick={handleSubmit}>
               Save
-            </Button>
+            </SaveButton>
           </FormButtons>
         </Form>
       </Modal.Body>
@@ -120,8 +147,12 @@ const CreateForm: React.FC<Props> = (props) => {
 
 const FormButtons = styled.div({
   display: 'flex',
-  width: '90%',
+  paddingRight: 16,
   justifyContent: 'flex-end',
+});
+
+const SaveButton = styled(Button)({
+  marginLeft: 8,
 });
 
 export default CreateForm;

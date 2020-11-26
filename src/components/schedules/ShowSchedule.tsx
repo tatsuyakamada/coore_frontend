@@ -63,9 +63,9 @@ const ShowSchedule: React.FC<Props> = (props) => {
     <Modal show={show} onHide={onHide}>
       <Card>
         <CardHeader>
-          <Date>
+          <div>
             {scheduledMenu.schedule.date}
-          </Date>
+          </div>
           <Type>
             <ScheduleCategory pill variant={scheduleCategolize()}>
               {scheduledMenu.schedule.category}
@@ -81,11 +81,20 @@ const ShowSchedule: React.FC<Props> = (props) => {
             ))
           }
         </ImageSlide>
-        <CardBody>
+        <ScheduleContent>
+          {
+            scheduledMenu.schedule.memo
+            && (
+              <>
+                <MemoTitle>~Memo~</MemoTitle>
+                <MemoText>{scheduledMenu.schedule.memo}</MemoText>
+              </>
+            )
+          }
           <Card.Title>Menu</Card.Title>
           {
             scheduledMenu.menus.map((menu) => (
-              <MenuNames key={menu.id}>
+              <MenuList key={menu.id}>
                 <div>
                   <MenuCategory
                     pill
@@ -95,10 +104,10 @@ const ShowSchedule: React.FC<Props> = (props) => {
                   </MenuCategory>
                 </div>
                 <DishName>{menu.dishName}</DishName>
-              </MenuNames>
+              </MenuList>
             ))
           }
-        </CardBody>
+        </ScheduleContent>
       </Card>
     </Modal>
   );
@@ -109,32 +118,12 @@ const CardHeader = styled(Card.Header)({
   padding: 8,
 });
 
-const Date = styled.div({
-
-});
-
 const Type = styled.div({
   marginLeft: 'auto',
 });
 
-const MenuNames = styled.div({
-  display: 'flex',
-});
-
 const ScheduleCategory = styled(Badge)({
   margin: 'auto',
-});
-
-const CardBody = styled(Card.Body)({
-  padding: 8,
-});
-
-const MenuCategory = styled(Badge)({
-  margin: 'auto',
-});
-
-const DishName = styled(Card.Text)({
-  paddingLeft: 8,
 });
 
 const ImageSlide = styled(Carousel)({
@@ -145,6 +134,32 @@ const ImageSlide = styled(Carousel)({
 const Img = styled.img({
   width: '100%',
   maxHeight: '300px',
+});
+
+const ScheduleContent = styled(Card.Body)({
+  padding: 8,
+});
+
+const MemoTitle = styled(Card.Title)({
+  fontSize: 18,
+});
+
+const MemoText = styled(Card.Text)({
+  padding: '0 16px',
+});
+
+const MenuList = styled.div({
+  display: 'flex',
+  marginBottom: 8,
+  paddingLeft: 16,
+});
+
+const MenuCategory = styled(Badge)({
+  margin: 'auto',
+});
+
+const DishName = styled(Card.Text)({
+  paddingLeft: 8,
 });
 
 export default ShowSchedule;

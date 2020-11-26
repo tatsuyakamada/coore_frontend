@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { ScheduledMenu } from '../interfaces/domains/schedule';
 
+import MenuItem from './MenuItem';
 import ShowSchedule from './schedules/ShowSchedule';
 
 type Props = {
@@ -25,21 +26,6 @@ const ScheduleItem: React.FC<Props> = (props) => {
         return 'warning';
       case 'brunch':
         return 'info';
-      default:
-        return 'light';
-    }
-  };
-
-  const menuCategolize = (category: string): string => {
-    switch (category) {
-      case 'main':
-        return 'danger';
-      case 'side':
-        return 'success';
-      case 'dessert':
-        return 'info';
-      case 'other':
-        return 'secondary';
       default:
         return 'light';
     }
@@ -78,35 +64,23 @@ const ScheduleItem: React.FC<Props> = (props) => {
         onClick={handleClick}
       >
         <CardHeader>
-          <Date>
-            {scheduledMenu.schedule.date}
-          </Date>
+          <div>{scheduledMenu.schedule.date}</div>
           <Type>
             <ScheduleCategory pill variant={scheduleCategolize()}>
               {scheduledMenu.schedule.category}
             </ScheduleCategory>
           </Type>
         </CardHeader>
-        <CardImage>
+        <ScheduleImage>
           <Card.Img style={{ maxHeight: '100%', maxWidth: '100%' }} src={displayImage()} />
-        </CardImage>
-        <CardBody>
+        </ScheduleImage>
+        <MenuList>
           {
             scheduledMenu.menus.map((menu) => (
-              <Menu key={menu.id}>
-                <div>
-                  <MenuCategory
-                    pill
-                    variant={menuCategolize(menu.category)}
-                  >
-                    {menu.category}
-                  </MenuCategory>
-                </div>
-                <DishName>{menu.dishName}</DishName>
-              </Menu>
+              <MenuItem id={menu.id} category={menu.category} name={menu.dishName} />
             ))
           }
-        </CardBody>
+        </MenuList>
       </Card>
     </>
   );
@@ -117,37 +91,21 @@ const CardHeader = styled(Card.Header)({
   padding: 8,
 });
 
-const Date = styled.div({
-
-});
-
 const Type = styled.div({
   marginLeft: 'auto',
-});
-
-const Menu = styled.div({
-  display: 'flex',
 });
 
 const ScheduleCategory = styled(Badge)({
   margin: 'auto',
 });
 
-const CardBody = styled(Card.Body)({
-  padding: 8,
-});
-
-const MenuCategory = styled(Badge)({
-  margin: 'auto',
-});
-
-const DishName = styled(Card.Text)({
-  paddingLeft: 8,
-});
-
-const CardImage = styled.div({
+const ScheduleImage = styled.div({
   width: '100%',
   height: 150,
+});
+
+const MenuList = styled(Card.Body)({
+  padding: 8,
 });
 
 export default ScheduleItem;
