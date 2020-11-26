@@ -1,13 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import {
-  Button, FormControl, InputGroup, Modal,
+  Button, Form, FormControl, InputGroup, Modal,
 } from 'react-bootstrap';
+import styled from 'styled-components';
 
-import Genre from '../../enum/genre';
-import { DraftDish } from '../../interfaces/domains/dish';
-import FormAlert from '../FormAlert';
-import Selector from '../Selector';
+import { DraftDish, Genre } from '../../../interfaces/domains/dish';
+import FormAlert from '../../molecules/FormAlert';
+import GenreSelector from '../../molecules/GenreSelector';
 
 type Props = {
   show: boolean;
@@ -46,8 +46,8 @@ const CreateForm: React.FC<Props> = (props) => {
     setDish({ name: event.target.value, genre: dish.genre });
   };
 
-  const handleSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDish({ name: dish.name, genre: event.target.value });
+  const handleSelect = (value: Genre): void => {
+    setDish({ name: dish.name, genre: value });
   };
 
   return (
@@ -57,6 +57,13 @@ const CreateForm: React.FC<Props> = (props) => {
         <Modal.Title>CreateForm</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <FormItem>
+          <Label>Genre</Label>
+          <GenreSelector
+            onChange={handleSelect}
+            selected={dish.genre}
+          />
+        </FormItem>
         <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text id="name">Name</InputGroup.Text>
@@ -67,12 +74,6 @@ const CreateForm: React.FC<Props> = (props) => {
             aria-describedby="name"
             onChange={handleChange}
           />
-        </InputGroup>
-        <InputGroup>
-          <InputGroup.Prepend>
-            <InputGroup.Text id="genre">Genre</InputGroup.Text>
-          </InputGroup.Prepend>
-          <Selector options={Genre} onChange={handleSelect} />
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
@@ -86,5 +87,13 @@ const CreateForm: React.FC<Props> = (props) => {
     </Modal>
   );
 };
+
+const FormItem = styled(Form.Group)({
+  padding: '0 16px',
+});
+
+const Label = styled(Form.Label)({
+  display: 'block',
+});
 
 export default CreateForm;

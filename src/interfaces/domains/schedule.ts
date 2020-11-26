@@ -8,7 +8,7 @@ export interface ScheduledMenu {
 export interface Schedule {
   id: string;
   date: Date;
-  category: string;
+  category: ScheduleCategory;
   memo: string;
   images: string[] | null;
   createdAt: Date;
@@ -17,7 +17,9 @@ export interface Schedule {
 
 export interface DraftSchedule {
   date: Date;
-  category: string;
+  category: ScheduleCategory;
   memo: string;
   images: FileList | null;
 }
+
+export type ScheduleCategory = 'dinner' | 'lunch' | 'morning' | 'brunch'

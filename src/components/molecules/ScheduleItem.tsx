@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Card, Badge } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { ScheduledMenu } from '../interfaces/domains/schedule';
+import { ScheduledMenu } from '../../interfaces/domains/schedule';
+import ScheduleBadge from '../atoms/ScheduleBadge';
+import ShowSchedule from '../organisms/schedules/ShowSchedule';
 
 import MenuItem from './MenuItem';
-import ShowSchedule from './schedules/ShowSchedule';
 
 type Props = {
   scheduledMenu: ScheduledMenu;
@@ -15,21 +16,6 @@ const ScheduleItem: React.FC<Props> = (props) => {
   const { scheduledMenu } = props;
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
-
-  const scheduleCategolize = (): string => {
-    switch (scheduledMenu.schedule.category) {
-      case 'morning':
-        return 'primary';
-      case 'lunch':
-        return 'success';
-      case 'dinner':
-        return 'warning';
-      case 'brunch':
-        return 'info';
-      default:
-        return 'light';
-    }
-  };
 
   const displayImage = (): string => {
     if (scheduledMenu.schedule.images) {
@@ -60,15 +46,13 @@ const ScheduleItem: React.FC<Props> = (props) => {
       />
       <Card
         key={scheduledMenu.schedule.id}
-        style={{ minWidth: '13.5rem', maxWidth: '13.5rem' }}
+        style={{ margin: 4, minWidth: '24%', maxWidth: '24%' }}
         onClick={handleClick}
       >
         <CardHeader>
           <div>{scheduledMenu.schedule.date}</div>
           <Type>
-            <ScheduleCategory pill variant={scheduleCategolize()}>
-              {scheduledMenu.schedule.category}
-            </ScheduleCategory>
+            <ScheduleBadge category={scheduledMenu.schedule.category} />
           </Type>
         </CardHeader>
         <ScheduleImage>
@@ -93,10 +77,6 @@ const CardHeader = styled(Card.Header)({
 
 const Type = styled.div({
   marginLeft: 'auto',
-});
-
-const ScheduleCategory = styled(Badge)({
-  margin: 'auto',
 });
 
 const ScheduleImage = styled.div({

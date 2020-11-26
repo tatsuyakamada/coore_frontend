@@ -1,14 +1,18 @@
+import { ReactText } from 'react';
+
+import { Genres } from '../../enum/genre';
+
 export interface Dish {
   id: number;
   name: string;
-  genre: string;
+  genre: Genre;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface DraftDish {
   name: string;
-  genre: string;
+  genre: Genre;
 }
 
 export interface DishItem {
@@ -16,3 +20,9 @@ export interface DishItem {
   label: string,
   selectable: boolean,
 }
+
+export type Genre = 'japanese' | 'western' | 'chinese' | 'other'
+
+export const isGenre = (value: ReactText): value is Genre => (
+  Genres.some((genre) => (genre === value))
+);

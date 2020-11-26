@@ -1,5 +1,5 @@
 import React, {
-  useContext, useState, ReactText, useEffect,
+  useContext, useState, useEffect,
 } from 'react';
 import {
   Button, Form, InputGroup, Modal,
@@ -9,12 +9,11 @@ import { AiFillMinusCircle } from 'react-icons/ai';
 import { BiImageAdd } from 'react-icons/bi';
 import styled from 'styled-components';
 
-import ScheduledMenuCategory from '../../enum/scheduled_menu_category';
-import { DishItem } from '../../interfaces/domains/dish';
-import { DraftMenu } from '../../interfaces/domains/menu';
-import { FormProps } from '../../interfaces/domains/utils';
-import FormAlert from '../FormAlert';
-import RadioSelector from '../RadioSelector';
+import { DishItem } from '../../../interfaces/domains/dish';
+import { DraftMenu, MenuCategory } from '../../../interfaces/domains/menu';
+import { FormProps } from '../../../interfaces/domains/utils';
+import FormAlert from '../../molecules/FormAlert';
+import MenuCategorySelector from '../../molecules/MenuCategorySelector';
 
 import { MenusContext } from './CreateForm';
 
@@ -36,7 +35,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
 
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
-  const initialMenu = {
+  const initialMenu: DraftMenu = {
     id: null,
     index: -1,
     dishId: null,
@@ -58,10 +57,8 @@ const MenuItemForm: React.FC<Props> = (props) => {
     onHide();
   };
 
-  const handleCategorySelect = (value: ReactText): void => {
-    if (typeof value === 'string') {
-      setDraftMenu({ ...draftMenu, category: value });
-    }
+  const handleCategorySelect = (value: MenuCategory): void => {
+    setDraftMenu({ ...draftMenu, category: value });
   };
 
   const handleDishSelect = (selected: DishItem[]): void => {
@@ -130,8 +127,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
         <Modal.Body>
           <Form.Group style={{ marginBottom: 8 }}>
             <Label>Category</Label>
-            <RadioSelector
-              options={ScheduledMenuCategory}
+            <MenuCategorySelector
               onChange={handleCategorySelect}
               selected={draftMenu.category}
             />

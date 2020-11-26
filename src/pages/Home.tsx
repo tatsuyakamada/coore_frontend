@@ -12,7 +12,6 @@ const Home: React.FC = () => (
       }}
     >
       <Link to="/">Home</Link>
-      <Link to="/about">About</Link>
       <Link to="/dishes">Dishes</Link>
     </div>
     <h1>Home</h1>

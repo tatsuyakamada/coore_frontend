@@ -1,13 +1,13 @@
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, CardGroup } from 'react-bootstrap';
-import { AiFillPlusCircle } from 'react-icons/ai';
+import { CardDeck } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import ContentHeader from '../../components/ContentHeader';
-import ScheduleItem from '../../components/ScheduleItem';
-import CreateForm from '../../components/schedules/CreateForm';
+import AddButton from '../../components/atoms/AddButton';
+import ScheduleItem from '../../components/molecules/ScheduleItem';
+import ContentHeader from '../../components/organisms/ContentHeader';
+import CreateForm from '../../components/organisms/schedules/CreateForm';
 import { ScheduledMenu } from '../../interfaces/domains/schedule';
 
 const IndexSchedule: React.FC = () => {
@@ -22,6 +22,10 @@ const IndexSchedule: React.FC = () => {
       });
   }, [reload]);
 
+  const handleNew = () => (
+    setShow(true)
+  );
+
   return (
     <>
       <CreateForm
@@ -31,14 +35,10 @@ const IndexSchedule: React.FC = () => {
       />
       <ContentHeader title="Schedule">
         <RightContent>
-          <Button variant="info" onClick={() => { setShow(true); }}>
-            <span>
-              <AiFillPlusCircle />
-            </span>
-          </Button>
+          <AddButton onClick={handleNew} />
         </RightContent>
       </ContentHeader>
-      <CardGroup>
+      <Cards>
         {
           scheduledMenus.map((scheduledMenu) => (
             <ScheduleItem
@@ -47,15 +47,20 @@ const IndexSchedule: React.FC = () => {
             />
           ))
         }
-      </CardGroup>
+      </Cards>
     </>
   );
 };
 
+const Cards = styled(CardDeck)({
+  margin: 0,
+});
+
 const RightContent = styled.div({
+  display: 'flex',
   margin: 'auto',
-  textAlign: 'right',
   width: '100%',
+  justifyContent: 'flex-end',
 });
 
 export default IndexSchedule;

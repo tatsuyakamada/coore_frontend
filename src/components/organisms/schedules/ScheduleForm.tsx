@@ -1,12 +1,12 @@
-import React, { useState, useContext, ReactText } from 'react';
+import React, { useState, useContext } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
 import { BiImages } from 'react-icons/bi';
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker';
 import styled from 'styled-components';
 
-import ScheduleCategory from '../../enum/schedule_category';
-import { FormProps } from '../../interfaces/domains/utils';
-import RadioSelector from '../RadioSelector';
+import { ScheduleCategory } from '../../../interfaces/domains/schedule';
+import { FormProps } from '../../../interfaces/domains/utils';
+import ScheduleCategorySelector from '../../molecules/ScheduleCategorySelector';
 
 import { ScheduleContext } from './CreateForm';
 
@@ -40,8 +40,8 @@ const ScheduleForm: React.FC = () => {
     />
   );
 
-  const handleCategorySelect = (value: ReactText): void => {
-    scheduleDispatch({ type: 'category', value: value.toString() });
+  const handleCategorySelect = (value: ScheduleCategory): void => {
+    scheduleDispatch({ type: 'category', value });
   };
 
   const handleMemoInput = (event: React.FormEvent<FormProps>): void => {
@@ -68,10 +68,9 @@ const ScheduleForm: React.FC = () => {
       </FormItem>
       <FormItem style={{ marginBottom: 8 }}>
         <Label>Category</Label>
-        <RadioSelector
-          options={ScheduleCategory}
+        <ScheduleCategorySelector
           onChange={handleCategorySelect}
-          selected="dinner"
+          selected={schedule.category}
         />
       </FormItem>
       <FormItem>

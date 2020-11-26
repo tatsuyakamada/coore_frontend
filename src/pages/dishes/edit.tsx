@@ -6,8 +6,8 @@ import {
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 
-import ContentHeader from '../../components/ContentHeader';
-import { DraftDish } from '../../interfaces/domains/dish';
+import ContentHeader from '../../components/organisms/ContentHeader';
+import { DraftDish, isGenre } from '../../interfaces/domains/dish';
 
 type Props = {
   match: {
@@ -34,7 +34,7 @@ const EditDish: React.FC<Props> = (props) => {
       });
   }, [match.params.id]);
 
-  const [dishAttribute, setDishAttribute] = useState<DraftDish>({ name: '', genre: '' });
+  const [dishAttribute, setDishAttribute] = useState<DraftDish>({ name: '', genre: 'japanese' });
 
   const renderRedirect = () => {
     if (redirect) {
@@ -64,12 +64,14 @@ const EditDish: React.FC<Props> = (props) => {
   };
 
   const handleSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDishAttribute(
-      {
-        name: dishAttribute.name,
-        genre: event.target.value,
-      },
-    );
+    if (isGenre(event.target.value)) {
+      setDishAttribute(
+        {
+          name: dishAttribute.name,
+          genre: event.target.value,
+        },
+      );
+    }
   };
 
   return (
