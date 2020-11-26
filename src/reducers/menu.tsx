@@ -1,63 +1,45 @@
 import { DraftMenu } from '../interfaces/domains/menu';
 
-export type MenusAction = {
-  type: keyof DraftMenu | 'add' | 'delete' |'reset';
-  index: number | null;
-  value: DraftMenu[keyof DraftMenu] | null;
+export const initialMenu: DraftMenu = {
+  id: null,
+  index: 0,
+  dishId: null,
+  dishName: '',
+  category: 'main',
+  memo: '',
+  image: null,
+  delete: false,
 };
 
-export const initialMenus: DraftMenu[] = [
-  {
-    id: null,
-    index: 0,
-    dishId: 1,
-    category: 'main',
-    image: null,
-    delete: false,
-  },
-];
+export type MenusAction = {
+  type: 'add' | 'update' | 'delete' | 'reset';
+  index: number | null;
+  value: DraftMenu | null;
+};
 
 export const menusReducer = (state: DraftMenu[], action: MenusAction): DraftMenu[] => {
-  const newSelectedMenus = state;
-  if (action.index !== null) {
-    switch (action.type) {
-      case 'dishId':
-        if (typeof action.value === 'number') {
-          newSelectedMenus[action.index].dishId = action.value;
-        }
-        return newSelectedMenus;
-      case 'category':
-        if (typeof action.value === 'string') {
-          newSelectedMenus[action.index].category = action.value;
-        }
-        return newSelectedMenus;
-      case 'image':
-        if (action.value instanceof File) {
-          newSelectedMenus[action.index].image = action.value;
-        }
-        return newSelectedMenus;
-      case 'delete':
-        newSelectedMenus[action.index].delete = true;
-
-        return newSelectedMenus;
-      default:
-        return state;
-    }
-  } else {
-    switch (action.type) {
-      case 'add':
-        return newSelectedMenus.concat({
-          id: null,
-          index: state.length,
-          dishId: 1,
-          category: 'main',
-          image: null,
-          delete: false,
-        });
-      case 'reset':
-        return initialMenus;
-      default:
-        return state;
-    }
+  const newState = state;
+  switch (action.type) {
+    case 'add':
+      if (action.value !== null) {
+        const newMenu = action.value;
+        newMenu.index = state.length;
+        newState.push(newMenu);
+      }
+      return newState;
+    case 'update':
+      if (action.index !== null && action.index > -1 && action.value) {
+        newState[action.index] = action.value;
+      }
+      return newState;
+    case 'delete':
+      if (action.index !== null) {
+        newState[action.index].delete = true;
+      }
+      return newState;
+    case 'reset':
+      return [];
+    default:
+      return state;
   }
 };

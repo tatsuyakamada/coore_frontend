@@ -8,6 +8,7 @@ export type ScheduleAction = {
 export const initialSchedule: DraftSchedule = {
   date: new Date(),
   category: 'dinner',
+  memo: '',
   images: null,
 };
 
@@ -21,6 +22,11 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
     case 'category':
       if (typeof action.value === 'string') {
         return { ...state, category: action.value };
+      }
+      return state;
+    case 'memo':
+      if (typeof action.value === 'string') {
+        return { ...state, memo: action.value };
       }
       return state;
     case 'images':
