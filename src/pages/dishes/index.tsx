@@ -25,6 +25,7 @@ export const DishContext = createContext({} as {
 const IndexDish: React.FC = () => {
   const [dishes, dishesDispatch] = useReducer(dishesReducer, []);
   const [dishForm, dishFormDispatch] = useReducer(dishReducer, initialDishFormProps);
+
   const [reload, setReload] = useState<boolean>(false);
 
   useEffect(() => {
