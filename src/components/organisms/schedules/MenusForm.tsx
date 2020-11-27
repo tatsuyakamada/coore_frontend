@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai';
-import { BiPencil } from 'react-icons/bi';
+import { Form } from 'react-bootstrap';
 import { BsFillImageFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
-import { DraftMenu } from '../../interfaces/domains/menu';
-import MenuItem from '../MenuItem';
+import { DraftMenu } from '../../../interfaces/domains/menu';
+import AddButton from '../../atoms/AddButton';
+import DeleteIcon from '../../atoms/DeleteIcon';
+import EditIcon from '../../atoms/EditIcon';
+import MenuItem from '../../molecules/MenuItem';
 
 import { MenusContext } from './CreateForm';
 import MenuItemForm from './MenuItemForm';
@@ -39,15 +40,11 @@ const MenusForm: React.FC = () => {
 
   return (
     <MenuForm>
-      <MenuFormLabel>
-        <div>
-          <Form.Label style={{ fontWeight: 'bold' }}>Menu</Form.Label>
-        </div>
-        <AddButton variant="outline-info" onClick={handleAdd}>
-          <AiFillPlusCircle style={{ marginTop: -16 }} />
-        </AddButton>
+      <FormHeader>
+        <Label>Menu</Label>
+        <AddButton onClick={handleAdd} height={25} width={40} />
         <MenuItemForm show={show} menu={draftMenu || undefined} onHide={handleClose} />
-      </MenuFormLabel>
+      </FormHeader>
       {
         menus.map((menu) => (
           <MenuItem
@@ -59,12 +56,8 @@ const MenusForm: React.FC = () => {
               {
                 menu.image && <ImageIcon><BsFillImageFill /></ImageIcon>
               }
-              <EditIcon onClick={() => handleEdit(menu)}>
-                <BiPencil />
-              </EditIcon>
-              <DeleteIcon onClick={(event) => handleDelete(event, menu.index)}>
-                <AiFillMinusCircle />
-              </DeleteIcon>
+              <EditIcon onClick={() => handleEdit(menu)} />
+              <DeleteIcon onClick={(event) => handleDelete(event, menu.index)} />
             </MenuItemIcons>
           </MenuItem>
         ))
@@ -78,13 +71,13 @@ const MenuForm = styled(Form.Group)({
   width: '90%',
 });
 
-const MenuFormLabel = styled.div({
+const FormHeader = styled.div({
   display: 'flex',
 });
 
-const AddButton = styled(Button)({
-  marginLeft: 16,
-  height: 25,
+const Label = styled(Form.Label)({
+  fontWeight: 'bold',
+  marginRight: 16,
 });
 
 const MenuItemIcons = styled.div({
@@ -94,22 +87,6 @@ const MenuItemIcons = styled.div({
 
 const ImageIcon = styled.span({
   color: '#1e71cc',
-});
-
-const EditIcon = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 10,
-  color: 'green',
-  cursor: 'pointer',
-});
-
-const DeleteIcon = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 10,
-  color: '#dc3545',
-  cursor: 'pointer',
 });
 
 export default MenusForm;

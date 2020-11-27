@@ -1,13 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { AiFillPlusCircle } from 'react-icons/ai';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
-import ContentHeader from '../../components/ContentHeader';
-import CreateForm from '../../components/dishes/CreateForm';
-import DishList from '../../components/DishList';
+import AddButton from '../../components/atoms/AddButton';
+import ContentHeader from '../../components/organisms/ContentHeader';
+import CreateForm from '../../components/organisms/dishes/CreateForm';
+import DishList from '../../components/organisms/dishes/DishList';
 import { Dish } from '../../interfaces/domains/dish';
 
 const IndexDish: React.FC = () => {
@@ -26,17 +25,17 @@ const IndexDish: React.FC = () => {
       });
   }, [reload]);
 
-  const showModal = (): void => {
-    setShow(true);
-  };
+  const handleClose = (): void => (
+    setShow(false)
+  );
 
-  const handleClose = (): void => {
-    setShow(false);
-  };
+  const handleCreate = (): void => (
+    setReload(true)
+  );
 
-  const handleCreate = (): void => {
-    setReload(true);
-  };
+  const handleNew = (): void => (
+    setShow(true)
+  );
 
   return (
     <>
@@ -47,9 +46,7 @@ const IndexDish: React.FC = () => {
       />
       <ContentHeader title="Dish">
         <RightContent>
-          <Button variant="info" onClick={showModal}>
-            <AiFillPlusCircle />
-          </Button>
+          <AddButton onClick={handleNew} />
         </RightContent>
       </ContentHeader>
       <DishList dishes={dishes} />
@@ -58,9 +55,11 @@ const IndexDish: React.FC = () => {
 };
 
 const RightContent = styled.div({
+  display: 'flex',
   margin: 'auto',
   textAlign: 'right',
   width: '100%',
+  justifyContent: 'flex-end',
 });
 
 export default withRouter(IndexDish);

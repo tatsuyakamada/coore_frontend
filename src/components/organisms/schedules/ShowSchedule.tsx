@@ -4,8 +4,9 @@ import {
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { Menu } from '../../interfaces/domains/menu';
-import { ScheduledMenu } from '../../interfaces/domains/schedule';
+import { Menu } from '../../../interfaces/domains/menu';
+import { ScheduledMenu } from '../../../interfaces/domains/schedule';
+import MenuBadge from '../../atoms/MenuBadge';
 
 type Props = {
   show: boolean;
@@ -26,21 +27,6 @@ const ShowSchedule: React.FC<Props> = (props) => {
         return 'warning';
       case 'brunch':
         return 'info';
-      default:
-        return 'light';
-    }
-  };
-
-  const menuCategolize = (category: string): string => {
-    switch (category) {
-      case 'main':
-        return 'danger';
-      case 'side':
-        return 'success';
-      case 'dessert':
-        return 'info';
-      case 'other':
-        return 'secondary';
       default:
         return 'light';
     }
@@ -67,9 +53,9 @@ const ShowSchedule: React.FC<Props> = (props) => {
             {scheduledMenu.schedule.date}
           </div>
           <Type>
-            <ScheduleCategory pill variant={scheduleCategolize()}>
+            <ScheduleCategoryOption pill variant={scheduleCategolize()}>
               {scheduledMenu.schedule.category}
-            </ScheduleCategory>
+            </ScheduleCategoryOption>
           </Type>
         </CardHeader>
         <ImageSlide indicators={false}>
@@ -95,14 +81,7 @@ const ShowSchedule: React.FC<Props> = (props) => {
           {
             scheduledMenu.menus.map((menu) => (
               <MenuList key={menu.id}>
-                <div>
-                  <MenuCategory
-                    pill
-                    variant={menuCategolize(menu.category)}
-                  >
-                    {menu.category}
-                  </MenuCategory>
-                </div>
+                <MenuBadge category={menu.category} />
                 <DishName>{menu.dishName}</DishName>
               </MenuList>
             ))
@@ -122,7 +101,7 @@ const Type = styled.div({
   marginLeft: 'auto',
 });
 
-const ScheduleCategory = styled(Badge)({
+const ScheduleCategoryOption = styled(Badge)({
   margin: 'auto',
 });
 
@@ -152,10 +131,6 @@ const MenuList = styled.div({
   display: 'flex',
   marginBottom: 8,
   paddingLeft: 16,
-});
-
-const MenuCategory = styled(Badge)({
-  margin: 'auto',
 });
 
 const DishName = styled(Card.Text)({

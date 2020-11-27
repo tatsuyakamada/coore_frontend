@@ -1,4 +1,5 @@
-import { DraftSchedule } from '../interfaces/domains/schedule';
+import { ScheduleCategories } from '../enum/schedule_category';
+import { DraftSchedule, ScheduleCategory } from '../interfaces/domains/schedule';
 
 export type ScheduleAction = {
   type: keyof DraftSchedule | 'reset';
@@ -20,7 +21,7 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
       }
       return state;
     case 'category':
-      if (typeof action.value === 'string') {
+      if (isScheduleCategory(action.value)) {
         return { ...state, category: action.value };
       }
       return state;
@@ -39,4 +40,13 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
     default:
       return state;
   }
+};
+
+const isScheduleCategory = (
+  value: DraftSchedule[keyof DraftSchedule] | null,
+): value is ScheduleCategory => {
+  if (typeof value !== 'string') {
+    return false;
+  }
+  return ScheduleCategories.some((category) => (category === value));
 };

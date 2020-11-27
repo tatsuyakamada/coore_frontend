@@ -3,7 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Dish } from '../interfaces/domains/dish';
+import { Dish } from '../../../interfaces/domains/dish';
 
 type Props = {
   dishes: Dish[];

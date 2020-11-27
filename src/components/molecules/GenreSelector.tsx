@@ -2,21 +2,18 @@ import React from 'react';
 import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import GenreOption from '../../enum/genre';
+import { Genre } from '../../interfaces/domains/dish';
+
 type Props = {
-  options: Option[];
-  onChange: (value: string | number) => void;
+  onChange: (value: Genre) => void;
   selected?: string | number;
 };
 
-type Option = {
-  value: string | number;
-  label: string;
-};
+const GenreSelector: React.FC<Props> = (props) => {
+  const { onChange, selected } = props;
 
-const RadioSelector: React.FC<Props> = (props) => {
-  const { options, onChange, selected } = props;
-
-  const handleChange = (value: string | number): void => {
+  const handleChange = (value: Genre): void => {
     onChange(value);
   };
 
@@ -24,11 +21,11 @@ const RadioSelector: React.FC<Props> = (props) => {
     <ToggleButtonGroup
       type="radio"
       name="option"
-      defaultValue={selected || options[0].value}
+      defaultValue={selected || GenreOption[0].value}
       onChange={handleChange}
     >
       {
-        options.map((option) => (
+        GenreOption.map((option) => (
           <ButtonItem
             variant="outline-info"
             value={option.value}
@@ -42,7 +39,7 @@ const RadioSelector: React.FC<Props> = (props) => {
 };
 
 const ButtonItem = styled(ToggleButton)({
-  width: 80,
+  width: 90,
 });
 
-export default RadioSelector;
+export default GenreSelector;
