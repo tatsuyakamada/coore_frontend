@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import EditDish from './pages/dishes/edit';
 import IndexDish from './pages/dishes/index';
 import Home from './pages/Home';
 import IndexSchedule from './pages/schedules/index';
@@ -11,7 +10,6 @@ const Router: React.FC = () => (
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/dishes" component={IndexDish} />
-      <Route exact path="/dishes/edit/:id" component={EditDish} />
       <Route exact path="/schedules" component={IndexSchedule} />
     </Switch>
   </BrowserRouter>

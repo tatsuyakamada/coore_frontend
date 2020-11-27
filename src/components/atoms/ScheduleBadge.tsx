@@ -11,6 +11,7 @@ type Props = {
 
 const ScheduleBadge: React.FC<Props> = (props) => {
   const { category } = props;
+
   const colorByCategory = (
     { backgroundColor: ScheduleCategoryColor[category] }
   );

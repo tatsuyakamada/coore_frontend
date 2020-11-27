@@ -21,4 +21,11 @@ export const ScheduleCategoryColor = {
   brunch: '#39A7DE',
 };
 
+export const GenreColor = {
+  japanese: '#5F4493',
+  western: '#F4E02B',
+  chinese: '#8BC90B',
+  other: '#39A7DE',
+};
+
 export default Color;

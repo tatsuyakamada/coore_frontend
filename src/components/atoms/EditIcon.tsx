@@ -8,18 +8,20 @@ type Props = {
   onClick: () => void;
   height?: number;
   width?: number;
+  style?: React.CSSProperties;
 }
 
 const EditIcon: React.FC<Props> = (props) => {
-  const { onClick, height, width } = props;
+  const {
+    onClick, height, width, style,
+  } = props;
 
   const iconStyle = (
     { height: height || 20, width: width || 20 }
   );
 
   return (
-    <Edit onClick={onClick}>
-      {console.log(Color.green)}
+    <Edit onClick={onClick} style={{ ...style }}>
       <BiPencil style={{ ...iconStyle }} />
     </Edit>
   );
