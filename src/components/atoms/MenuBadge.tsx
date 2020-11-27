@@ -11,6 +11,7 @@ type Props = {
 
 const MenuBadge: React.FC<Props> = (props) => {
   const { category } = props;
+
   const colorByCategory = (
     { backgroundColor: MenuCategoryColor[category] }
   );

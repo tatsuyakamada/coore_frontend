@@ -11,6 +11,7 @@ export interface Dish {
 }
 
 export interface DraftDish {
+  id: number | null;
   name: string;
   genre: Genre;
 }

@@ -1,23 +1,36 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, {
+  createContext, useEffect, useState, useReducer,
+} from 'react';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
 import AddButton from '../../components/atoms/AddButton';
 import ContentHeader from '../../components/organisms/ContentHeader';
-import CreateForm from '../../components/organisms/dishes/CreateForm';
+import DishForm from '../../components/organisms/dishes/DishForm';
 import DishList from '../../components/organisms/dishes/DishList';
 import { Dish } from '../../interfaces/domains/dish';
+import { DishesAction, dishesReducer } from '../../reducers/dish/dishes';
+import {
+  DishFormAction, DishFormProps, dishReducer, initialDishFormProps,
+} from '../../reducers/dish/dishForm';
+
+export const DishContext = createContext({} as {
+  dishes: Dish[];
+  dishesDispatch: React.Dispatch<DishesAction>
+  dishForm: DishFormProps;
+  dishFormDispatch: React.Dispatch<DishFormAction>;
+});
 
 const IndexDish: React.FC = () => {
+  const [dishes, dishesDispatch] = useReducer(dishesReducer, []);
+  const [dishForm, dishFormDispatch] = useReducer(dishReducer, initialDishFormProps);
   const [reload, setReload] = useState<boolean>(false);
-  const [dishes, setDishes] = useState<Dish[]>([]);
-  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get('http://localhost:3100/api/v1/dishes.json')
       .then((results) => {
-        setDishes(results.data);
+        dishesDispatch({ type: 'fetch', value: results.data });
         setReload(false);
       })
       .catch((data) => {
@@ -25,32 +38,28 @@ const IndexDish: React.FC = () => {
       });
   }, [reload]);
 
-  const handleClose = (): void => (
-    setShow(false)
+  const handleNew = (): void => (
+    dishFormDispatch({ type: 'new', value: { show: true, dish: null } })
   );
 
   const handleCreate = (): void => (
     setReload(true)
   );
 
-  const handleNew = (): void => (
-    setShow(true)
-  );
-
   return (
-    <>
-      <CreateForm
-        show={show}
-        onClose={handleClose}
-        onCreate={handleCreate}
-      />
+    <DishContext.Provider
+      value={{
+        dishes, dishesDispatch, dishForm, dishFormDispatch,
+      }}
+    >
       <ContentHeader title="Dish">
         <RightContent>
           <AddButton onClick={handleNew} />
         </RightContent>
       </ContentHeader>
-      <DishList dishes={dishes} />
-    </>
+      <DishForm onCreate={handleCreate} />
+      <DishList />
+    </DishContext.Provider>
   );
 };
 

@@ -1,36 +1,44 @@
-import React from 'react';
-import { ListGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { Dish } from '../../../interfaces/domains/dish';
+import { DishContext } from '../../../pages/dishes';
 
-type Props = {
-  dishes: Dish[];
-}
+import DishCard from './DishCard';
 
-const DishList: React.FC<Props> = (props) => {
-  const { dishes } = props;
+const DishList: React.FC = () => {
+  const { dishes } = useContext(DishContext);
+
+  const mappedDish = (): Dish[][] => {
+    const size = Math.floor(dishes.length / 4);
+    let count = 0;
+    const newArray = [];
+    while (count <= size) {
+      newArray.push(dishes.slice(count * 4, (count + 1) * 4));
+      count += 1;
+    }
+    return newArray;
+  };
 
   return (
-    <ListGroup>
-      {
-        dishes.map((dish) => (
-          <ListGroup.Item as="div" key={dish.id}>
-            <Item>
-              <p>{dish.genre}</p>
-              <Link to={`dishes/edit/${dish.id}`}>
-                {dish.name}
-              </Link>
-            </Item>
-          </ListGroup.Item>
-        ))
-      }
-    </ListGroup>
+    <>
+      <div>
+        {
+          mappedDish().map((mappedDishes) => (
+            <Row>
+              {
+                mappedDishes.map((dish) => (
+                  <Col className="col-3">
+                    <DishCard dish={dish} />
+                  </Col>
+                ))
+              }
+            </Row>
+          ))
+        }
+      </div>
+    </>
   );
 };
-
-const Item = styled.div({
-});
 
 export default DishList;
