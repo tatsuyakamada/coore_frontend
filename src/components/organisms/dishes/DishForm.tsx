@@ -21,17 +21,30 @@ type Props = {
 const DishForm: React.FC<Props> = (props) => {
   const { onCreate } = props;
 
-  const { dishForm, dishFormDispatch } = useContext(DishContext);
-  const [draftDish, setDraftDish] = useState<DraftDish>(dishForm.dish);
+  const {
+    dish, dishDispatch, dishModal, dishModalDispatch,
+  } = useContext(DishContext);
+
+  const [draftDish, setDraftDish] = useState<DraftDish>(dish);
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
   useEffect(() => {
-    if (dishForm.dish) setDraftDish(dishForm.dish);
-  }, [dishForm]);
+    if (dish) setDraftDish(dish);
+  }, [dish]);
+
+  const handleHide = (): void => {
+    dishDispatch({ type: 'reset' });
+    dishModalDispatch({ type: 'close' });
+  };
+
+  const handleAlertClose = (): void => (
+    setErrors(null)
+  );
 
   const handleClose = (): void => {
+    dishDispatch({ type: 'reset' });
+    dishModalDispatch({ type: 'close' });
     setErrors(null);
-    dishFormDispatch({ type: 'cancel', value: { show: false, dish: null } });
   };
 
   const handleSubmit = (): void => {
@@ -52,17 +65,17 @@ const DishForm: React.FC<Props> = (props) => {
       });
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDraftDish({ id: draftDish.id, name: event.target.value, genre: draftDish.genre });
-  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => (
+    setDraftDish({ id: draftDish.id, name: event.target.value, genre: draftDish.genre })
+  );
 
-  const handleSelect = (value: Genre): void => {
-    setDraftDish({ id: draftDish.id, name: draftDish.name, genre: value });
-  };
+  const handleSelect = (value: Genre): void => (
+    setDraftDish({ id: draftDish.id, name: draftDish.name, genre: value })
+  );
 
   return (
-    <Modal show={dishForm.show} onHide={handleClose}>
-      <FormAlert messages={errors} onClose={handleClose} />
+    <Modal show={dishModal.show} onHide={handleHide}>
+      <FormAlert messages={errors} onClose={handleAlertClose} />
       <Modal.Header closeButton>
         <Modal.Title>DishForm</Modal.Title>
       </Modal.Header>

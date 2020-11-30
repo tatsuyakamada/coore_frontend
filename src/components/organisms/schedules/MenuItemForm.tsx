@@ -5,17 +5,18 @@ import {
   Button, Form, InputGroup, Modal,
 } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { AiFillMinusCircle } from 'react-icons/ai';
 import { BiImageAdd } from 'react-icons/bi';
 import styled from 'styled-components';
 
 import { DishItem } from '../../../interfaces/domains/dish';
 import { DraftMenu, MenuCategory } from '../../../interfaces/domains/menu';
 import { FormProps } from '../../../interfaces/domains/utils';
+import { ScheduledMenuContext } from '../../../pages/schedules/index';
+import DeleteIcon from '../../atoms/DeleteIcon';
 import FormAlert from '../../molecules/FormAlert';
 import MenuCategorySelector from '../../molecules/MenuCategorySelector';
 
-import { MenusContext } from './CreateForm';
+import { MenusContext } from './ScheduledMenuForm';
 
 type Props = {
   show: boolean;
@@ -30,8 +31,8 @@ type errorMessages = {
 const MenuItemForm: React.FC<Props> = (props) => {
   const { show, menu, onHide } = props;
 
-  const { dishList } = useContext(MenusContext);
-  const { menusDispatch, dishListDispatch } = useContext(MenusContext);
+  const { menusDispatch } = useContext(ScheduledMenuContext);
+  const { dishList, dishListDispatch } = useContext(MenusContext);
 
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
@@ -43,6 +44,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
     category: 'main',
     memo: '',
     image: null,
+    deleteImage: null,
     delete: false,
   };
 
@@ -57,37 +59,38 @@ const MenuItemForm: React.FC<Props> = (props) => {
     onHide();
   };
 
-  const handleCategorySelect = (value: MenuCategory): void => {
-    setDraftMenu({ ...draftMenu, category: value });
-  };
+  const handleCategorySelect = (value: MenuCategory): void => (
+    setDraftMenu({ ...draftMenu, category: value })
+  );
 
   const handleDishSelect = (selected: DishItem[]): void => {
     if (selected[0] !== undefined) {
+      const prevId = draftMenu.dishId;
       setDraftMenu({
         ...draftMenu,
         dishId: selected[0].id,
         dishName: selected[0].label,
       });
-      dishListDispatch({ type: 'select', value: selected[0].id });
+      dishListDispatch({ type: 'select', value: selected[0].id, prev: prevId || undefined });
       setErrors(null);
     }
   };
 
-  const handleDishSelectInput = (): void => {
+  const handleDishSelectInput = (): void => (
     setDraftMenu({
       ...draftMenu,
       dishId: null,
       dishName: '',
-    });
-  };
+    })
+  );
 
   const selectableDish: DishItem[] = (
     dishList.filter((dish) => (dish.selectable === true))
   );
 
-  const handleMemoInput = (event: React.FormEvent<FormProps>): void => {
-    setDraftMenu({ ...draftMenu, memo: event.currentTarget.value });
-  };
+  const handleMemoInput = (event: React.FormEvent<FormProps>): void => (
+    setDraftMenu({ ...draftMenu, memo: event.currentTarget.value })
+  );
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (event.target.files !== null && event.target.files.length > 0) {
@@ -95,9 +98,9 @@ const MenuItemForm: React.FC<Props> = (props) => {
     }
   };
 
-  const handleImageDelete = (): void => {
-    setDraftMenu({ ...draftMenu, image: null });
-  };
+  const handleImageDelete = (): void => (
+    setDraftMenu({ ...draftMenu, image: null })
+  );
 
   const handleSubmit = (): void => {
     if (draftMenu.dishId !== null) {
@@ -179,9 +182,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
               && (
                 <ImageList>
                   <li>{draftMenu.image.name}</li>
-                  <DeleteIcon onClick={handleImageDelete}>
-                    <AiFillMinusCircle />
-                  </DeleteIcon>
+                  <DeleteIcon onClick={handleImageDelete} />
                 </ImageList>
               )
             }
@@ -223,14 +224,6 @@ const UploadIcon = styled.span({
 const ImageList = styled.div({
   display: 'flex',
   fontSize: 14,
-});
-
-const DeleteIcon = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 10,
-  color: '#dc3545',
-  cursor: 'pointer',
 });
 
 const FormButtons = styled.div({

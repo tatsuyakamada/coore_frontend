@@ -20,9 +20,7 @@ const ScheduleCard: React.FC<Props> = (props) => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const displayImage = (): string => {
-    if (scheduledMenu.schedule.images) {
-      return scheduledMenu.schedule.images[0];
-    }
+    if (scheduledMenu.schedule.images) return scheduledMenu.schedule.images[0].url;
     return menuImage() || '/logo192.png';
   };
 
@@ -31,12 +29,12 @@ const ScheduleCard: React.FC<Props> = (props) => {
     return hasImageMenu ? hasImageMenu.image : null;
   };
 
-  const handleClick = () => {
-    setShowDetail(true);
-  };
-
   const handleClose = () => {
     setShowDetail(false);
+  };
+
+  const handleClick = () => {
+    setShowDetail(true);
   };
 
   const initialCategolizedMenu = {
@@ -65,7 +63,6 @@ const ScheduleCard: React.FC<Props> = (props) => {
       />
       <Content
         key={scheduledMenu.schedule.id}
-        style={{ margin: 4 }}
         onClick={handleClick}
       >
         <CardHeader>

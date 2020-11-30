@@ -8,18 +8,25 @@ export const initialMenu: DraftMenu = {
   category: 'main',
   memo: '',
   image: null,
+  deleteImage: null,
   delete: false,
 };
 
 export type MenusAction = {
-  type: 'add' | 'update' | 'delete' | 'reset';
+  type: 'set' | 'add' | 'update' | 'delete' | 'reset';
   index: number | null;
+  menus?: DraftMenu[];
   value: DraftMenu | null;
 };
 
 export const menusReducer = (state: DraftMenu[], action: MenusAction): DraftMenu[] => {
   const newState = state;
   switch (action.type) {
+    case 'set':
+      if (action.menus) {
+        return action.menus;
+      }
+      return state;
     case 'add':
       if (action.value !== null) {
         const newMenu = action.value;

@@ -1,8 +1,22 @@
 import { DraftDish } from '../../interfaces/domains/dish';
 
-export type DishFormProps = {
+export type DishModal = {
   show: boolean;
-  dish: DraftDish;
+};
+
+export type DishModalAction = {
+  type: 'open' | 'close';
+};
+
+export const dishModalReducer = (state: DishModal, action: DishModalAction): DishModal => {
+  switch (action.type) {
+    case 'open':
+      return { show: true };
+    case 'close':
+      return { show: false };
+    default:
+      return state;
+  }
 };
 
 export const initialDish: DraftDish = {
@@ -11,31 +25,23 @@ export const initialDish: DraftDish = {
   name: '',
 };
 
-export const initialDishFormProps: DishFormProps = {
-  show: false,
-  dish: initialDish,
+export type DishAction = {
+  type: 'new' | 'edit' | 'reset';
+  dish?: DraftDish;
 };
 
-export type DishFormAction = {
-  type: 'new' | 'edit' | 'cancel';
-  value: {
-    show: boolean;
-    dish: DraftDish | null;
-  };
-}
-
-export const dishReducer = (state: DishFormProps, action: DishFormAction): DishFormProps => {
+export const dishReducer = (state: DraftDish, action: DishAction): DraftDish => {
   switch (action.type) {
     case 'new':
-      return { ...state, show: true };
+      return initialDish;
     case 'edit':
-      if (action.value.dish) {
-        return { ...state, show: true, dish: action.value.dish };
+      if (action.dish) {
+        return action.dish;
       }
-      return initialDishFormProps;
-    case 'cancel':
-      return { ...state, show: false, dish: initialDish };
+      return state;
+    case 'reset':
+      return initialDish;
     default:
-      return initialDishFormProps;
+      return state;
   }
 };

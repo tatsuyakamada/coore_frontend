@@ -4,23 +4,23 @@ import { BsFillImageFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
 import { DraftMenu } from '../../../interfaces/domains/menu';
+import { ScheduledMenuContext } from '../../../pages/schedules';
 import AddButton from '../../atoms/AddButton';
 import DeleteIcon from '../../atoms/DeleteIcon';
 import EditIcon from '../../atoms/EditIcon';
 import MenuItem from '../../molecules/MenuItem';
 
-import { MenusContext } from './CreateForm';
 import MenuItemForm from './MenuItemForm';
 
 const MenusForm: React.FC = () => {
-  const { menus, menusDispatch } = useContext(MenusContext);
-  const [show, setShow] = useState<boolean>(false);
+  const { menus, menusDispatch } = useContext(ScheduledMenuContext);
 
+  const [show, setShow] = useState<boolean>(false);
   const [draftMenu, setDraftMenu] = useState<DraftMenu | null>(null);
 
-  const handleAdd = (): void => {
-    setShow(true);
-  };
+  const handleAdd = (): void => (
+    setShow(true)
+  );
 
   const handleClose = (): void => {
     setDraftMenu(null);

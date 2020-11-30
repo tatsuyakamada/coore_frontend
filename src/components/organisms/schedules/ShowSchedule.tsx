@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-  Badge, Carousel, Card, Modal,
+  Carousel, Card, Modal,
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { Menu } from '../../../interfaces/domains/menu';
+import { Menu, DraftMenu } from '../../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../../interfaces/domains/schedule';
+import { ScheduledMenuContext } from '../../../pages/schedules/index';
+import EditIcon from '../../atoms/EditIcon';
 import MenuBadge from '../../atoms/MenuBadge';
+import ScheduleBadge from '../../atoms/ScheduleBadge';
 
 type Props = {
   show: boolean;
@@ -17,25 +20,20 @@ type Props = {
 const ShowSchedule: React.FC<Props> = (props) => {
   const { show, scheduledMenu, onHide } = props;
 
-  const scheduleCategolize = (): string => {
-    switch (scheduledMenu.schedule.category) {
-      case 'morning':
-        return 'primary';
-      case 'lunch':
-        return 'success';
-      case 'dinner':
-        return 'warning';
-      case 'brunch':
-        return 'info';
-      default:
-        return 'light';
-    }
-  };
+  const {
+    scheduleDispatch,
+    scheduleModalDispatch,
+    menusDispatch,
+  } = useContext(ScheduledMenuContext);
 
   const displayImages = (): string[] => {
-    const images = [...menuImages()];
-    if (scheduledMenu.schedule.images) images.unshift(...scheduledMenu.schedule.images);
+    const images = [...scheduleImages(), ...menuImages()];
     return images.length > 0 ? images : ['/logo192.png'];
+  };
+
+  const scheduleImages = () => {
+    const { images } = scheduledMenu.schedule;
+    return images ? images.map((image) => (image.url)).reverse() : [];
   };
 
   const menuImages = (): string[] => {
@@ -43,6 +41,33 @@ const ShowSchedule: React.FC<Props> = (props) => {
       menu.image !== null
     ));
     return hasImageMenus.map((menu) => (menu.image));
+  };
+
+  const translatedMenus = (): DraftMenu[] => {
+    const newMenus: DraftMenu[] = [];
+    scheduledMenu.menus.forEach((menu, index) => {
+      newMenus.push({
+        id: menu.id,
+        index,
+        dishId: menu.dishId,
+        dishName: menu.dishName,
+        category: menu.category,
+        memo: menu.memo,
+        image: null,
+        deleteImage: null,
+        delete: false,
+      });
+    });
+    return newMenus;
+  };
+
+  const handleEdit = () => {
+    scheduleDispatch({ type: 'edit', schedule: scheduledMenu.schedule });
+    menusDispatch({
+      type: 'set', menus: translatedMenus(), index: null, value: null,
+    });
+    scheduleModalDispatch({ type: 'open' });
+    onHide();
   };
 
   return (
@@ -53,9 +78,8 @@ const ShowSchedule: React.FC<Props> = (props) => {
             {scheduledMenu.schedule.date}
           </div>
           <Type>
-            <ScheduleCategoryOption pill variant={scheduleCategolize()}>
-              {scheduledMenu.schedule.category}
-            </ScheduleCategoryOption>
+            <ScheduleBadge category={scheduledMenu.schedule.category} />
+            <EditIcon onClick={handleEdit} />
           </Type>
         </CardHeader>
         <ImageSlide indicators={false}>
@@ -98,11 +122,8 @@ const CardHeader = styled(Card.Header)({
 });
 
 const Type = styled.div({
+  display: 'flex',
   marginLeft: 'auto',
-});
-
-const ScheduleCategoryOption = styled(Badge)({
-  margin: 'auto',
 });
 
 const ImageSlide = styled(Carousel)({
