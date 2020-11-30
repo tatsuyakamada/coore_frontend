@@ -13,7 +13,7 @@ import { DraftMenu } from '../../../interfaces/domains/menu';
 import { DraftSchedule } from '../../../interfaces/domains/schedule';
 import { dishListReducer, DishListAction } from '../../../reducers/dish/list';
 import { MenusAction, menusReducer } from '../../../reducers/menu';
-import { initialSchedule, ScheduleAction, scheduleReducer } from '../../../reducers/schedule';
+import { initialSchedule, ScheduleAction, scheduleReducer } from '../../../reducers/schedule/scheduleForm';
 import FormAlert from '../../molecules/FormAlert';
 
 import MenuForm from './MenusForm';

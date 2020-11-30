@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import { MenuCategories } from '../../enum/scheduled_menu_category';
+import { MenuCategory } from '../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../interfaces/domains/schedule';
 import ScheduleBadge from '../atoms/ScheduleBadge';
 import ShowSchedule from '../organisms/schedules/ShowSchedule';
@@ -12,7 +14,7 @@ type Props = {
   scheduledMenu: ScheduledMenu;
 }
 
-const ScheduleItem: React.FC<Props> = (props) => {
+const ScheduleCard: React.FC<Props> = (props) => {
   const { scheduledMenu } = props;
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -37,6 +39,23 @@ const ScheduleItem: React.FC<Props> = (props) => {
     setShowDetail(false);
   };
 
+  const initialCategolizedMenu = {
+    main: '',
+    side: '',
+    dessert: '',
+    other: '',
+  };
+
+  const categolizedMenus = (key: MenuCategory): string => {
+    const categolized = initialCategolizedMenu;
+    MenuCategories.forEach((category) => {
+      categolized[category] = scheduledMenu.menus.filter((menu) => (
+        menu.category === category
+      )).map((menu) => (menu.dishName)).join('/');
+    });
+    return categolized[key];
+  };
+
   return (
     <>
       <ShowSchedule
@@ -44,9 +63,9 @@ const ScheduleItem: React.FC<Props> = (props) => {
         scheduledMenu={scheduledMenu}
         onHide={handleClose}
       />
-      <Card
+      <Content
         key={scheduledMenu.schedule.id}
-        style={{ margin: 4, minWidth: '24%', maxWidth: '24%' }}
+        style={{ margin: 4 }}
         onClick={handleClick}
       >
         <CardHeader>
@@ -60,15 +79,20 @@ const ScheduleItem: React.FC<Props> = (props) => {
         </ScheduleImage>
         <MenuList>
           {
-            scheduledMenu.menus.map((menu) => (
-              <MenuItem id={menu.id} category={menu.category} name={menu.dishName} />
+            MenuCategories.map((category) => (
+              <MenuItem id={category} category={category} name={categolizedMenus(category)} />
             ))
           }
         </MenuList>
-      </Card>
+      </Content>
     </>
   );
 };
+
+const Content = styled(Card)({
+  margin: 4,
+  height: 300,
+});
 
 const CardHeader = styled(Card.Header)({
   display: 'flex',
@@ -88,4 +112,4 @@ const MenuList = styled(Card.Body)({
   padding: 8,
 });
 
-export default ScheduleItem;
+export default ScheduleCard;

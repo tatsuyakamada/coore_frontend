@@ -1,5 +1,5 @@
-import { ScheduleCategories } from '../enum/schedule_category';
-import { DraftSchedule, ScheduleCategory } from '../interfaces/domains/schedule';
+import { ScheduleCategories } from '../../enum/schedule_category';
+import { DraftSchedule, ScheduleCategory } from '../../interfaces/domains/schedule';
 
 export type ScheduleAction = {
   type: keyof DraftSchedule | 'reset';
