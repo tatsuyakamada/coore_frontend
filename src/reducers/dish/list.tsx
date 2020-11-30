@@ -3,6 +3,7 @@ import { DishItem } from '../../interfaces/domains/dish';
 export type DishListAction = {
   type: 'set' | 'select' | 'delete';
   value: DishItem[] | number;
+  prev?: number;
 };
 
 export const dishListReducer = (state: DishItem[], action: DishListAction): DishItem[] => {
@@ -13,9 +14,8 @@ export const dishListReducer = (state: DishItem[], action: DishListAction): Dish
     case 'select':
       if (action.value !== null) {
         newState.forEach((dish, index) => {
-          if (dish.id === action.value) {
-            newState[index].selectable = false;
-          }
+          if (dish.id === action.value) newState[index].selectable = false;
+          if (dish.id === action.prev) newState[index].selectable = true;
         });
       }
       return newState;

@@ -6,20 +6,28 @@ export interface ScheduledMenu {
 }
 
 export interface Schedule {
-  id: string;
+  id: number;
   date: Date;
   category: ScheduleCategory;
   memo: string;
-  images: string[] | null;
+  images: Image[] | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
+interface Image {
+  id: number;
+  name: string;
+  url: string;
+}
+
 export interface DraftSchedule {
+  id: number | null;
   date: Date;
   category: ScheduleCategory;
   memo: string;
   images: FileList | null;
+  deleteImages: number[];
 }
 
 export type ScheduleCategory = 'dinner' | 'lunch' | 'morning' | 'brunch'

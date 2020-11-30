@@ -17,7 +17,7 @@ const MenuItem: React.FC<Props> = (props) => {
     id, category, name, children,
   } = props;
 
-  const onHover = () => (
+  const handleHover = () => (
     <Tooltip id={id.toString()}>
       {
         name.split('/').map((separatedName) => (
@@ -33,7 +33,7 @@ const MenuItem: React.FC<Props> = (props) => {
       <OverlayTrigger
         placement="right"
         delay={{ show: 250, hide: 0 }}
-        overlay={onHover()}
+        overlay={handleHover()}
       >
         <Name>{name}</Name>
       </OverlayTrigger>

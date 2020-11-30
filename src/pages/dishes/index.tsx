@@ -9,22 +9,25 @@ import AddButton from '../../components/atoms/AddButton';
 import ContentHeader from '../../components/organisms/ContentHeader';
 import DishForm from '../../components/organisms/dishes/DishForm';
 import DishList from '../../components/organisms/dishes/DishList';
-import { Dish } from '../../interfaces/domains/dish';
+import { Dish, DraftDish } from '../../interfaces/domains/dish';
 import { DishesAction, dishesReducer } from '../../reducers/dish/dishes';
 import {
-  DishFormAction, DishFormProps, dishReducer, initialDishFormProps,
+  DishAction, dishModalReducer, DishModal, dishReducer, initialDish, DishModalAction,
 } from '../../reducers/dish/dishForm';
 
 export const DishContext = createContext({} as {
   dishes: Dish[];
   dishesDispatch: React.Dispatch<DishesAction>
-  dishForm: DishFormProps;
-  dishFormDispatch: React.Dispatch<DishFormAction>;
+  dish: DraftDish;
+  dishDispatch: React.Dispatch<DishAction>;
+  dishModal: DishModal;
+  dishModalDispatch: React.Dispatch<DishModalAction>;
 });
 
 const IndexDish: React.FC = () => {
   const [dishes, dishesDispatch] = useReducer(dishesReducer, []);
-  const [dishForm, dishFormDispatch] = useReducer(dishReducer, initialDishFormProps);
+  const [dish, dishDispatch] = useReducer(dishReducer, initialDish);
+  const [dishModal, dishModalDispatch] = useReducer(dishModalReducer, { show: false });
 
   const [reload, setReload] = useState<boolean>(false);
 
@@ -39,9 +42,10 @@ const IndexDish: React.FC = () => {
       });
   }, [reload]);
 
-  const handleNew = (): void => (
-    dishFormDispatch({ type: 'new', value: { show: true, dish: null } })
-  );
+  const handleNew = (): void => {
+    dishDispatch({ type: 'new' });
+    dishModalDispatch({ type: 'open' });
+  };
 
   const handleCreate = (): void => (
     setReload(true)
@@ -50,7 +54,12 @@ const IndexDish: React.FC = () => {
   return (
     <DishContext.Provider
       value={{
-        dishes, dishesDispatch, dishForm, dishFormDispatch,
+        dishes,
+        dishesDispatch,
+        dish,
+        dishDispatch,
+        dishModal,
+        dishModalDispatch,
       }}
     >
       <ContentHeader title="Dish">

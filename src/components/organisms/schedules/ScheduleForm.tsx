@@ -6,24 +6,29 @@ import styled from 'styled-components';
 
 import { ScheduleCategory } from '../../../interfaces/domains/schedule';
 import { FormProps } from '../../../interfaces/domains/utils';
+import { ScheduledMenuContext } from '../../../pages/schedules/index';
 import ScheduleCategorySelector from '../../molecules/ScheduleCategorySelector';
 
-import { ScheduleContext } from './CreateForm';
-
 const ScheduleForm: React.FC = () => {
-  const { schedule, scheduleDispatch } = useContext(ScheduleContext);
+  const { schedule, scheduleDispatch } = useContext(ScheduledMenuContext);
 
-  const initialDate = {
-    year: schedule.date.getFullYear(),
-    month: schedule.date.getMonth() + 1,
-    day: schedule.date.getDate(),
-  };
+  const scheduleDate = new Date(schedule.date);
+
+  const initialDate = () => (
+    {
+      year: scheduleDate.getFullYear(),
+      month: scheduleDate.getMonth() + 1,
+      day: scheduleDate.getDate(),
+    }
+  );
 
   const [selectedDay, setSelectedDay] = useState<DayValue>(initialDate);
 
-  const handleDateSelect = (value: DayValue | null): void => {
-    setSelectedDay(value);
-    const date = value ? new Date(value.year, value.month - 1, value.day) : schedule.date;
+  const handleDateSelect = (selectedDate: DayValue | null): void => {
+    setSelectedDay(selectedDate);
+    const date = selectedDate
+      ? new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day)
+      : schedule.date;
     scheduleDispatch({ type: 'date', value: date });
   };
 
@@ -34,19 +39,19 @@ const ScheduleForm: React.FC = () => {
   const renderCustomInput = ({ ref }: RefProps): React.ReactElement => (
     <DateSelector
       ref={ref}
-      value={schedule.date.toLocaleDateString()}
+      value={scheduleDate.toLocaleDateString()}
       readOnly
       style={{ backgroundColor: 'white' }}
     />
   );
 
-  const handleCategorySelect = (value: ScheduleCategory): void => {
-    scheduleDispatch({ type: 'category', value });
-  };
+  const handleCategorySelect = (category: ScheduleCategory): void => (
+    scheduleDispatch({ type: 'category', value: category })
+  );
 
-  const handleMemoInput = (event: React.FormEvent<FormProps>): void => {
-    scheduleDispatch({ type: 'memo', value: event.currentTarget.value });
-  };
+  const handleMemoInput = (event: React.FormEvent<FormProps>): void => (
+    scheduleDispatch({ type: 'memo', value: event.currentTarget.value })
+  );
 
   const handleImagesSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (event.target.files !== null && event.target.files.length > 0) {
