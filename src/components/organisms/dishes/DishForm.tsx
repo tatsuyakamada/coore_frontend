@@ -84,7 +84,7 @@ const DishForm: React.FC<Props> = (props) => {
           <Label>Genre</Label>
           <GenreSelector
             onChange={handleSelect}
-            selected={draftDish.genre}
+            selected={dish.genre}
           />
         </FormItem>
         <FormItem>

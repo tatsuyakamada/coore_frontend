@@ -14,11 +14,12 @@ type Props = {
 const DishCard: React.FC<Props> = (props) => {
   const { dish } = props;
 
-  const { dishDispatch } = useContext(DishContext);
+  const { dishDispatch, dishModalDispatch } = useContext(DishContext);
 
-  const handleEdit = () => (
-    dishDispatch({ type: 'edit', dish })
-  );
+  const handleEdit = (): void => {
+    dishDispatch({ type: 'edit', dish });
+    dishModalDispatch({ type: 'open' });
+  };
 
   return (
     <Content>
