@@ -4,7 +4,7 @@ export interface Menu {
   dishName: string;
   category: MenuCategory;
   memo: string;
-  image: string;
+  image: Image;
 }
 
 export interface DraftMenu {
@@ -15,7 +15,7 @@ export interface DraftMenu {
   category: MenuCategory;
   memo: string;
   image: File | null;
-  deleteImage: Image | null;
+  deleteImage: DraftImage | null;
   delete: boolean;
 }
 
@@ -23,6 +23,10 @@ interface Image {
   id: number;
   name: string;
   url: string;
+}
+
+export interface DraftImage extends Image {
+  delete: boolean;
 }
 
 export type MenuCategory = 'main' | 'side' | 'dessert' | 'other'

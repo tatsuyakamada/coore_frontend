@@ -31,16 +31,16 @@ const ShowSchedule: React.FC<Props> = (props) => {
     return images.length > 0 ? images : ['/logo192.png'];
   };
 
-  const scheduleImages = () => {
+  const scheduleImages = (): string[] => {
     const { images } = scheduledMenu.schedule;
     return images ? images.map((image) => (image.url)).reverse() : [];
   };
 
   const menuImages = (): string[] => {
     const hasImageMenus: Menu[] = scheduledMenu.menus.filter((menu) => (
-      menu.image !== null
+      menu.image !== undefined
     ));
-    return hasImageMenus.map((menu) => (menu.image));
+    return hasImageMenus.map((menu) => (menu.image.url));
   };
 
   const translatedMenus = (): DraftMenu[] => {
@@ -54,14 +54,14 @@ const ShowSchedule: React.FC<Props> = (props) => {
         category: menu.category,
         memo: menu.memo,
         image: null,
-        deleteImage: null,
+        deleteImage: menu.image ? { ...menu.image, delete: false } : null,
         delete: false,
       });
     });
     return newMenus;
   };
 
-  const handleEdit = () => {
+  const handleEdit = (): void => {
     scheduleDispatch({ type: 'edit', schedule: scheduledMenu.schedule });
     menusDispatch({
       type: 'set', menus: translatedMenus(), index: null, value: null,

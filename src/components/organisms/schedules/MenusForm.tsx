@@ -54,7 +54,10 @@ const MenusForm: React.FC = () => {
           >
             <MenuItemIcons>
               {
-                menu.image && <ImageIcon><BsFillImageFill /></ImageIcon>
+                (menu.image || (menu.deleteImage && menu.deleteImage.delete === false))
+                && (
+                  <ImageIcon><BsFillImageFill /></ImageIcon>
+                )
               }
               <EditIcon onClick={() => handleEdit(menu)} />
               <DeleteIcon onClick={(event) => handleDelete(event, menu.index)} />
