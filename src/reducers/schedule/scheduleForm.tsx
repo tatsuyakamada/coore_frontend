@@ -1,5 +1,7 @@
 import { ScheduleCategories } from '../../enum/schedule_category';
-import { DraftSchedule, Schedule, ScheduleCategory } from '../../interfaces/domains/schedule';
+import {
+  DraftImage, DraftSchedule, Schedule, ScheduleCategory,
+} from '../../interfaces/domains/schedule';
 
 export type ScheduleModal = {
   show: boolean;
@@ -43,17 +45,28 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
     case 'new':
       return initialSchedule;
     case 'edit':
-      if (action.schedule) {
+      if (action.schedule && isSchedule(action.schedule)) {
         const {
-          id, date, category, memo,
+          id, date, category, memo, images,
         } = action.schedule;
+        const deleteImages: DraftImage[] = [];
+        if (images) {
+          images.forEach((image) => {
+            deleteImages.push({
+              id: image.id,
+              name: image.name,
+              url: image.url,
+              delete: false,
+            });
+          });
+        }
         return {
           id: id || null,
           date,
           category,
           memo,
           images: null,
-          deleteImages: [],
+          deleteImages: deleteImages || [],
         };
       }
       return state;
@@ -77,12 +90,27 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
         return { ...state, images: action.value };
       }
       return state;
+    case 'deleteImages':
+      if (typeof action.value === 'number') {
+        const newDeleteImages = state.deleteImages;
+        newDeleteImages.forEach((image) => {
+          if (image.id === action.value) {
+            image.delete = true;
+          }
+        });
+        return { ...state, deleteImages: newDeleteImages };
+      }
+      return state;
     case 'reset':
       return initialSchedule;
     default:
       return state;
   }
 };
+
+const isSchedule = (schedule: Schedule | DraftSchedule): schedule is Schedule => (
+  !('deleteImage' in schedule)
+);
 
 const isScheduleCategory = (
   value: DraftSchedule[keyof DraftSchedule] | null,

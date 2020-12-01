@@ -19,33 +19,32 @@ const ScheduleCard: React.FC<Props> = (props) => {
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
+  const handleClose = (): void => {
+    setShowDetail(false);
+  };
+
+  const handleClick = (): void => {
+    setShowDetail(true);
+  };
+
   const displayImage = (): string => {
     if (scheduledMenu.schedule.images) return scheduledMenu.schedule.images[0].url;
     return menuImage() || '/logo192.png';
   };
 
   const menuImage = (): string | null => {
-    const hasImageMenu = scheduledMenu.menus.find((menu) => (menu.image !== null));
-    return hasImageMenu ? hasImageMenu.image : null;
-  };
-
-  const handleClose = () => {
-    setShowDetail(false);
-  };
-
-  const handleClick = () => {
-    setShowDetail(true);
-  };
-
-  const initialCategolizedMenu = {
-    main: '',
-    side: '',
-    dessert: '',
-    other: '',
+    const hasImageMenu = scheduledMenu.menus.find((menu) => (menu.image !== undefined));
+    return hasImageMenu ? hasImageMenu.image.url : null;
   };
 
   const categolizedMenus = (key: MenuCategory): string => {
-    const categolized = initialCategolizedMenu;
+    const categolized = {
+      main: '',
+      side: '',
+      dessert: '',
+      other: '',
+    };
+
     MenuCategories.forEach((category) => {
       categolized[category] = scheduledMenu.menus.filter((menu) => (
         menu.category === category

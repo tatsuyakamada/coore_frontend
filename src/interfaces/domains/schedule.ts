@@ -21,13 +21,17 @@ interface Image {
   url: string;
 }
 
+export interface DraftImage extends Image {
+  delete: boolean;
+}
+
 export interface DraftSchedule {
   id: number | null;
   date: Date;
   category: ScheduleCategory;
   memo: string;
   images: FileList | null;
-  deleteImages: number[];
+  deleteImages: DraftImage[];
 }
 
 export type ScheduleCategory = 'dinner' | 'lunch' | 'morning' | 'brunch'

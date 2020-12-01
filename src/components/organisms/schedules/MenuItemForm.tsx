@@ -88,6 +88,10 @@ const MenuItemForm: React.FC<Props> = (props) => {
     dishList.filter((dish) => (dish.selectable === true))
   );
 
+  const selectedDish: DishItem[] = (
+    draftMenu.dishId ? [{ id: draftMenu.dishId, label: draftMenu.dishName, selectable: false }] : []
+  );
+
   const handleMemoInput = (event: React.FormEvent<FormProps>): void => (
     setDraftMenu({ ...draftMenu, memo: event.currentTarget.value })
   );
@@ -102,6 +106,14 @@ const MenuItemForm: React.FC<Props> = (props) => {
     setDraftMenu({ ...draftMenu, image: null })
   );
 
+  const handleRegisterdImageDelete = (): void => {
+    if (draftMenu.deleteImage) {
+      setDraftMenu({
+        ...draftMenu, deleteImage: { ...draftMenu.deleteImage, delete: true },
+      });
+    }
+  };
+
   const handleSubmit = (): void => {
     if (draftMenu.dishId !== null) {
       menusDispatch({ type: draftMenu.index > -1 ? 'update' : 'add', index: draftMenu.index, value: draftMenu });
@@ -111,10 +123,6 @@ const MenuItemForm: React.FC<Props> = (props) => {
       setErrors({ dishId: ['not selected!'] });
     }
   };
-
-  const selectedDish: DishItem[] = (
-    draftMenu.dishId ? [{ id: draftMenu.dishId, label: draftMenu.dishName, selectable: false }] : []
-  );
 
   const ref: React.RefObject<Typeahead<DishItem>> = React.createRef();
 
@@ -161,6 +169,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
               <Form.Label>Image</Form.Label>
               {
                 draftMenu.image === null
+                && (draftMenu.deleteImage === null || draftMenu.deleteImage.delete)
                 && (
                   <UploadIcon>
                     <label htmlFor={`menu-image-${draftMenu.index.toString()}`}>
@@ -184,6 +193,16 @@ const MenuItemForm: React.FC<Props> = (props) => {
                   <li>{draftMenu.image.name}</li>
                   <DeleteIcon onClick={handleImageDelete} />
                 </ImageList>
+              )
+            }
+            {
+              draftMenu.deleteImage
+              && draftMenu.deleteImage.delete === false
+              && (
+                <ImageItem>
+                  {draftMenu.deleteImage.name}
+                  <DeleteIcon onClick={handleRegisterdImageDelete} />
+                </ImageItem>
               )
             }
           </Form.Group>
@@ -234,6 +253,11 @@ const FormButtons = styled.div({
 
 const FormButton = styled(Button)({
   marginLeft: 8,
+});
+
+const ImageItem = styled.li({
+  display: 'flex',
+  fontSize: 14,
 });
 
 export default MenuItemForm;

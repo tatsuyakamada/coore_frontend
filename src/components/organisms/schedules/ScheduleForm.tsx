@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { ScheduleCategory } from '../../../interfaces/domains/schedule';
 import { FormProps } from '../../../interfaces/domains/utils';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
+import DeleteIcon from '../../atoms/DeleteIcon';
 import ScheduleCategorySelector from '../../molecules/ScheduleCategorySelector';
 
 const ScheduleForm: React.FC = () => {
@@ -14,7 +15,7 @@ const ScheduleForm: React.FC = () => {
 
   const scheduleDate = new Date(schedule.date);
 
-  const initialDate = () => (
+  const initialDate = (): DayValue => (
     {
       year: scheduleDate.getFullYear(),
       month: scheduleDate.getMonth() + 1,
@@ -57,6 +58,14 @@ const ScheduleForm: React.FC = () => {
     if (event.target.files !== null && event.target.files.length > 0) {
       scheduleDispatch({ type: 'images', value: event.target.files });
     }
+  };
+
+  const handleImageDelete = (
+    event: React.MouseEvent<HTMLSpanElement>, id: number, index: number,
+  ): void => {
+    scheduleDispatch({ type: 'deleteImages', value: id });
+    const targetImage: HTMLElement | null = event.currentTarget.closest(`#delete-image-${index}`);
+    if (targetImage !== null) targetImage.hidden = true;
   };
 
   return (
@@ -103,6 +112,21 @@ const ScheduleForm: React.FC = () => {
           </UploadIcon>
         </InputGroup>
         {
+          schedule.deleteImages
+          && (
+            <div>
+              {
+                Array.from(schedule.deleteImages).map((image, index) => (
+                  <ImageItem id={`delete-image-${index}`}>
+                    {image.name}
+                    <DeleteIcon onClick={(event) => handleImageDelete(event, image.id, index)} />
+                  </ImageItem>
+                ))
+              }
+            </div>
+          )
+        }
+        {
           schedule.images
           && (
             <div>
@@ -140,6 +164,7 @@ const UploadIcon = styled.span({
 });
 
 const ImageItem = styled.li({
+  display: 'flex',
   fontSize: 14,
 });
 

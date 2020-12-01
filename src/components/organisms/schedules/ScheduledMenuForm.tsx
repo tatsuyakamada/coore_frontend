@@ -83,6 +83,12 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
     formData.append('scheduledMenu[schedule][category]', schedule.category);
     formData.append('scheduledMenu[schedule][memo]', schedule.memo);
 
+    if (schedule.deleteImages !== null) {
+      schedule.deleteImages.filter((image) => (image.delete === true)).forEach((image) => (
+        formData.append('scheduledMenu[schedule][delete_images][]', image.id.toString())
+      ));
+    }
+
     if (schedule.images !== null) {
       Array.from(schedule.images).forEach((image) => (
         formData.append('scheduledMenu[schedule][images][]', image)
@@ -98,7 +104,14 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
       if (menu.dishId) formData.append(`scheduledMenu[menus][0${menu.index}][dish_id]`, menu.dishId.toString());
       formData.append(`scheduledMenu[menus][0${menu.index}][category]`, menu.category);
       if (menu.image) formData.append(`scheduledMenu[menus][0${menu.index}][image]`, menu.image);
+      if (menu.deleteImage && menu.deleteImage.delete) formData.append(`scheduledMenu[menus][0${menu.index}][delete_image]`, menu.deleteImage.id.toString());
     });
+
+    if (schedule.deleteImages !== null) {
+      schedule.deleteImages.filter((image) => (image.delete)).forEach((image) => (
+        formData.append('scheduledMenu[schedule][delete_images][]', image.id.toString())
+      ));
+    }
 
     const baseUrl = 'http://localhost:3100/api/v1/schedules';
     const url = schedule.id ? baseUrl.concat(`/${schedule.id}`) : baseUrl;
@@ -133,11 +146,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
       <Modal.Body>
         <Form>
           <ScheduleForm />
-          <MenusContext.Provider
-            value={{
-              dishList, dishListDispatch,
-            }}
-          >
+          <MenusContext.Provider value={{ dishList, dishListDispatch }}>
             <MenuForm />
           </MenusContext.Provider>
           <FormButtons>
