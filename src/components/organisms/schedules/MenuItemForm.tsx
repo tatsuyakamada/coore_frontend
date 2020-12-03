@@ -85,7 +85,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
   );
 
   const selectableDish: DishItem[] = (
-    dishList.filter((dish) => (dish.selectable === true))
+    dishList.filter((dish) => (dish.selectable))
   );
 
   const selectedDish: DishItem[] = (
@@ -197,7 +197,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
             }
             {
               draftMenu.deleteImage
-              && draftMenu.deleteImage.delete === false
+              && !draftMenu.deleteImage.delete
               && (
                 <ImageItem>
                   {draftMenu.deleteImage.name}

@@ -83,20 +83,20 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
     formData.append('scheduledMenu[schedule][category]', schedule.category);
     formData.append('scheduledMenu[schedule][memo]', schedule.memo);
 
-    if (schedule.deleteImages !== null) {
-      schedule.deleteImages.filter((image) => (image.delete === true)).forEach((image) => (
+    if (schedule.deleteImages) {
+      schedule.deleteImages.filter((image) => (image.delete)).forEach((image) => (
         formData.append('scheduledMenu[schedule][delete_images][]', image.id.toString())
       ));
     }
 
-    if (schedule.images !== null) {
+    if (schedule.images) {
       Array.from(schedule.images).forEach((image) => (
         formData.append('scheduledMenu[schedule][images][]', image)
       ));
     }
 
     const filteredMenus: DraftMenu[] = menus.filter((menu) => (
-      menu.dishId && menu.delete === false
+      menu.dishId && !menu.delete
     ));
 
     filteredMenus.forEach((menu) => {
@@ -107,7 +107,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
       if (menu.deleteImage && menu.deleteImage.delete) formData.append(`scheduledMenu[menus][0${menu.index}][delete_image]`, menu.deleteImage.id.toString());
     });
 
-    if (schedule.deleteImages !== null) {
+    if (schedule.deleteImages) {
       schedule.deleteImages.filter((image) => (image.delete)).forEach((image) => (
         formData.append('scheduledMenu[schedule][delete_images][]', image.id.toString())
       ));
