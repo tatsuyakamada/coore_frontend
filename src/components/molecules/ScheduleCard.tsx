@@ -3,16 +3,18 @@ import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { MenuCategories } from '../../enum/scheduled_menu_category';
+import { Image } from '../../interfaces/domains/image';
 import { MenuCategory } from '../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../interfaces/domains/schedule';
 import ScheduleBadge from '../atoms/ScheduleBadge';
 import ShowSchedule from '../organisms/schedules/ShowSchedule';
 
+import FormedImage from './FormedImage';
 import MenuItem from './MenuItem';
 
 type Props = {
   scheduledMenu: ScheduledMenu;
-}
+};
 
 const ScheduleCard: React.FC<Props> = (props) => {
   const { scheduledMenu } = props;
@@ -27,14 +29,22 @@ const ScheduleCard: React.FC<Props> = (props) => {
     setShowDetail(true);
   };
 
-  const displayImage = (): string => {
-    if (scheduledMenu.schedule.images) return scheduledMenu.schedule.images[0].url;
-    return menuImage() || '/logo192.png';
+  const defaultImage = {
+    id: 0,
+    name: 'default',
+    url: '/logo192.png',
+    width: 400,
+    height: 400,
   };
 
-  const menuImage = (): string | null => {
+  const displayImage = (): Image => {
+    if (scheduledMenu.schedule.images) return scheduledMenu.schedule.images[0];
+    return menuImage() || defaultImage;
+  };
+
+  const menuImage = (): Image | null => {
     const hasImageMenu = scheduledMenu.menus.find((menu) => (menu.image !== undefined));
-    return hasImageMenu ? hasImageMenu.image.url : null;
+    return hasImageMenu ? hasImageMenu.image : null;
   };
 
   const categolizedMenus = (key: MenuCategory): string => {
@@ -71,7 +81,7 @@ const ScheduleCard: React.FC<Props> = (props) => {
           </Type>
         </CardHeader>
         <ScheduleImage>
-          <Card.Img style={{ maxHeight: '100%', maxWidth: '100%' }} src={displayImage()} />
+          <FormedImage image={displayImage()} />
         </ScheduleImage>
         <MenuList>
           {
@@ -100,8 +110,10 @@ const Type = styled.div({
 });
 
 const ScheduleImage = styled.div({
+  display: 'flex',
   width: '100%',
   height: 150,
+  justifyContent: 'center',
 });
 
 const MenuList = styled(Card.Body)({

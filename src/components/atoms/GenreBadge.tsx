@@ -7,18 +7,19 @@ import { GenreColor } from '../../utils/colors';
 
 type Props = {
   genre: Genre;
-}
+  style?: React.CSSProperties;
+};
 
 const GenreBadge: React.FC<Props> = (props) => {
-  const { genre } = props;
+  const { genre, style } = props;
 
-  const colorByCategory = (
+  const colorByCategory: React.CSSProperties = (
     { backgroundColor: GenreColor[genre] }
   );
 
   return (
     <div>
-      <GenreBadgeIcon pill style={{ ...colorByCategory }}>
+      <GenreBadgeIcon pill style={{ ...colorByCategory, ...style }}>
         {genre}
       </GenreBadgeIcon>
     </div>

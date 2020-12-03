@@ -71,7 +71,7 @@ const IndexSchedule: React.FC = () => {
           <AddButton onClick={handleNew} />
         </RightContent>
       </ContentHeader>
-      <ScheduleList />
+      <ScheduleList scheduledMenus={scheduledMenus} />
     </ScheduledMenuContext.Provider>
   );
 };

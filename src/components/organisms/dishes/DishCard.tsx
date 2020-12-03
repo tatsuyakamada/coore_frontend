@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Card } from 'react-bootstrap';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 import { Dish } from '../../../interfaces/domains/dish';
@@ -9,20 +10,27 @@ import GenreBadge from '../../atoms/GenreBadge';
 
 type Props = {
   dish: Dish;
-}
+};
 
 const DishCard: React.FC<Props> = (props) => {
   const { dish } = props;
 
   const { dishDispatch, dishModalDispatch } = useContext(DishContext);
 
-  const handleEdit = (): void => {
+  const history = useHistory();
+
+  const handleClick = (): void => {
+    history.push({ pathname: `/dishes/${dish.id}`, state: { id: dish.id } });
+  };
+
+  const handleEdit = (event: React.MouseEvent<HTMLInputElement>): void => {
     dishDispatch({ type: 'edit', dish });
     dishModalDispatch({ type: 'open' });
+    event.stopPropagation();
   };
 
   return (
-    <Content>
+    <Content onClick={handleClick}>
       <Label>
         <GenreBadge genre={dish.genre} />
         <Name>{dish.name}</Name>

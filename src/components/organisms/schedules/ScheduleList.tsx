@@ -1,18 +1,22 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { ScheduledMenu } from '../../../interfaces/domains/schedule';
-import { ScheduledMenuContext } from '../../../pages/schedules/index';
 import mappedItem from '../../../utils/mappedItem';
 import ScheduleCard from '../../molecules/ScheduleCard';
 
-const ScheduleList: React.FC = () => {
-  const { scheduledMenus } = useContext(ScheduledMenuContext);
+type Props = {
+  scheduledMenus: ScheduledMenu[];
+  columns?: number;
+};
+
+const ScheduleList: React.FC<Props> = (props) => {
+  const { scheduledMenus, columns } = props;
 
   return (
-    <div>
+    <>
       {
-        mappedItem<ScheduledMenu>(scheduledMenus, 4).map((mappedSchedules) => (
+        mappedItem<ScheduledMenu>(scheduledMenus, columns || 4).map((mappedSchedules) => (
           <Row>
             {
               mappedSchedules.map((scheduledMenu) => (
@@ -27,7 +31,7 @@ const ScheduleList: React.FC = () => {
           </Row>
         ))
       }
-    </div>
+    </>
   );
 };
 

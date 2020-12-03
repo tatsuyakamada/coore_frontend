@@ -2,23 +2,36 @@ import React, { useContext } from 'react';
 import {
   Carousel, Card, Modal,
 } from 'react-bootstrap';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
+import { Image } from '../../../interfaces/domains/image';
 import { Menu, DraftMenu } from '../../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../../interfaces/domains/schedule';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
 import EditIcon from '../../atoms/EditIcon';
 import MenuBadge from '../../atoms/MenuBadge';
 import ScheduleBadge from '../../atoms/ScheduleBadge';
+import FormedImage from '../../molecules/FormedImage';
 
 type Props = {
   show: boolean;
   scheduledMenu: ScheduledMenu;
   onHide: () => void;
-}
+};
 
 const ShowSchedule: React.FC<Props> = (props) => {
   const { show, scheduledMenu, onHide } = props;
+
+  const location = useLocation();
+
+  const defaultImage = {
+    id: 0,
+    name: 'default',
+    url: '/logo192.png',
+    width: 400,
+    height: 400,
+  };
 
   const {
     scheduleDispatch,
@@ -26,21 +39,21 @@ const ShowSchedule: React.FC<Props> = (props) => {
     menusDispatch,
   } = useContext(ScheduledMenuContext);
 
-  const displayImages = (): string[] => {
+  const displayImages = (): Image[] => {
     const images = [...scheduleImages(), ...menuImages()];
-    return images.length > 0 ? images : ['/logo192.png'];
+    return images.length > 0 ? images : [defaultImage];
   };
 
-  const scheduleImages = (): string[] => {
+  const scheduleImages = (): Image[] => {
     const { images } = scheduledMenu.schedule;
-    return images ? images.map((image) => (image.url)).reverse() : [];
+    return images ? images.reverse() : [];
   };
 
-  const menuImages = (): string[] => {
+  const menuImages = (): Image[] => {
     const hasImageMenus: Menu[] = scheduledMenu.menus.filter((menu) => (
       menu.image !== undefined
     ));
-    return hasImageMenus.map((menu) => (menu.image.url));
+    return hasImageMenus.map((menu) => (menu.image));
   };
 
   const translatedMenus = (): DraftMenu[] => {
@@ -71,7 +84,7 @@ const ShowSchedule: React.FC<Props> = (props) => {
   };
 
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={onHide} size="lg">
       <Card>
         <CardHeader>
           <div>
@@ -79,14 +92,18 @@ const ShowSchedule: React.FC<Props> = (props) => {
           </div>
           <Type>
             <ScheduleBadge category={scheduledMenu.schedule.category} />
-            <EditIcon onClick={handleEdit} />
+            {
+              !location.state && <EditIcon onClick={handleEdit} />
+            }
           </Type>
         </CardHeader>
         <ImageSlide indicators={false}>
           {
             displayImages().map((img) => (
-              <Carousel.Item key={img}>
-                <Img src={img} />
+              <Carousel.Item key={img.id}>
+                <ImageItem>
+                  <FormedImage image={img} style={{ maxHeight: 480 }} />
+                </ImageItem>
               </Carousel.Item>
             ))
           }
@@ -128,12 +145,12 @@ const Type = styled.div({
 
 const ImageSlide = styled(Carousel)({
   width: '100%',
-  height: 300,
+  height: 480,
 });
 
-const Img = styled.img({
-  width: '100%',
-  maxHeight: '300px',
+const ImageItem = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
 });
 
 const ScheduleContent = styled(Card.Body)({
