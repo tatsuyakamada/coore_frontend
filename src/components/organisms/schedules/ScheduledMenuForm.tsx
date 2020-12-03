@@ -69,7 +69,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
   );
 
   const duplicateDish = (): boolean => {
-    const filteredMenus = menus.filter((menu) => (menu.dishId !== null));
+    const filteredMenus = menus.filter((menu) => (menu.dishId !== null && menu.delete !== true));
     const dishIds = filteredMenus.map((menu) => (menu.dishId));
     const uniqueIds = new Set(dishIds);
     return dishIds.length === uniqueIds.size;

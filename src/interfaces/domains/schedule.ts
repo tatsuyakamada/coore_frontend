@@ -1,3 +1,4 @@
+import { Image } from './image';
 import { Menu } from './menu';
 
 export interface ScheduledMenu {
@@ -15,13 +16,7 @@ export interface Schedule {
   updatedAt: Date;
 }
 
-interface Image {
-  id: number;
-  name: string;
-  url: string;
-}
-
-export interface DraftImage extends Image {
+export interface DraftImage extends Omit<Image, 'width' | 'height'> {
   delete: boolean;
 }
 

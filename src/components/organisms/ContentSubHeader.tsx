@@ -2,16 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 type Props = {
-  title: string;
+  subtitle: string;
 };
 
-const ContentHeader: React.FC<Props> = (props) => {
-  const { title, children } = props;
+const ContentSubHeader: React.FC<Props> = (props) => {
+  const { subtitle, children } = props;
   return (
     <Container>
-      <Title>
-        <h2>{title}</h2>
-      </Title>
+      <Subtitle>
+        <h5>{subtitle}</h5>
+      </Subtitle>
       {children}
     </Container>
 
@@ -23,8 +23,8 @@ const Container = styled.div({
   marginTop: 20,
 });
 
-const Title = styled.div({
+const Subtitle = styled.div({
   width: '100%',
 });
 
-export default ContentHeader;
+export default ContentSubHeader;
