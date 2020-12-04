@@ -107,12 +107,6 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
       if (menu.deleteImage && menu.deleteImage.delete) formData.append(`scheduledMenu[menus][0${menu.index}][delete_image]`, menu.deleteImage.id.toString());
     });
 
-    if (schedule.deleteImages) {
-      schedule.deleteImages.filter((image) => (image.delete)).forEach((image) => (
-        formData.append('scheduledMenu[schedule][delete_images][]', image.id.toString())
-      ));
-    }
-
     const baseUrl = 'http://localhost:3100/api/v1/schedules';
     const url = schedule.id ? baseUrl.concat(`/${schedule.id}`) : baseUrl;
     const method = schedule.id ? 'put' : 'post';

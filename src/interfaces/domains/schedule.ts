@@ -1,3 +1,5 @@
+import { ScheduleCategories } from '../../enum/schedule_category';
+
 import { Image } from './image';
 import { Menu } from './menu';
 
@@ -30,3 +32,7 @@ export interface DraftSchedule {
 }
 
 export type ScheduleCategory = 'dinner' | 'lunch' | 'morning' | 'brunch'
+
+export const isScheduleCategory = (value: string): value is ScheduleCategory => (
+  ScheduleCategories.some((category) => (category === value))
+);

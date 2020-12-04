@@ -16,7 +16,7 @@ const FormedImage: React.FC<Props> = (props) => {
     return { [main]: '100%' };
   };
 
-  return <Image src={image.url} style={{ ...style, ...imageSize() }} />;
+  return <Image src={image.url} style={{ maxWidth: '100%', ...style, ...imageSize() }} />;
 };
 
 export default FormedImage;
