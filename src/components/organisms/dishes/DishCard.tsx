@@ -30,7 +30,7 @@ const DishCard: React.FC<Props> = (props) => {
   };
 
   return (
-    <Content onClick={handleClick}>
+    <Content key={dish.id} onClick={handleClick}>
       <Label>
         <GenreBadge genre={dish.genre} />
         <Name>{dish.name}</Name>

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, {
-  createContext, useState, useEffect, useReducer,
+  createContext, useState, useEffect, useReducer, useContext,
 } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import styled from 'styled-components';
 
 import GenreBadge from '../../components/atoms/GenreBadge';
@@ -16,6 +16,7 @@ import { ScheduledMenu, DraftSchedule } from '../../interfaces/domains/schedule'
 import {
   initialSchedule, scheduleReducer, ScheduleAction,
 } from '../../reducers/schedule/scheduleForm';
+import { ErrorContext } from '../Layout';
 
 export const ScheduledMenuContext = createContext({} as {
   schedule: DraftSchedule;
@@ -23,7 +24,11 @@ export const ScheduledMenuContext = createContext({} as {
 });
 
 const ShowDish: React.FC = () => {
+  const { errorDispatch } = useContext(ErrorContext);
+
   const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
+
+  const history = useHistory();
 
   const [dish, setDish] = useState<Dish | null>(null);
   const [images, setImages] = useState<Image[]>([]);
@@ -36,12 +41,14 @@ const ShowDish: React.FC = () => {
   useEffect(() => {
     axios.get(`http://localhost:3100/api/v1/dishes/${id}.json`)
       .then((result) => {
+        errorDispatch({ type: 'reset' });
         setDish(result.data.dish);
         setImages(result.data.images);
         setScheduledMenus(result.data.schedules);
       })
       .catch((error) => {
-        console.log(error);
+        errorDispatch({ type: 'set', value: error.response.data });
+        history.push('/dishes');
       });
   }, [id]);
 

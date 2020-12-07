@@ -52,7 +52,7 @@ const DishList: React.FC = () => {
             {
               mappedDishes.map((dish) => (
                 <Col className="col-3">
-                  <DishCard dish={dish} />
+                  <DishCard key={dish.id} dish={dish} />
                 </Col>
               ))
             }

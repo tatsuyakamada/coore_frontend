@@ -21,7 +21,7 @@ const MenuItem: React.FC<Props> = (props) => {
     <Tooltip id={id.toString()}>
       {
         name.split('/').map((separatedName) => (
-          <div>{separatedName}</div>
+          <div key={separatedName}>{separatedName}</div>
         ))
       }
     </Tooltip>
