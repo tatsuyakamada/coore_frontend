@@ -86,7 +86,12 @@ const ScheduleCard: React.FC<Props> = (props) => {
         <MenuList>
           {
             MenuCategories.map((category) => (
-              <MenuItem id={category} category={category} name={categolizedMenus(category)} />
+              <MenuItem
+                key={category}
+                id={category}
+                category={category}
+                name={categolizedMenus(category)}
+              />
             ))
           }
         </MenuList>

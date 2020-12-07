@@ -80,7 +80,7 @@ const ScheduleList: React.FC<Props> = (props) => {
         <DateSelector
           ref={ref}
           value={stringifyDateRange()}
-          maximumDate={30}
+          maximumdate={30}
           readOnly
           style={{ backgroundColor: 'white' }}
         />

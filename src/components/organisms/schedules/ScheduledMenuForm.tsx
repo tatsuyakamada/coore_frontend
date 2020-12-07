@@ -72,7 +72,11 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
     const filteredMenus = menus.filter((menu) => (menu.dishId !== null && menu.delete !== true));
     const dishIds = filteredMenus.map((menu) => (menu.dishId));
     const uniqueIds = new Set(dishIds);
-    return dishIds.length === uniqueIds.size;
+    if (dishIds.length !== uniqueIds.size) {
+      setErrors({ dishId: ['duplicated!'] });
+      return false;
+    }
+    return true;
   };
 
   const submitSchedule = (): void => {
@@ -120,15 +124,14 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
         onCreate();
         handleClose();
       })
-      .catch((error) => { console.log(error); });
+      .catch((error) => {
+        const response = error.response.data;
+        setErrors({ error: [response.message] });
+      });
   };
 
   const handleSubmit = (): void => {
-    if (validateMenus()) {
-      submitSchedule();
-    } else {
-      setErrors({ dishId: ['duplicated!'] });
-    }
+    if (validateMenus()) submitSchedule();
   };
 
   return (
