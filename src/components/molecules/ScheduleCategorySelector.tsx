@@ -39,7 +39,8 @@ const ScheduleCategorySelector: React.FC<Props> = (props) => {
 };
 
 const ButtonItem = styled(ToggleButton)({
-  width: 80,
+  width: 75,
+  padding: '6px 8px',
 });
 
 export default ScheduleCategorySelector;

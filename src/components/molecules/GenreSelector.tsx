@@ -30,7 +30,7 @@ const GenreSelector: React.FC<Props> = (props) => {
             variant="outline-info"
             value={option.value}
           >
-            {option.value}
+            {option.label}
           </ButtonItem>
         ))
       }
@@ -39,7 +39,7 @@ const GenreSelector: React.FC<Props> = (props) => {
 };
 
 const ButtonItem = styled(ToggleButton)({
-  width: 90,
+  width: 75,
 });
 
 export default GenreSelector;

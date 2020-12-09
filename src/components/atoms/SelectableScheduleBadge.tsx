@@ -2,17 +2,17 @@ import React from 'react';
 import { Badge } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { ScheduleCategory, isScheduleCategory } from '../../interfaces/domains/schedule';
+import { ScheduleCategory } from '../../interfaces/domains/schedule';
 import { ScheduleCategoryColor } from '../../utils/colors';
 
 type Props = {
   category: ScheduleCategory;
-  selected: boolean;
+  categories: ScheduleCategory[];
   onClick: (category: ScheduleCategory) => void;
 }
 
 const SelectableGenreBadge: React.FC<Props> = (props) => {
-  const { category, selected, onClick } = props;
+  const { category, categories, onClick } = props;
 
   const selectedColor = (): React.CSSProperties => (
     { backgroundColor: ScheduleCategoryColor[category] }
@@ -23,13 +23,12 @@ const SelectableGenreBadge: React.FC<Props> = (props) => {
   );
 
   const styleByselected = (): React.CSSProperties => (
-    selected ? selectedColor() : unselectedColor()
+    categories.includes(category) ? selectedColor() : unselectedColor()
   );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    const target = event.currentTarget.id;
-    if (isScheduleCategory(target)) onClick(target);
-  };
+  const handleClick = (): void => (
+    onClick(category)
+  );
 
   return (
     <Button id={category} onClick={handleClick}>

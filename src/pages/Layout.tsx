@@ -16,7 +16,7 @@ const Layout: React.FC = (props) => {
   const [errors, errorDispatch] = useReducer(errorReducer, []);
 
   return (
-    <MainContent fluid="true">
+    <MainContent fluid>
       <ErrorContext.Provider value={{ errors, errorDispatch }}>
         <Alert />
         {children}
@@ -27,7 +27,6 @@ const Layout: React.FC = (props) => {
 
 const MainContent = styled(Container)({
   marginTop: 20,
-  padding: '0px 72px',
 });
 
 export default Layout;

@@ -8,7 +8,9 @@ const SearchBar: React.FC = (props) => {
 
   return (
     <Bar variant="light" bg="light">
-      <Navbar.Brand><BsFilter /></Navbar.Brand>
+      <SeachIcon>
+        <Navbar.Brand><BsFilter /></Navbar.Brand>
+      </SeachIcon>
       {children}
     </Bar>
   );
@@ -17,6 +19,9 @@ const SearchBar: React.FC = (props) => {
 const Bar = styled(Navbar)({
   marginBottom: 12,
   borderRadius: 4,
+});
+
+const SeachIcon = styled.div({
 });
 
 export default SearchBar;

@@ -5,6 +5,11 @@ const GenreOption = [
   { value: 'other', label: 'その他' },
 ];
 
-export const Genres = ['japanese', 'western', 'chinese', 'other'] as const;
+export const Genres = {
+  japanese: '和食',
+  western: '洋食',
+  chinese: '中華',
+  other: 'その他',
+} as const;
 
 export default GenreOption;

@@ -25,5 +25,5 @@ export interface DishItem {
 export type Genre = 'japanese' | 'western' | 'chinese' | 'other'
 
 export const isGenre = (value: ReactText): value is Genre => (
-  Genres.some((genre) => (genre === value))
+  Object.keys(Genres).some((genre) => (genre === value))
 );

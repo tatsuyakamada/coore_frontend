@@ -34,5 +34,5 @@ export interface DraftSchedule {
 export type ScheduleCategory = 'dinner' | 'lunch' | 'morning' | 'brunch'
 
 export const isScheduleCategory = (value: string): value is ScheduleCategory => (
-  ScheduleCategories.some((category) => (category === value))
+  Object.keys(ScheduleCategories).some((category) => (category === value))
 );

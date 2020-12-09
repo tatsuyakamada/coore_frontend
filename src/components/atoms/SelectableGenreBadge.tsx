@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Badge } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { Genre, isGenre } from '../../interfaces/domains/dish';
+import { Genres } from '../../enum/genre';
+import { Genre } from '../../interfaces/domains/dish';
+import { DishContext } from '../../pages/dishes/index';
 import { GenreColor } from '../../utils/colors';
 
 type Props = {
   genre: Genre;
-  selected: boolean;
-  onClick: (genre: Genre) => void;
 }
 
 const SelectableGenreBadge: React.FC<Props> = (props) => {
-  const { genre, selected, onClick } = props;
+  const { genre } = props;
+
+  const { searchCondition, searchConditionDispatch } = useContext(DishContext);
 
   const selectedColor = (): React.CSSProperties => (
     { backgroundColor: GenreColor[genre] }
@@ -23,18 +25,17 @@ const SelectableGenreBadge: React.FC<Props> = (props) => {
   );
 
   const styleByselected = (): React.CSSProperties => (
-    selected ? selectedColor() : unselectedColor()
+    searchCondition.genres.includes(genre) ? selectedColor() : unselectedColor()
   );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    const target = event.currentTarget.id;
-    if (isGenre(target)) onClick(target);
-  };
+  const handleClick = (): void => (
+    searchConditionDispatch({ type: 'genre', value: genre })
+  );
 
   return (
     <Button id={genre} onClick={handleClick}>
       <GenreBadgeIcon pill style={{ ...styleByselected() }}>
-        {genre}
+        {Genres[genre]}
       </GenreBadgeIcon>
     </Button>
   );

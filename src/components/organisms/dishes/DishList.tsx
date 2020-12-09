@@ -1,72 +1,56 @@
-import React, { useContext, useState } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { useMediaQuery } from 'react-responsive';
 
-import { Dish, Genre } from '../../../interfaces/domains/dish';
+import { Dish } from '../../../interfaces/domains/dish';
 import { DishContext } from '../../../pages/dishes';
 import mappedItem from '../../../utils/mappedItem';
-import MultipleGenreSelector from '../../molecules/MultiGenreSelector';
-import SearchBar from '../../molecules/SearchBar';
+import mobile from '../../../utils/responsive';
 
 import DishCard from './DishCard';
+import DishSearchBar from './DishSearchBar';
+import DishSearchModal from './DishSearchModal';
 
 const DishList: React.FC = () => {
-  const { dishes } = useContext(DishContext);
+  const { dishes, searchCondition } = useContext(DishContext);
 
-  const [selectedGenre, setSelectedGenre] = useState<Genre[]>(['japanese', 'western', 'chinese', 'other']);
-  const [word, setWord] = useState<string | null>(null);
+  const isMobile = useMediaQuery(mobile);
 
-  const filteredDishes = (): Dish[] => (
-    dishes.filter((dish) => (
-      selectedGenre.includes(dish.genre) && (word ? dish.name.indexOf(word) > -1 : true)
-    ))
-  );
-
-  const handleClick = (genre: Genre): void => {
-    const newSelectedGenre = selectedGenre;
-    if (newSelectedGenre.includes(genre)) {
-      setSelectedGenre(newSelectedGenre.filter((selected) => (selected !== genre)));
-    } else {
-      setSelectedGenre(newSelectedGenre.concat(genre));
-    }
+  const filteredDishes = (): Dish[] => {
+    const { genres, words } = searchCondition;
+    return dishes.filter((dish) => (
+      genres.includes(dish.genre) && (words ? dish.name.indexOf(words) > -1 : true)
+    ));
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => (
-    setWord(event.target.value)
+  const listStyle = (): React.CSSProperties | null => (
+    isMobile ? { height: '85vh', overflowY: 'scroll' } : null
   );
 
   return (
     <>
-      <SearchBar>
-        <MultipleGenreSelector onClick={handleClick} />
-        <NameForm
-          placeholder="Name"
-          alia-label="name"
-          aria-describedby="name"
-          onChange={handleChange}
-        />
-      </SearchBar>
       {
-        mappedItem<Dish>(filteredDishes(), 4).map((mappedDishes) => (
-          <Row>
-            {
-              mappedDishes.map((dish) => (
-                <Col className="col-3">
-                  <DishCard key={dish.id} dish={dish} />
-                </Col>
-              ))
-            }
-          </Row>
-        ))
+        isMobile
+          ? <DishSearchModal />
+          : <DishSearchBar />
       }
+      <div style={{ ...listStyle() }}>
+        {
+          mappedItem<Dish>(filteredDishes(), 1).map((mappedDishes) => (
+            <Row>
+              {
+                mappedDishes.map((dish) => (
+                  <Col>
+                    <DishCard key={dish.id} dish={dish} />
+                  </Col>
+                ))
+              }
+            </Row>
+          ))
+        }
+      </div>
     </>
   );
 };
-
-const NameForm = styled(FormControl)({
-  marginLeft: 30,
-  width: 300,
-  fontSize: 14,
-});
 
 export default DishList;
