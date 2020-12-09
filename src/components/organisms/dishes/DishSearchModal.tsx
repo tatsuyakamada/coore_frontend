@@ -2,11 +2,16 @@ import React, { useContext } from 'react';
 import { FormControl, Modal, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { DishContext } from '../../../pages/dishes/index';
+import { Genre } from '../../../interfaces/domains/dish';
 import SelectableGenreBadge from '../../atoms/SelectableGenreBadge';
+import { DishContext } from '../../pages/dishes/index';
 
 const DishSearchModal: React.FC = () => {
   const { searchCondition, searchConditionDispatch } = useContext(DishContext);
+
+  const handleClick = (genre: Genre): void => (
+    searchConditionDispatch({ type: 'genre', value: genre })
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => (
     searchConditionDispatch({ type: 'words', value: event.target.value })
@@ -20,17 +25,35 @@ const DishSearchModal: React.FC = () => {
     searchConditionDispatch({ type: 'reset' })
   );
 
+  const selected = (genre: Genre): boolean => searchCondition.genres.includes(genre);
+
   return (
     <Modal show={searchCondition.show} centered onHide={handleClose}>
       <Modal.Header closeButton>Search</Modal.Header>
       <Modal.Body>
         <BadgeRow>
-          <SelectableGenreBadge genre="japanese" />
-          <SelectableGenreBadge genre="western" />
+          <SelectableGenreBadge
+            genre="japanese"
+            selected={selected('japanese')}
+            onClick={handleClick}
+          />
+          <SelectableGenreBadge
+            genre="western"
+            selected={selected('western')}
+            onClick={handleClick}
+          />
         </BadgeRow>
         <BadgeRow>
-          <SelectableGenreBadge genre="chinese" />
-          <SelectableGenreBadge genre="other" />
+          <SelectableGenreBadge
+            genre="chinese"
+            selected={selected('chinese')}
+            onClick={handleClick}
+          />
+          <SelectableGenreBadge
+            genre="other"
+            selected={selected('other')}
+            onClick={handleClick}
+          />
         </BadgeRow>
         <div>
           <NameForm

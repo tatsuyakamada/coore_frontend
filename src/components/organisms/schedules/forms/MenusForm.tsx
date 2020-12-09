@@ -3,12 +3,12 @@ import { Form } from 'react-bootstrap';
 import { BsFillImageFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
-import { DraftMenu } from '../../../interfaces/domains/menu';
+import { DraftMenu } from '../../../../interfaces/domains/menu';
+import AddButton from '../../../atoms/AddButton';
+import DeleteIcon from '../../../atoms/DeleteIcon';
+import EditIcon from '../../../atoms/EditIcon';
+import MenuItem from '../../../molecules/MenuItem';
 import { ScheduledMenuContext } from '../../../pages/schedules';
-import AddButton from '../../atoms/AddButton';
-import DeleteIcon from '../../atoms/DeleteIcon';
-import EditIcon from '../../atoms/EditIcon';
-import MenuItem from '../../molecules/MenuItem';
 
 import MenuItemForm from './MenuItemForm';
 
@@ -48,6 +48,7 @@ const MenusForm: React.FC = () => {
       {
         menus.map((menu) => (
           <MenuItem
+            key={menu.id}
             id={menu.index}
             category={menu.category}
             name={menu.dishName}

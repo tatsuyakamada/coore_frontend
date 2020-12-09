@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import IndexDish from './pages/dishes/index';
-import ShowDish from './pages/dishes/show';
-import Home from './pages/Home';
-import IndexSchedule from './pages/schedules/index';
+import IndexDish from './components/pages/dishes/index';
+import ShowDish from './components/pages/dishes/show';
+import Home from './components/pages/Home';
+import IndexSchedule from './components/pages/schedules/index';
 
 const Router: React.FC = () => (
   <BrowserRouter>

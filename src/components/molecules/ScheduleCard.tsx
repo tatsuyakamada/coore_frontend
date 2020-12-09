@@ -101,13 +101,15 @@ const ScheduleCard: React.FC<Props> = (props) => {
 };
 
 const Content = styled(Card)({
-  margin: 4,
   height: 300,
+  width: 320,
+  margin: 4,
 });
 
 const CardHeader = styled(Card.Header)({
   display: 'flex',
   padding: 8,
+  alignItems: 'center',
 });
 
 const Type = styled.div({

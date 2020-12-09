@@ -6,47 +6,58 @@ import { useMediaQuery } from 'react-responsive';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
-import AddButton from '../../components/atoms/AddButton';
-import SearchButton from '../../components/atoms/SeachIcon';
-import ContentHeader from '../../components/organisms/ContentHeader';
-import DishForm from '../../components/organisms/dishes/DishForm';
-import DishList from '../../components/organisms/dishes/DishList';
-import { Dish, DraftDish } from '../../interfaces/domains/dish';
-import { DishesAction, dishesReducer } from '../../reducers/dish/dishes';
+import { Dish, DraftDish } from '../../../interfaces/domains/dish';
 import {
   DishAction, dishModalReducer, DishModal, dishReducer, initialDish, DishModalAction,
-} from '../../reducers/dish/dishForm';
+} from '../../../reducers/dish/dishForm';
 import {
   dishSearchReducer, initialCondition, SearchCondition, SearchAction,
-} from '../../reducers/dish/search';
-import mobile from '../../utils/responsive';
+} from '../../../reducers/dish/search';
+import {
+  scheduleSearchReducer,
+  initialCondition as ScheduleInitialCondition,
+  SearchCondition as ScheduleSearchCondition,
+  SearchAction as ScheduleSearchAction,
+} from '../../../reducers/schedule/search';
+import mobile from '../../../utils/responsive';
+import AddButton from '../../atoms/AddButton';
+import SearchButton from '../../atoms/SeachIcon';
+import ContentHeader from '../../organisms/ContentHeader';
+import DishForm from '../../organisms/dishes/DishForm';
+import DishList from '../../organisms/dishes/DishList';
+import DishSearchBar from '../../organisms/dishes/DishSearchBar';
+import DishSearchModal from '../../organisms/dishes/DishSearchModal';
 
 export const DishContext = createContext({} as {
-  dishes: Dish[];
-  dishesDispatch: React.Dispatch<DishesAction>
-  dish: DraftDish;
+  targetDish: DraftDish;
   dishDispatch: React.Dispatch<DishAction>;
   dishModal: DishModal;
   dishModalDispatch: React.Dispatch<DishModalAction>;
   searchCondition: SearchCondition;
   searchConditionDispatch: React.Dispatch<SearchAction>;
+  scheduleSearchCondition: ScheduleSearchCondition;
+  scheduleSearchConditionDispatch: React.Dispatch<ScheduleSearchAction>;
 });
 
 const IndexDish: React.FC = () => {
-  const [dishes, dishesDispatch] = useReducer(dishesReducer, []);
-  const [dish, dishDispatch] = useReducer(dishReducer, initialDish);
+  const [targetDish, dishDispatch] = useReducer(dishReducer, initialDish);
   const [dishModal, dishModalDispatch] = useReducer(dishModalReducer, { show: false });
   const [
     searchCondition,
     searchConditionDispatch,
   ] = useReducer(dishSearchReducer, initialCondition);
+  const [
+    scheduleSearchCondition,
+    scheduleSearchConditionDispatch,
+  ] = useReducer(scheduleSearchReducer, ScheduleInitialCondition);
 
+  const [dishes, setDishes] = useState<Dish[]>([]);
   const [reload, setReload] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get('http://localhost:3100/api/v1/dishes.json')
       .then((results) => {
-        dishesDispatch({ type: 'fetch', value: results.data });
+        setDishes(results.data);
         setReload(false);
       })
       .catch((data) => {
@@ -69,17 +80,25 @@ const IndexDish: React.FC = () => {
     setReload(true)
   );
 
+  const { genres, words } = searchCondition;
+
+  const filteredDishes: Dish[] = (
+    dishes.filter((dish) => (
+      genres.includes(dish.genre) && (words ? dish.name.indexOf(words) > -1 : true)
+    ))
+  );
+
   return (
     <DishContext.Provider
       value={{
-        dishes,
-        dishesDispatch,
-        dish,
+        targetDish,
         dishDispatch,
         dishModal,
         dishModalDispatch,
         searchCondition,
         searchConditionDispatch,
+        scheduleSearchCondition,
+        scheduleSearchConditionDispatch,
       }}
     >
       <ContentHeader title="Dish">
@@ -89,7 +108,11 @@ const IndexDish: React.FC = () => {
         </RightContent>
       </ContentHeader>
       <DishForm onCreate={handleCreate} />
-      <DishList />
+      {isMobile ? <DishSearchModal /> : <DishSearchBar />}
+      <DishList
+        dishes={filteredDishes}
+        columns={isMobile ? 1 : 4}
+      />
     </DishContext.Provider>
   );
 };

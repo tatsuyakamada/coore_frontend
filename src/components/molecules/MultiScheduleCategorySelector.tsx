@@ -12,17 +12,22 @@ type Props = {
 const MultiScheduleCategorySelector: React.FC<Props> = (props) => {
   const { categories, onClick } = props;
 
+  const selected = (category: ScheduleCategory): boolean => (
+    categories.includes(category)
+  );
+
   return (
     <>
       {
         Object.keys(ScheduleCategories).map((category) => (
           isScheduleCategory(category)
           && (
-          <SelectableScheduleBadge
-            category={category}
-            categories={categories}
-            onClick={onClick}
-          />
+            <SelectableScheduleBadge
+              key={category}
+              category={category}
+              selected={selected(category)}
+              onClick={onClick}
+            />
           )
         ))
       }

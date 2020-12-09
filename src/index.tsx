@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Header from './components/organisms/Header';
-import Layout from './pages/Layout';
+import Layout from './components/pages/Layout';
 import Router from './Router';
 import * as serviceWorker from './serviceWorker';
 

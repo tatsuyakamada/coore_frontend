@@ -4,9 +4,9 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 import { Dish } from '../../../interfaces/domains/dish';
-import { DishContext } from '../../../pages/dishes';
 import EditIcon from '../../atoms/EditIcon';
 import GenreBadge from '../../atoms/GenreBadge';
+import { DishContext } from '../../pages/dishes/index';
 
 type Props = {
   dish: Dish;
@@ -30,7 +30,7 @@ const DishCard: React.FC<Props> = (props) => {
   };
 
   return (
-    <Content key={dish.id} onClick={handleClick}>
+    <Content onClick={handleClick}>
       <Label>
         <GenreBadge genre={dish.genre} />
         <Name>{dish.name}</Name>

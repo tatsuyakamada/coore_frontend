@@ -7,7 +7,7 @@ import { ScheduleCategory } from '../../../interfaces/domains/schedule';
 import DayRangeSelector from '../../molecules/DayRangeSelector';
 import MultiScheduleCategorySelector from '../../molecules/MultiScheduleCategorySelector';
 import SearchBar from '../../molecules/SearchBar';
-import { ScheduledMenuContext } from '../../pages/schedules/index';
+import { ScheduledMenuContext } from '../../pages/dishes/show';
 
 const ScheduleSearchBar: React.FC = () => {
   const { searchCondition, searchConditionDispatch } = useContext(ScheduledMenuContext);

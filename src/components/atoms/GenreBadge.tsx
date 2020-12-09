@@ -8,19 +8,27 @@ import { GenreColor } from '../../utils/colors';
 
 type Props = {
   genre: Genre;
+  height?: number;
+  width?: number;
   style?: React.CSSProperties;
 };
 
 const GenreBadge: React.FC<Props> = (props) => {
-  const { genre, style } = props;
+  const {
+    genre, height, width, style,
+  } = props;
 
-  const colorByCategory: React.CSSProperties = (
-    { backgroundColor: GenreColor[genre] }
+  const badgeStyle: React.CSSProperties = (
+    {
+      height: height || 20,
+      width: width || 55,
+      backgroundColor: GenreColor[genre],
+    }
   );
 
   return (
     <div>
-      <GenreBadgeIcon pill style={{ ...colorByCategory, ...style }}>
+      <GenreBadgeIcon pill style={{ ...badgeStyle, ...style }}>
         {Genres[genre]}
       </GenreBadgeIcon>
     </div>
@@ -28,9 +36,9 @@ const GenreBadge: React.FC<Props> = (props) => {
 };
 
 const GenreBadgeIcon = styled(Badge)({
-  margin: 'auto',
-  width: 60,
-  verticalAlign: 'text-top',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   color: 'white',
 });
 

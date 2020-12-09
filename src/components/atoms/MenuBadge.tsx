@@ -7,18 +7,27 @@ import { MenuCategoryColor } from '../../utils/colors';
 
 type Props = {
   category: MenuCategory;
+  height?: number;
+  width?: number;
+  style?: React.CSSProperties;
 }
 
 const MenuBadge: React.FC<Props> = (props) => {
-  const { category } = props;
+  const {
+    category, height, width, style,
+  } = props;
 
-  const colorByCategory = (
-    { backgroundColor: MenuCategoryColor[category] }
+  const badgeStyle = (
+    {
+      height: height || 20,
+      width: width || 60,
+      backgroundColor: MenuCategoryColor[category],
+    }
   );
 
   return (
     <div>
-      <CategoryBadge pill style={{ ...colorByCategory }}>
+      <CategoryBadge pill style={{ ...badgeStyle, ...style }}>
         {category}
       </CategoryBadge>
     </div>
@@ -27,7 +36,6 @@ const MenuBadge: React.FC<Props> = (props) => {
 
 const CategoryBadge = styled(Badge)({
   margin: 'auto',
-  width: 60,
   verticalAlign: 'text-top',
   color: 'white',
 });
