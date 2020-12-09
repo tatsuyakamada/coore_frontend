@@ -1,6 +1,5 @@
-import { ScheduleCategories } from '../../enum/schedule_category';
 import {
-  DraftImage, DraftSchedule, Schedule, ScheduleCategory,
+  DraftImage, DraftSchedule, isScheduleCategory, Schedule,
 } from '../../interfaces/domains/schedule';
 
 export type ScheduleModal = {
@@ -76,7 +75,7 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
       }
       return state;
     case 'category':
-      if (action.value && isScheduleCategory(action.value)) {
+      if (action.value && typeof action.value === 'string' && isScheduleCategory(action.value)) {
         return { ...state, category: action.value };
       }
       return state;
@@ -111,12 +110,3 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
 const isSchedule = (schedule: Schedule | DraftSchedule): schedule is Schedule => (
   !('deleteImage' in schedule)
 );
-
-const isScheduleCategory = (
-  value: DraftSchedule[keyof DraftSchedule] | null,
-): value is ScheduleCategory => {
-  if (typeof value !== 'string') {
-    return false;
-  }
-  return ScheduleCategories.some((category) => (category === value));
-};

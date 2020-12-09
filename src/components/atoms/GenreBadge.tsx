@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import { Genres } from '../../enum/genre';
 import { Genre } from '../../interfaces/domains/dish';
 import { GenreColor } from '../../utils/colors';
 
@@ -20,7 +21,7 @@ const GenreBadge: React.FC<Props> = (props) => {
   return (
     <div>
       <GenreBadgeIcon pill style={{ ...colorByCategory, ...style }}>
-        {genre}
+        {Genres[genre]}
       </GenreBadgeIcon>
     </div>
   );
@@ -28,7 +29,7 @@ const GenreBadge: React.FC<Props> = (props) => {
 
 const GenreBadgeIcon = styled(Badge)({
   margin: 'auto',
-  width: 75,
+  width: 60,
   verticalAlign: 'text-top',
   color: 'white',
 });

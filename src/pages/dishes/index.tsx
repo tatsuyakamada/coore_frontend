@@ -2,10 +2,12 @@ import axios from 'axios';
 import React, {
   createContext, useEffect, useState, useReducer,
 } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
 import AddButton from '../../components/atoms/AddButton';
+import SearchButton from '../../components/atoms/SeachIcon';
 import ContentHeader from '../../components/organisms/ContentHeader';
 import DishForm from '../../components/organisms/dishes/DishForm';
 import DishList from '../../components/organisms/dishes/DishList';
@@ -14,6 +16,10 @@ import { DishesAction, dishesReducer } from '../../reducers/dish/dishes';
 import {
   DishAction, dishModalReducer, DishModal, dishReducer, initialDish, DishModalAction,
 } from '../../reducers/dish/dishForm';
+import {
+  dishSearchReducer, initialCondition, SearchCondition, SearchAction,
+} from '../../reducers/dish/search';
+import mobile from '../../utils/responsive';
 
 export const DishContext = createContext({} as {
   dishes: Dish[];
@@ -22,12 +28,18 @@ export const DishContext = createContext({} as {
   dishDispatch: React.Dispatch<DishAction>;
   dishModal: DishModal;
   dishModalDispatch: React.Dispatch<DishModalAction>;
+  searchCondition: SearchCondition;
+  searchConditionDispatch: React.Dispatch<SearchAction>;
 });
 
 const IndexDish: React.FC = () => {
   const [dishes, dishesDispatch] = useReducer(dishesReducer, []);
   const [dish, dishDispatch] = useReducer(dishReducer, initialDish);
   const [dishModal, dishModalDispatch] = useReducer(dishModalReducer, { show: false });
+  const [
+    searchCondition,
+    searchConditionDispatch,
+  ] = useReducer(dishSearchReducer, initialCondition);
 
   const [reload, setReload] = useState<boolean>(false);
 
@@ -41,6 +53,12 @@ const IndexDish: React.FC = () => {
         console.log(data);
       });
   }, [reload]);
+
+  const isMobile = useMediaQuery(mobile);
+
+  const handleSearch = (): void => (
+    searchConditionDispatch({ type: 'open' })
+  );
 
   const handleNew = (): void => {
     dishDispatch({ type: 'new' });
@@ -60,10 +78,13 @@ const IndexDish: React.FC = () => {
         dishDispatch,
         dishModal,
         dishModalDispatch,
+        searchCondition,
+        searchConditionDispatch,
       }}
     >
       <ContentHeader title="Dish">
         <RightContent>
+          { isMobile && <SearchButton onClick={handleSearch} /> }
           <AddButton onClick={handleNew} />
         </RightContent>
       </ContentHeader>
