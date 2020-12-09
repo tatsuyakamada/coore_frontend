@@ -1,17 +1,35 @@
 import React from 'react';
 
 import { Genres } from '../../enum/genre';
-import { isGenre } from '../../interfaces/domains/dish';
+import { isGenre, Genre } from '../../interfaces/domains/dish';
 import SelectableGenreBadge from '../atoms/SelectableGenreBadge';
 
-const MultipleGenreSelector: React.FC = () => (
-  <>
-    {
-      Object.keys(Genres).map((genre) => (
-        isGenre(genre) && <SelectableGenreBadge genre={genre} />
-      ))
-    }
-  </>
-);
+type Props = {
+  genres: Genre[];
+  onClick: (genre: Genre) => void;
+}
+
+const MultipleGenreSelector: React.FC<Props> = (props) => {
+  const { genres, onClick } = props;
+
+  const selected = (genre: Genre): boolean => genres.includes(genre);
+
+  return (
+    <>
+      {
+        Object.keys(Genres).map((genre) => (
+          isGenre(genre) && (
+            <SelectableGenreBadge
+              key={genre}
+              genre={genre}
+              selected={selected(genre)}
+              onClick={onClick}
+            />
+          )
+        ))
+      }
+    </>
+  );
+};
 
 export default MultipleGenreSelector;

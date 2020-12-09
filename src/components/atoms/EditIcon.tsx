@@ -22,7 +22,7 @@ const EditIcon: React.FC<Props> = (props) => {
 
   return (
     <Edit onClick={onClick} style={{ ...style }}>
-      <BiPencil style={{ ...iconStyle }} />
+      <BiPencil style={{ ...iconStyle, ...style }} />
     </Edit>
   );
 };

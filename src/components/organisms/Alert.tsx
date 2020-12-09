@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Alert as Component } from 'react-bootstrap';
 
-import { ErrorContext } from '../../pages/Layout';
+import { ErrorContext } from '../pages/Layout';
 
 const Alert: React.FC = () => {
   const { errors, errorDispatch } = useContext(ErrorContext);

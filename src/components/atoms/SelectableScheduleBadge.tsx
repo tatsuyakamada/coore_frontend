@@ -7,24 +7,26 @@ import { ScheduleCategoryColor } from '../../utils/colors';
 
 type Props = {
   category: ScheduleCategory;
-  categories: ScheduleCategory[];
+  selected: boolean;
   onClick: (category: ScheduleCategory) => void;
 }
 
 const SelectableGenreBadge: React.FC<Props> = (props) => {
-  const { category, categories, onClick } = props;
+  const { category, selected, onClick } = props;
 
-  const selectedColor = (): React.CSSProperties => (
+  const selectedColor: React.CSSProperties = (
     { backgroundColor: ScheduleCategoryColor[category] }
   );
 
-  const unselectedColor = (): React.CSSProperties => (
-    { color: ScheduleCategoryColor[category], backgroundColor: 'white', border: `solid 0.5px ${ScheduleCategoryColor[category]}` }
+  const unselectedColor: React.CSSProperties = (
+    {
+      color: ScheduleCategoryColor[category],
+      backgroundColor: 'white',
+      border: `solid 0.5px ${ScheduleCategoryColor[category]}`,
+    }
   );
 
-  const styleByselected = (): React.CSSProperties => (
-    categories.includes(category) ? selectedColor() : unselectedColor()
-  );
+  const styleByselected: React.CSSProperties = selected ? selectedColor : unselectedColor;
 
   const handleClick = (): void => (
     onClick(category)
@@ -32,7 +34,7 @@ const SelectableGenreBadge: React.FC<Props> = (props) => {
 
   return (
     <Button id={category} onClick={handleClick}>
-      <CategoryBadge pill style={{ ...styleByselected() }}>
+      <CategoryBadge pill style={{ ...styleByselected }}>
         {category}
       </CategoryBadge>
     </Button>

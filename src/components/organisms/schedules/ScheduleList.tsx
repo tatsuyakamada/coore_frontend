@@ -16,11 +16,11 @@ const ScheduleList: React.FC<Props> = (props) => {
   return (
     <>
       {
-        mappedItem<ScheduledMenu>(scheduledMenus, columns || 1).map((mappedSchedules) => (
+        mappedItem<ScheduledMenu>(scheduledMenus, columns || 4).map((mappedSchedules) => (
           <Row>
             {
               mappedSchedules.map((scheduledMenu) => (
-                <Col>
+                <Col className={`col-${columns ? 12 / columns : 3}`}>
                   <ScheduleCard
                     key={scheduledMenu.schedule.id}
                     scheduledMenu={scheduledMenu}

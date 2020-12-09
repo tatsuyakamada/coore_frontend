@@ -6,9 +6,9 @@ import {
 import styled from 'styled-components';
 
 import { DraftDish, Genre } from '../../../interfaces/domains/dish';
-import { DishContext } from '../../../pages/dishes';
 import FormAlert from '../../molecules/FormAlert';
 import GenreSelector from '../../molecules/GenreSelector';
+import { DishContext } from '../../pages/dishes/index';
 
 type errorMessages = {
   [key: string]: string[];
@@ -22,15 +22,15 @@ const DishForm: React.FC<Props> = (props) => {
   const { onCreate } = props;
 
   const {
-    dish, dishDispatch, dishModal, dishModalDispatch,
+    targetDish, dishDispatch, dishModal, dishModalDispatch,
   } = useContext(DishContext);
 
-  const [draftDish, setDraftDish] = useState<DraftDish>(dish);
+  const [draftDish, setDraftDish] = useState<DraftDish>(targetDish);
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
   useEffect(() => {
-    if (dish) setDraftDish(dish);
-  }, [dish]);
+    if (targetDish) setDraftDish(targetDish);
+  }, [targetDish]);
 
   const handleHide = (): void => {
     dishDispatch({ type: 'reset' });
@@ -74,7 +74,7 @@ const DishForm: React.FC<Props> = (props) => {
   );
 
   return (
-    <Modal show={dishModal.show} onHide={handleHide}>
+    <Modal show={dishModal.show} centered onHide={handleHide}>
       <FormAlert messages={errors} onClose={handleAlertClose} />
       <Modal.Header closeButton>
         <Modal.Title>DishForm</Modal.Title>
@@ -84,7 +84,7 @@ const DishForm: React.FC<Props> = (props) => {
           <Label>Genre</Label>
           <GenreSelector
             onChange={handleSelect}
-            selected={dish.genre}
+            selected={targetDish.genre}
           />
         </FormItem>
         <FormItem>

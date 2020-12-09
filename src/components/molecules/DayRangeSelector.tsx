@@ -32,7 +32,7 @@ const DayRangeSelector: React.FC<Props> = (props) => {
 
   const renderCustomInput = ({ ref }: RefProps): React.ReactElement => (
     <DayRangeSelect style={{ ...style }}>
-      <Form.Group>
+      <Form.Group style={{ marginBottom: 0 }}>
         <DayLabel>Date</DayLabel>
         <DateSelector
           ref={ref}
@@ -57,7 +57,7 @@ const DayRangeSelector: React.FC<Props> = (props) => {
 
 const DayRangeSelect = styled.div({
   display: 'flex',
-  marginTop: -12,
+  marginTop: -22,
   marginLeft: 30,
 });
 

@@ -8,13 +8,13 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { BiImageAdd } from 'react-icons/bi';
 import styled from 'styled-components';
 
-import { DishItem } from '../../../interfaces/domains/dish';
-import { DraftMenu, MenuCategory } from '../../../interfaces/domains/menu';
-import { FormProps } from '../../../interfaces/domains/utils';
+import { DishItem } from '../../../../interfaces/domains/dish';
+import { DraftMenu, MenuCategory } from '../../../../interfaces/domains/menu';
+import { FormProps } from '../../../../interfaces/domains/utils';
+import DeleteIcon from '../../../atoms/DeleteIcon';
+import FormAlert from '../../../molecules/FormAlert';
+import MenuCategorySelector from '../../../molecules/MenuCategorySelector';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
-import DeleteIcon from '../../atoms/DeleteIcon';
-import FormAlert from '../../molecules/FormAlert';
-import MenuCategorySelector from '../../molecules/MenuCategorySelector';
 
 import { MenusContext } from './ScheduledMenuForm';
 
@@ -146,6 +146,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
           <Form.Group style={{ marginBottom: 8 }}>
             <Label>Dish</Label>
             <Typeahead
+              id="dish"
               ref={ref}
               onChange={handleDishSelect}
               onInputChange={handleDishSelectInput}

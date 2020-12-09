@@ -27,6 +27,7 @@ const ScheduleCategorySelector: React.FC<Props> = (props) => {
       {
         ScheduleCategoryOption.map((option) => (
           <ButtonItem
+            key={option.value}
             variant="outline-info"
             value={option.value}
           >

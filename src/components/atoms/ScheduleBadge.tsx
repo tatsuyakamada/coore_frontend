@@ -7,18 +7,27 @@ import { ScheduleCategoryColor } from '../../utils/colors';
 
 type Props = {
   category: ScheduleCategory;
+  height?: number;
+  width?: number;
+  style?: React.CSSProperties;
 }
 
 const ScheduleBadge: React.FC<Props> = (props) => {
-  const { category } = props;
+  const {
+    category, height, width, style,
+  } = props;
 
-  const colorByCategory = (
-    { backgroundColor: ScheduleCategoryColor[category] }
+  const badgeStyle = (
+    {
+      height: height || 20,
+      width: width || 65,
+      backgroundColor: ScheduleCategoryColor[category],
+    }
   );
 
   return (
     <div>
-      <CategoryBadge style={{ ...colorByCategory }}>
+      <CategoryBadge style={{ ...badgeStyle, ...style }}>
         {category}
       </CategoryBadge>
     </div>
@@ -26,9 +35,10 @@ const ScheduleBadge: React.FC<Props> = (props) => {
 };
 
 const CategoryBadge = styled(Badge)({
+  display: 'flex',
   margin: 'auto',
-  width: 65,
-  verticalAlign: 'text-top',
+  justifyContent: 'center',
+  alignItems: 'center',
   color: 'white',
 });
 

@@ -1,40 +1,37 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Badge } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { Genres } from '../../enum/genre';
 import { Genre } from '../../interfaces/domains/dish';
-import { DishContext } from '../../pages/dishes/index';
 import { GenreColor } from '../../utils/colors';
 
 type Props = {
   genre: Genre;
+  selected: boolean;
+  onClick: (genre: Genre) => void;
 }
 
 const SelectableGenreBadge: React.FC<Props> = (props) => {
-  const { genre } = props;
+  const { genre, selected, onClick } = props;
 
-  const { searchCondition, searchConditionDispatch } = useContext(DishContext);
+  const handleClick = (): void => onClick(genre);
 
-  const selectedColor = (): React.CSSProperties => (
-    { backgroundColor: GenreColor[genre] }
+  const selectedColor: React.CSSProperties = { backgroundColor: GenreColor[genre] };
+
+  const unselectedColor: React.CSSProperties = (
+    {
+      color: GenreColor[genre],
+      backgroundColor: 'white',
+      border: `solid 0.5px ${GenreColor[genre]}`,
+    }
   );
 
-  const unselectedColor = (): React.CSSProperties => (
-    { color: GenreColor[genre], backgroundColor: 'white', border: `solid 0.5px ${GenreColor[genre]}` }
-  );
-
-  const styleByselected = (): React.CSSProperties => (
-    searchCondition.genres.includes(genre) ? selectedColor() : unselectedColor()
-  );
-
-  const handleClick = (): void => (
-    searchConditionDispatch({ type: 'genre', value: genre })
-  );
+  const styleByselected: React.CSSProperties = selected ? selectedColor : unselectedColor;
 
   return (
     <Button id={genre} onClick={handleClick}>
-      <GenreBadgeIcon pill style={{ ...styleByselected() }}>
+      <GenreBadgeIcon pill style={{ ...styleByselected }}>
         {Genres[genre]}
       </GenreBadgeIcon>
     </Button>

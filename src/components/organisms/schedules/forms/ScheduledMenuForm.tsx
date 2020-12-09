@@ -8,11 +8,11 @@ import {
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { DishItem } from '../../../interfaces/domains/dish';
-import { DraftMenu } from '../../../interfaces/domains/menu';
+import { DishItem } from '../../../../interfaces/domains/dish';
+import { DraftMenu } from '../../../../interfaces/domains/menu';
+import { dishListReducer, DishListAction } from '../../../../reducers/dish/list';
+import FormAlert from '../../../molecules/FormAlert';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
-import { dishListReducer, DishListAction } from '../../../reducers/dish/list';
-import FormAlert from '../../molecules/FormAlert';
 
 import MenuForm from './MenusForm';
 import ScheduleForm from './ScheduleForm';
@@ -135,7 +135,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <Modal show={scheduleModal.show} onHide={handleClose}>
+    <Modal show={scheduleModal.show} centered onHide={handleClose}>
       <FormAlert messages={errors} onClose={handleAlertClose} />
       <Modal.Header closeButton>
         <Modal.Title>Create Schedule</Modal.Title>

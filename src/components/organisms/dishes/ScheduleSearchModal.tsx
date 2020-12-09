@@ -6,16 +6,14 @@ import styled from 'styled-components';
 import { ScheduleCategory } from '../../../interfaces/domains/schedule';
 import SelectableScheduleBadge from '../../atoms/SelectableScheduleBadge';
 import DayRangeSelector from '../../molecules/DayRangeSelector';
-import { ScheduledMenuContext } from '../../pages/schedules/index';
+import { ScheduledMenuContext } from '../../pages/dishes/show';
 
 const ScheduleSearchModal: React.FC = () => {
   const { searchCondition, searchConditionDispatch } = useContext(ScheduledMenuContext);
 
   const { show, categories, dayRange } = searchCondition;
 
-  const handleClose = () => (
-    searchConditionDispatch({ type: 'close' })
-  );
+  const handleClose = () => searchConditionDispatch({ type: 'close' });
 
   const selected = (category: ScheduleCategory): boolean => categories.includes(category);
 

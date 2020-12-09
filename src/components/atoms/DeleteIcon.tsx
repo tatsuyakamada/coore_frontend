@@ -8,10 +8,13 @@ type Props = {
   onClick: (event: React.MouseEvent<HTMLSpanElement>) => void;
   height?: number;
   width?: number;
+  style?: React.CSSProperties;
 }
 
 const DeleteIcon: React.FC<Props> = (props) => {
-  const { onClick, height, width } = props;
+  const {
+    onClick, height, width, style,
+  } = props;
 
   const iconStyle = (
     { height: height || 20, width: width || 20 }
@@ -19,7 +22,7 @@ const DeleteIcon: React.FC<Props> = (props) => {
 
   return (
     <Delete onClick={onClick}>
-      <FiDelete style={{ ...iconStyle }} />
+      <FiDelete style={{ ...iconStyle, ...style }} />
     </Delete>
   );
 };

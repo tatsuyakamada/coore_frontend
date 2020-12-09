@@ -4,18 +4,18 @@ import { BiImages } from 'react-icons/bi';
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker';
 import styled from 'styled-components';
 
-import { ScheduleCategory } from '../../../interfaces/domains/schedule';
-import { FormProps } from '../../../interfaces/domains/utils';
+import { ScheduleCategory } from '../../../../interfaces/domains/schedule';
+import { FormProps } from '../../../../interfaces/domains/utils';
+import DeleteIcon from '../../../atoms/DeleteIcon';
+import ScheduleCategorySelector from '../../../molecules/ScheduleCategorySelector';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
-import DeleteIcon from '../../atoms/DeleteIcon';
-import ScheduleCategorySelector from '../../molecules/ScheduleCategorySelector';
 
 const ScheduleForm: React.FC = () => {
   const { schedule, scheduleDispatch } = useContext(ScheduledMenuContext);
 
   const scheduleDate = new Date(schedule.date);
 
-  const initialDate = (): DayValue => (
+  const initialDate: DayValue = (
     {
       year: scheduleDate.getFullYear(),
       month: scheduleDate.getMonth() + 1,

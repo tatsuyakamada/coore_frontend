@@ -2,8 +2,8 @@ import React, { createContext, useReducer } from 'react';
 import { Container } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import Alert from '../components/molecules/Alert';
-import { Error, ErrorAction, errorReducer } from '../reducers/error';
+import { Error, ErrorAction, errorReducer } from '../../reducers/error';
+import Alert from '../organisms/Alert';
 
 export const ErrorContext = createContext({} as {
   errors: Error[];
