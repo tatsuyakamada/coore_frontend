@@ -30,7 +30,7 @@ const ScheduleSearchModal: React.FC = () => {
   const handleReset = () => searchConditionDispatch({ type: 'reset' });
 
   return (
-    <Modal show={show} centered onHide={handleClose}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>Search</Modal.Header>
       <Modal.Body>
         <BadgeRow>

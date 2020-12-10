@@ -81,7 +81,7 @@ const BadgeRow = styled.div({
 
 const NameForm = styled(FormControl)({
   width: '100%',
-  fontSize: 14,
+  fontSize: 16,
 });
 
 export default DishSearchModal;

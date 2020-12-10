@@ -2,12 +2,15 @@ import React, { useContext } from 'react';
 import {
   Carousel, Card, Modal,
 } from 'react-bootstrap';
+import { useMediaQuery } from 'react-responsive';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
 import { Image } from '../../../interfaces/domains/image';
 import { Menu, DraftMenu } from '../../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../../interfaces/domains/schedule';
+import { hasVerticalImage } from '../../../utils/image';
+import mobile from '../../../utils/responsive';
 import EditIcon from '../../atoms/EditIcon';
 import MenuBadge from '../../atoms/MenuBadge';
 import ScheduleBadge from '../../atoms/ScheduleBadge';
@@ -83,13 +86,18 @@ const ShowSchedule: React.FC<Props> = (props) => {
     onHide();
   };
 
+  const isMobile = useMediaQuery(mobile);
+
+  const slideHeight = (): number => {
+    if (isMobile) return hasVerticalImage(displayImages()) ? 330 : 210;
+    return 480;
+  };
+
   return (
-    <Modal show={show} onHide={onHide} size="lg">
+    <Modal show={show} centered onHide={onHide} size="lg">
       <Card>
         <CardHeader>
-          <div>
-            {scheduledMenu.schedule.date}
-          </div>
+          <div>{scheduledMenu.schedule.date}</div>
           <Type>
             <ScheduleBadge category={scheduledMenu.schedule.category} />
             {
@@ -97,12 +105,12 @@ const ShowSchedule: React.FC<Props> = (props) => {
             }
           </Type>
         </CardHeader>
-        <ImageSlide indicators={false}>
+        <ImageSlide indicators={false} style={{ height: slideHeight() }}>
           {
             displayImages().map((img) => (
               <Carousel.Item key={img.id}>
                 <ImageItem>
-                  <FormedImage image={img} style={{ maxHeight: 480 }} />
+                  <FormedImage image={img} style={{ maxHeight: slideHeight() }} />
                 </ImageItem>
               </Carousel.Item>
             ))
@@ -145,7 +153,6 @@ const Type = styled.div({
 
 const ImageSlide = styled(Carousel)({
   width: '100%',
-  height: 480,
 });
 
 const ImageItem = styled.div({

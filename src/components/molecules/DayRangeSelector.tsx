@@ -1,7 +1,10 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import DatePicker, { DayValue, DayRange } from 'react-modern-calendar-datepicker';
+import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
+
+import mobile from '../../utils/responsive';
 
 type Props = {
   dayRange: DayRange;
@@ -11,6 +14,8 @@ type Props = {
 
 const DayRangeSelector: React.FC<Props> = (props) => {
   const { dayRange, onSelect, style } = props;
+
+  const isMobile = useMediaQuery(mobile);
 
   type RefProps = {
     ref: React.RefObject<HTMLElement>;
@@ -50,6 +55,7 @@ const DayRangeSelector: React.FC<Props> = (props) => {
       value={dayRange}
       onChange={handleDayRangeSelect}
       renderInput={renderCustomInput} // render a custom input
+      calendarPopperPosition={isMobile ? 'bottom' : 'auto'}
       shouldHighlightWeekends
     />
   );
@@ -68,7 +74,6 @@ const DayLabel = styled(Form.Label)({
 
 const DateSelector = styled(Form.Control)({
   width: 200,
-  fontSize: 14,
   textAlign: 'center',
 });
 

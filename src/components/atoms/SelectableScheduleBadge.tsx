@@ -22,7 +22,7 @@ const SelectableGenreBadge: React.FC<Props> = (props) => {
     {
       color: ScheduleCategoryColor[category],
       backgroundColor: 'white',
-      border: `solid 0.5px ${ScheduleCategoryColor[category]}`,
+      border: `solid 1px ${ScheduleCategoryColor[category]}`,
     }
   );
 
