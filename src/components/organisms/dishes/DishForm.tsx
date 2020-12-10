@@ -6,9 +6,12 @@ import {
 import styled from 'styled-components';
 
 import { DraftDish, Genre } from '../../../interfaces/domains/dish';
+import { MenuCategory } from '../../../interfaces/domains/menu';
 import FormAlert from '../../molecules/FormAlert';
 import GenreSelector from '../../molecules/GenreSelector';
+import MenuCategorySelector from '../../molecules/MenuCategorySelector';
 import { DishContext } from '../../pages/dishes/index';
+import { DeviceContext } from '../../pages/Layout';
 
 type errorMessages = {
   [key: string]: string[];
@@ -20,6 +23,8 @@ type Props = {
 
 const DishForm: React.FC<Props> = (props) => {
   const { onCreate } = props;
+
+  const { isMobile } = useContext(DeviceContext);
 
   const {
     targetDish, dishDispatch, dishModal, dishModalDispatch,
@@ -67,9 +72,15 @@ const DishForm: React.FC<Props> = (props) => {
     setDraftDish({ ...draftDish, name: event.target.value })
   );
 
-  const handleSelect = (value: Genre): void => (
+  const handleGenreSelect = (value: Genre): void => (
     setDraftDish({ ...draftDish, genre: value })
   );
+
+  const handleCategorySelect = (value: MenuCategory): void => (
+    setDraftDish({ ...draftDish, category: value })
+  );
+
+  const formStyle: React.CSSProperties = { padding: isMobile ? '0' : '0 16px' };
 
   return (
     <Modal show={dishModal.show} centered onHide={handleHide}>
@@ -78,14 +89,14 @@ const DishForm: React.FC<Props> = (props) => {
         <Modal.Title>DishForm</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <FormItem>
+        <Form.Group style={{ ...formStyle }}>
           <Label>Genre</Label>
           <GenreSelector
-            onChange={handleSelect}
+            onChange={handleGenreSelect}
             selected={targetDish.genre}
           />
-        </FormItem>
-        <FormItem>
+        </Form.Group>
+        <Form.Group style={{ ...formStyle }}>
           <Label>Name</Label>
           <FormControl
             placeholder="name"
@@ -94,7 +105,14 @@ const DishForm: React.FC<Props> = (props) => {
             value={draftDish.name}
             onChange={handleChange}
           />
-        </FormItem>
+        </Form.Group>
+        <Form.Group style={{ ...formStyle }}>
+          <Label>Category</Label>
+          <MenuCategorySelector
+            onChange={handleCategorySelect}
+            selected={targetDish.category}
+          />
+        </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
@@ -107,10 +125,6 @@ const DishForm: React.FC<Props> = (props) => {
     </Modal>
   );
 };
-
-const FormItem = styled(Form.Group)({
-  padding: '0 16px',
-});
 
 const Label = styled(Form.Label)({
   display: 'block',

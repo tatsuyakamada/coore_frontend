@@ -1,10 +1,15 @@
 const MenuCategoryOption = [
-  { value: 'main', label: 'main' },
-  { value: 'side', label: 'side' },
-  { value: 'dessert', label: 'dessert' },
-  { value: 'other', label: 'other' },
+  { value: 'main', label: '主菜' },
+  { value: 'side', label: '副菜' },
+  { value: 'dessert', label: 'デザート' },
+  { value: 'other', label: 'その他' },
 ];
 
-export const MenuCategories = ['main', 'side', 'dessert', 'other'] as const;
+export const MenuCategories = {
+  main: '主菜',
+  side: '副菜',
+  dessert: 'デザート',
+  other: 'その他',
+} as const;
 
 export default MenuCategoryOption;

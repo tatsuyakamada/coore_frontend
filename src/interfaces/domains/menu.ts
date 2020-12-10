@@ -1,3 +1,5 @@
+import { MenuCategories } from '../../enum/scheduled_menu_category';
+
 import { Image } from './image';
 
 export interface Menu {
@@ -26,3 +28,7 @@ export interface DraftImage extends Omit<Image, 'width' | 'height'> {
 }
 
 export type MenuCategory = 'main' | 'side' | 'dessert' | 'other'
+
+export const isMenuCategory = (value: string): value is MenuCategory => (
+  Object.keys(MenuCategories).some((category) => (category === value))
+);

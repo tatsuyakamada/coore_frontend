@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { MenuCategories } from '../../enum/scheduled_menu_category';
 import { Image } from '../../interfaces/domains/image';
-import { MenuCategory } from '../../interfaces/domains/menu';
+import { isMenuCategory, MenuCategory } from '../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../interfaces/domains/schedule';
 import ScheduleBadge from '../atoms/ScheduleBadge';
 import ShowSchedule from '../organisms/schedules/ShowSchedule';
@@ -51,10 +51,12 @@ const ScheduleCard: React.FC<Props> = (props) => {
       other: '',
     };
 
-    MenuCategories.forEach((category) => {
-      categolized[category] = scheduledMenu.menus.filter((menu) => (
-        menu.category === category
-      )).map((menu) => (menu.dishName)).join('/');
+    Object.keys(MenuCategories).forEach((category) => {
+      if (isMenuCategory(category)) {
+        categolized[category] = scheduledMenu.menus.filter((menu) => (
+          menu.category === category
+        )).map((menu) => (menu.dishName)).join('/');
+      }
     });
     return categolized[key];
   };
@@ -81,13 +83,16 @@ const ScheduleCard: React.FC<Props> = (props) => {
         </ScheduleImage>
         <MenuList>
           {
-            MenuCategories.map((category) => (
-              <MenuItem
-                key={category}
-                id={category}
-                category={category}
-                name={categolizedMenus(category)}
-              />
+            Object.keys(MenuCategories).map((category) => (
+              isMenuCategory(category)
+              && (
+                <MenuItem
+                  key={category}
+                  id={category}
+                  category={category}
+                  name={categolizedMenus(category)}
+                />
+              )
             ))
           }
         </MenuList>

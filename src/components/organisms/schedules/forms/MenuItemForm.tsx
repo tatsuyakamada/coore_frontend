@@ -31,8 +31,8 @@ type errorMessages = {
 const MenuItemForm: React.FC<Props> = (props) => {
   const { show, menu, onHide } = props;
 
-  const { menusDispatch } = useContext(ScheduledMenuContext);
   const { dishList, dishListDispatch } = useContext(MenusContext);
+  const { menusDispatch } = useContext(ScheduledMenuContext);
 
   const [errors, setErrors] = useState<errorMessages | null>(null);
 
@@ -59,10 +59,6 @@ const MenuItemForm: React.FC<Props> = (props) => {
     onHide();
   };
 
-  const handleCategorySelect = (value: MenuCategory): void => (
-    setDraftMenu({ ...draftMenu, category: value })
-  );
-
   const handleDishSelect = (selected: DishItem[]): void => {
     if (selected[0] !== undefined) {
       const prevId = draftMenu.dishId;
@@ -70,24 +66,39 @@ const MenuItemForm: React.FC<Props> = (props) => {
         ...draftMenu,
         dishId: selected[0].id,
         dishName: selected[0].label,
+        category: selected[0].category,
       });
       dishListDispatch({ type: 'select', value: selected[0].id, prev: prevId || undefined });
       setErrors(null);
     }
   };
 
-  const handleDishSelectInput = (): void => (
+  const handleDishSelectInput = (): void => {
+    dishListDispatch({ type: 'select', value: null, prev: draftMenu.dishId || undefined });
     setDraftMenu({
       ...draftMenu,
       dishId: null,
       dishName: '',
-    })
-  );
+    });
+  };
 
   const selectableDish: DishItem[] = dishList.filter((dish) => (dish.selectable));
 
   const selectedDish: DishItem[] = (
-    draftMenu.dishId ? [{ id: draftMenu.dishId, label: draftMenu.dishName, selectable: false }] : []
+    draftMenu.dishId
+      ? [
+        {
+          id: draftMenu.dishId,
+          label: draftMenu.dishName,
+          category: draftMenu.category,
+          selectable: false,
+        },
+      ]
+      : []
+  );
+
+  const handleCategorySelect = (value: MenuCategory): void => (
+    setDraftMenu({ ...draftMenu, category: value })
   );
 
   const handleMemoInput = (event: React.FormEvent<FormProps>): void => (
@@ -133,13 +144,6 @@ const MenuItemForm: React.FC<Props> = (props) => {
         <Modal.Title>Add Menu</Modal.Title>
         <Modal.Body>
           <Form.Group style={{ marginBottom: 8 }}>
-            <Label>Category</Label>
-            <MenuCategorySelector
-              onChange={handleCategorySelect}
-              selected={draftMenu.category}
-            />
-          </Form.Group>
-          <Form.Group style={{ marginBottom: 8 }}>
             <Label>Dish</Label>
             <Typeahead
               id="dish"
@@ -149,6 +153,13 @@ const MenuItemForm: React.FC<Props> = (props) => {
               options={selectableDish}
               selected={selectedDish}
               placeholder="Dish"
+            />
+          </Form.Group>
+          <Form.Group style={{ marginBottom: 8 }}>
+            <Label>Category</Label>
+            <MenuCategorySelector
+              onChange={handleCategorySelect}
+              selected={draftMenu.category}
             />
           </Form.Group>
           <Form.Group>

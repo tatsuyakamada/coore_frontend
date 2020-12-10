@@ -1,17 +1,23 @@
 import React, { useContext } from 'react';
-import { Button, FormControl } from 'react-bootstrap';
+import { Button, FormControl, Form } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { Genre } from '../../../interfaces/domains/dish';
+import { MenuCategory } from '../../../interfaces/domains/menu';
 import MultipleGenreSelector from '../../molecules/MultiGenreSelector';
+import MultiMenuCategorySelector from '../../molecules/MultiMenuCategorySelector';
 import SearchBar from '../../molecules/SearchBar';
 import { DishContext } from '../../pages/dishes/index';
 
 const DishSearchBar: React.FC = () => {
   const { searchCondition, searchConditionDispatch } = useContext(DishContext);
 
-  const handleClick = (genre: Genre): void => (
+  const handleGenreClick = (genre: Genre): void => (
     searchConditionDispatch({ type: 'genre', value: genre })
+  );
+
+  const handleCategoryClick = (category: MenuCategory): void => (
+    searchConditionDispatch({ type: 'category', value: category })
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => (
@@ -22,15 +28,29 @@ const DishSearchBar: React.FC = () => {
 
   return (
     <SearchBar>
-      <MultipleGenreSelector genres={searchCondition.genres} onClick={handleClick} />
-      <div>
-        <NameForm
+      <Form.Group>
+        <Label>Genre</Label>
+        <MultipleGenreSelector
+          genres={searchCondition.genres}
+          onClick={handleGenreClick}
+        />
+      </Form.Group>
+      <CategorySelect>
+        <Label>Category</Label>
+        <MultiMenuCategorySelector
+          categories={searchCondition.categories}
+          onClick={handleCategoryClick}
+        />
+      </CategorySelect>
+      <NameForm>
+        <Label>Name</Label>
+        <NameInput
           placeholder="Name"
           alia-label="name"
           aria-describedby="name"
           onChange={handleChange}
         />
-      </div>
+      </NameForm>
       <ResetButton onClick={handleReset}>
         reset
       </ResetButton>
@@ -38,8 +58,21 @@ const DishSearchBar: React.FC = () => {
   );
 };
 
-const NameForm = styled(FormControl)({
+const CategorySelect = styled(Form.Group)({
+  marginLeft: 20,
+});
+
+const NameForm = styled(Form.Group)({
   marginLeft: 30,
+});
+
+const Label = styled(Form.Label)({
+  display: 'block',
+  marginBottom: 4,
+  fontSize: 12,
+});
+
+const NameInput = styled(FormControl)({
   width: 300,
   fontSize: 14,
 });

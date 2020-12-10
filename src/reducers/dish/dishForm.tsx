@@ -21,8 +21,9 @@ export const dishModalReducer = (state: DishModal, action: DishModalAction): Dis
 
 export const initialDish: DraftDish = {
   id: null,
-  genre: 'japanese',
   name: '',
+  genre: 'japanese',
+  category: 'main',
 };
 
 export type DishAction = {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import { MenuCategories } from '../../enum/scheduled_menu_category';
 import { MenuCategory } from '../../interfaces/domains/menu';
 import { MenuCategoryColor } from '../../utils/colors';
 
@@ -28,13 +29,16 @@ const MenuBadge: React.FC<Props> = (props) => {
   return (
     <div>
       <CategoryBadge pill style={{ ...badgeStyle, ...style }}>
-        {category}
+        {MenuCategories[category]}
       </CategoryBadge>
     </div>
   );
 };
 
 const CategoryBadge = styled(Badge)({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   margin: 'auto',
   verticalAlign: 'text-top',
   color: 'white',

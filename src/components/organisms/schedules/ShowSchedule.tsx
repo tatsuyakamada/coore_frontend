@@ -25,7 +25,7 @@ type Props = {
 const ShowSchedule: React.FC<Props> = (props) => {
   const { show, scheduledMenu, onHide } = props;
 
-  const isMobile = useContext(DeviceContext);
+  const { isMobile } = useContext(DeviceContext);
 
   const location = useLocation();
 
