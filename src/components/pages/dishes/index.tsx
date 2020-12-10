@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, {
-  createContext, useEffect, useState, useReducer,
+  createContext, useEffect, useState, useReducer, useContext,
 } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
@@ -19,7 +18,6 @@ import {
   SearchCondition as ScheduleSearchCondition,
   SearchAction as ScheduleSearchAction,
 } from '../../../reducers/schedule/search';
-import mobile from '../../../utils/responsive';
 import AddButton from '../../atoms/AddButton';
 import SearchButton from '../../atoms/SeachIcon';
 import ContentHeader from '../../organisms/ContentHeader';
@@ -27,6 +25,7 @@ import DishForm from '../../organisms/dishes/DishForm';
 import DishList from '../../organisms/dishes/DishList';
 import DishSearchBar from '../../organisms/dishes/DishSearchBar';
 import DishSearchModal from '../../organisms/dishes/DishSearchModal';
+import { DeviceContext } from '../Layout';
 
 export const DishContext = createContext({} as {
   targetDish: DraftDish;
@@ -40,6 +39,8 @@ export const DishContext = createContext({} as {
 });
 
 const IndexDish: React.FC = () => {
+  const isMobile = useContext(DeviceContext);
+
   const [targetDish, dishDispatch] = useReducer(dishReducer, initialDish);
   const [dishModal, dishModalDispatch] = useReducer(dishModalReducer, { show: false });
   const [
@@ -64,8 +65,6 @@ const IndexDish: React.FC = () => {
         console.log(data);
       });
   }, [reload]);
-
-  const isMobile = useMediaQuery(mobile);
 
   const handleSearch = (): void => (
     searchConditionDispatch({ type: 'open' })

@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { useMediaQuery } from 'react-responsive';
 
 import { Dish } from '../../../interfaces/domains/dish';
 import mappedItem from '../../../utils/mappedItem';
-import mobile from '../../../utils/responsive';
+import { DeviceContext } from '../../pages/Layout';
 
 import DishCard from './DishCard';
 
@@ -16,7 +15,7 @@ type Props = {
 const DishList: React.FC<Props> = (props) => {
   const { dishes, columns } = props;
 
-  const isMobile = useMediaQuery(mobile);
+  const isMobile = useContext(DeviceContext);
 
   const listStyle: React.CSSProperties | null = (
     isMobile ? { height: '85vh', overflowY: 'scroll' } : null

@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Form } from 'react-bootstrap';
 import DatePicker, { DayValue, DayRange } from 'react-modern-calendar-datepicker';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
-import mobile from '../../utils/responsive';
+import { DeviceContext } from '../pages/Layout';
 
 type Props = {
   dayRange: DayRange;
@@ -15,7 +14,7 @@ type Props = {
 const DayRangeSelector: React.FC<Props> = (props) => {
   const { dayRange, onSelect, style } = props;
 
-  const isMobile = useMediaQuery(mobile);
+  const { isMobile } = useContext(DeviceContext);
 
   type RefProps = {
     ref: React.RefObject<HTMLElement>;

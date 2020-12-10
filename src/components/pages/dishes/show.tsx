@@ -3,7 +3,6 @@ import React, {
   createContext, useState, useEffect, useReducer, useContext,
 } from 'react';
 import { DayValue } from 'react-modern-calendar-datepicker';
-import { useMediaQuery } from 'react-responsive';
 import { useParams, useHistory } from 'react-router';
 import styled from 'styled-components';
 
@@ -16,7 +15,6 @@ import {
 import {
   initialCondition, SearchCondition, scheduleSearchReducer, SearchAction,
 } from '../../../reducers/schedule/search';
-import mobile from '../../../utils/responsive';
 import GenreBadge from '../../atoms/GenreBadge';
 import SearchButton from '../../atoms/SeachIcon';
 import FormedImage from '../../molecules/FormedImage';
@@ -25,7 +23,7 @@ import ContentSubHeader from '../../organisms/ContentSubHeader';
 import ScheduleSearchBar from '../../organisms/dishes/ScheduleSearchBar';
 import ScheduleSearchModal from '../../organisms/dishes/ScheduleSearchModal';
 import ScheduleList from '../../organisms/schedules/ScheduleList';
-import { ErrorContext } from '../Layout';
+import { DeviceContext, ErrorContext } from '../Layout';
 
 export const ScheduledMenuContext = createContext({} as {
   schedule: DraftSchedule;
@@ -36,6 +34,7 @@ export const ScheduledMenuContext = createContext({} as {
 
 const ShowDish: React.FC = () => {
   const { errorDispatch } = useContext(ErrorContext);
+  const { isMobile } = useContext(DeviceContext);
 
   const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
   const [
@@ -51,8 +50,6 @@ const ShowDish: React.FC = () => {
   const [image, setImage] = useState<Image | null>(null);
 
   const { id } = useParams<{ id: string }>();
-
-  const isMobile = useMediaQuery(mobile);
 
   useEffect(() => {
     axios.get(`http://localhost:3100/api/v1/dishes/${id}.json`)

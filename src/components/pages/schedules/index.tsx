@@ -1,10 +1,9 @@
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import axios from 'axios';
 import React, {
-  useEffect, useReducer, useState, createContext,
+  useEffect, useReducer, useState, createContext, useContext,
 } from 'react';
 import { DayValue } from 'react-modern-calendar-datepicker';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import { DraftMenu } from '../../../interfaces/domains/menu';
@@ -17,7 +16,6 @@ import {
 import {
   initialCondition, SearchCondition, SearchAction, scheduleSearchReducer,
 } from '../../../reducers/schedule/search';
-import mobile from '../../../utils/responsive';
 import AddButton from '../../atoms/AddButton';
 import SearchButton from '../../atoms/SeachIcon';
 import ContentHeader from '../../organisms/ContentHeader';
@@ -25,6 +23,7 @@ import ScheduledMenuForm from '../../organisms/schedules/forms/ScheduledMenuForm
 import ScheduleList from '../../organisms/schedules/ScheduleList';
 import ScheduleSearchBar from '../../organisms/schedules/ScheduleSearchBar';
 import ScheduleSearchModal from '../../organisms/schedules/ScheduleSearchModal';
+import { DeviceContext } from '../Layout';
 
 export const ScheduledMenuContext = createContext({} as {
   schedule: DraftSchedule;
@@ -38,6 +37,8 @@ export const ScheduledMenuContext = createContext({} as {
 });
 
 const IndexSchedule: React.FC = () => {
+  const isMobile = useContext(DeviceContext);
+
   const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
   const [scheduleModal, scheduleModalDispatch] = useReducer(scheduleModalReducer, { show: false });
   const [menus, menusDispatch] = useReducer(menusReducer, []);
@@ -61,8 +62,6 @@ const IndexSchedule: React.FC = () => {
   }, [reload]);
 
   const handleCreate = (): void => setReload(true);
-
-  const isMobile = useMediaQuery(mobile);
 
   const handleSearch = (): void => searchConditionDispatch({ type: 'open' });
 

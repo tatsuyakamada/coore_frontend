@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import {
   Carousel, Card, Modal,
 } from 'react-bootstrap';
-import { useMediaQuery } from 'react-responsive';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
@@ -10,11 +9,11 @@ import { Image } from '../../../interfaces/domains/image';
 import { Menu, DraftMenu } from '../../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../../interfaces/domains/schedule';
 import { hasVerticalImage } from '../../../utils/image';
-import mobile from '../../../utils/responsive';
 import EditIcon from '../../atoms/EditIcon';
 import MenuBadge from '../../atoms/MenuBadge';
 import ScheduleBadge from '../../atoms/ScheduleBadge';
 import FormedImage from '../../molecules/FormedImage';
+import { DeviceContext } from '../../pages/Layout';
 import { ScheduledMenuContext } from '../../pages/schedules/index';
 
 type Props = {
@@ -25,6 +24,8 @@ type Props = {
 
 const ShowSchedule: React.FC<Props> = (props) => {
   const { show, scheduledMenu, onHide } = props;
+
+  const isMobile = useContext(DeviceContext);
 
   const location = useLocation();
 
@@ -85,8 +86,6 @@ const ShowSchedule: React.FC<Props> = (props) => {
     scheduleModalDispatch({ type: 'open' });
     onHide();
   };
-
-  const isMobile = useMediaQuery(mobile);
 
   const slideHeight = (): number => {
     if (isMobile) return hasVerticalImage(displayImages()) ? 330 : 210;
