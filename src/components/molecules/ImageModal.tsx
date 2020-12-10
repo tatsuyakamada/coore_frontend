@@ -21,9 +21,9 @@ const ImageModal: React.FC<Props> = (props) => {
     <>
       {
         image && (
-          <ImageModals show={show} onHide={handleClose}>
+          <ImageModals show={show} centered onHide={handleClose}>
             <ModalDialog centered>
-              <ImageContent src={image.url} />
+              <ImageContent src={image.url} style={{ maxWidth: '90vh' }} />
             </ModalDialog>
           </ImageModals>
         )
@@ -47,6 +47,7 @@ const ImageModals = styled(Modal)({
 
 const ImageContent = styled(Image)({
   maxHeight: '80vh',
+  width: '100%',
   margin: '0 auto',
 });
 

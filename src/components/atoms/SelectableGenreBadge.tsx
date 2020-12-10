@@ -23,7 +23,7 @@ const SelectableGenreBadge: React.FC<Props> = (props) => {
     {
       color: GenreColor[genre],
       backgroundColor: 'white',
-      border: `solid 0.5px ${GenreColor[genre]}`,
+      border: `solid 1px ${GenreColor[genre]}`,
     }
   );
 
