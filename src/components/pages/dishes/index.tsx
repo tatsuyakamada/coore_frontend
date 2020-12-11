@@ -25,7 +25,7 @@ import DishForm from '../../organisms/dishes/DishForm';
 import DishList from '../../organisms/dishes/DishList';
 import DishSearchBar from '../../organisms/dishes/DishSearchBar';
 import DishSearchModal from '../../organisms/dishes/DishSearchModal';
-import { DeviceContext } from '../Layout';
+import { DeviceContext, ErrorContext } from '../Layout';
 
 export const DishContext = createContext({} as {
   targetDish: DraftDish;
@@ -39,6 +39,7 @@ export const DishContext = createContext({} as {
 });
 
 const IndexDish: React.FC = () => {
+  const { errorDispatch } = useContext(ErrorContext);
   const isMobile = useContext(DeviceContext);
 
   const [targetDish, dishDispatch] = useReducer(dishReducer, initialDish);
@@ -61,23 +62,19 @@ const IndexDish: React.FC = () => {
         setDishes(results.data);
         setReload(false);
       })
-      .catch((data) => {
-        console.log(data);
+      .catch((error) => {
+        errorDispatch({ type: 'set', value: error.response.data });
       });
   }, [reload]);
 
-  const handleSearch = (): void => (
-    searchConditionDispatch({ type: 'open' })
-  );
+  const handleSearch = (): void => searchConditionDispatch({ type: 'open' });
 
   const handleNew = (): void => {
     dishDispatch({ type: 'new' });
     dishModalDispatch({ type: 'open' });
   };
 
-  const handleCreate = (): void => (
-    setReload(true)
-  );
+  const handleCreate = (): void => setReload(true);
 
   const { genres, words } = searchCondition;
 

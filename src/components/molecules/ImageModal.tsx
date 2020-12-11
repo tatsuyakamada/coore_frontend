@@ -13,9 +13,7 @@ type Props = {
 const ImageModal: React.FC<Props> = (props) => {
   const { show, image, onHide } = props;
 
-  const handleClose = (): void => (
-    onHide()
-  );
+  const handleClose = (): void => onHide();
 
   return (
     <>

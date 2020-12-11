@@ -20,9 +20,7 @@ const ScheduleSearchBar: React.FC = () => {
     searchConditionDispatch({ type: 'dayRange', dayRange })
   );
 
-  const handleReset = () => (
-    searchConditionDispatch({ type: 'reset' })
-  );
+  const handleReset = () => searchConditionDispatch({ type: 'reset' });
 
   return (
     <SearchBar style={{ padding: 16 }}>

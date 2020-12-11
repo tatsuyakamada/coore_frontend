@@ -21,13 +21,9 @@ const ScheduleCard: React.FC<Props> = (props) => {
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
-  const handleClose = (): void => {
-    setShowDetail(false);
-  };
+  const handleClose = (): void => setShowDetail(false);
 
-  const handleClick = (): void => {
-    setShowDetail(true);
-  };
+  const handleClick = (): void => setShowDetail(true);
 
   const defaultImage = {
     id: 0,
@@ -43,7 +39,7 @@ const ScheduleCard: React.FC<Props> = (props) => {
   };
 
   const menuImage = (): Image | null => {
-    const hasImageMenu = scheduledMenu.menus.find((menu) => (menu.image !== undefined));
+    const hasImageMenu = scheduledMenu.menus.find((menu) => (!menu.image));
     return hasImageMenu ? hasImageMenu.image : null;
   };
 

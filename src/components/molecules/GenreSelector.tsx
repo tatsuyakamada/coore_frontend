@@ -13,9 +13,7 @@ type Props = {
 const GenreSelector: React.FC<Props> = (props) => {
   const { onChange, selected } = props;
 
-  const handleChange = (value: Genre): void => {
-    onChange(value);
-  };
+  const handleChange = (value: Genre): void => onChange(value);
 
   return (
     <ToggleButtonGroup

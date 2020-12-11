@@ -12,7 +12,7 @@ type Props = {
 const AddButton: React.FC<Props> = (props) => {
   const { onClick, height, width } = props;
 
-  const iconStyle = (
+  const iconStyle: React.CSSProperties = (
     { height: height || 32, width: width || 32 }
   );
 

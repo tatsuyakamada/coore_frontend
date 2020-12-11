@@ -18,9 +18,7 @@ const DishSearchBar: React.FC = () => {
     searchConditionDispatch({ type: 'words', value: event.target.value })
   );
 
-  const handleReset = () => (
-    searchConditionDispatch({ type: 'reset' })
-  );
+  const handleReset = () => searchConditionDispatch({ type: 'reset' });
 
   return (
     <SearchBar>
