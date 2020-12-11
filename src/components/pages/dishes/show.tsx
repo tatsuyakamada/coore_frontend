@@ -70,9 +70,7 @@ const ShowDish: React.FC = () => {
     setShow(true);
   };
 
-  const handleHide = (): void => (
-    setShow(false)
-  );
+  const handleHide = (): void => setShow(false);
 
   const { categories, dayRange } = searchCondition;
 
@@ -87,9 +85,7 @@ const ShowDish: React.FC = () => {
     const to = dateFromDayValue(dayRange.to);
     if (from === null && to === null) return true;
     if (from) {
-      if (to) {
-        return from <= targetDate && targetDate <= to;
-      }
+      if (to) return from <= targetDate && targetDate <= to;
       return from <= targetDate;
     }
     return true;
@@ -102,9 +98,7 @@ const ShowDish: React.FC = () => {
     ))
   );
 
-  const handleSearch = (): void => (
-    searchConditionDispatch({ type: 'open' })
-  );
+  const handleSearch = (): void => searchConditionDispatch({ type: 'open' });
 
   return (
     <>

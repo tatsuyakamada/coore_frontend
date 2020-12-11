@@ -16,7 +16,7 @@ const DeleteIcon: React.FC<Props> = (props) => {
     onClick, height, width, style,
   } = props;
 
-  const iconStyle = (
+  const iconStyle: React.CSSProperties = (
     { height: height || 20, width: width || 20 }
   );
 

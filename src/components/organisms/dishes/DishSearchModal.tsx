@@ -17,13 +17,9 @@ const DishSearchModal: React.FC = () => {
     searchConditionDispatch({ type: 'words', value: event.target.value })
   );
 
-  const handleClose = () => (
-    searchConditionDispatch({ type: 'close' })
-  );
+  const handleClose = () => searchConditionDispatch({ type: 'close' });
 
-  const handleReset = () => (
-    searchConditionDispatch({ type: 'reset' })
-  );
+  const handleReset = () => searchConditionDispatch({ type: 'reset' });
 
   const selected = (genre: Genre): boolean => searchCondition.genres.includes(genre);
 

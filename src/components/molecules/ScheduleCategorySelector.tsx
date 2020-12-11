@@ -13,9 +13,7 @@ type Props = {
 const ScheduleCategorySelector: React.FC<Props> = (props) => {
   const { onChange, selected } = props;
 
-  const handleChange = (value: ScheduleCategory): void => {
-    onChange(value);
-  };
+  const handleChange = (value: ScheduleCategory): void => onChange(value);
 
   return (
     <ToggleButtonGroup

@@ -13,9 +13,7 @@ type Props = {
 const MenuCategorySelector: React.FC<Props> = (props) => {
   const { onChange, selected } = props;
 
-  const handleChange = (value: MenuCategory): void => {
-    onChange(value);
-  };
+  const handleChange = (value: MenuCategory): void => onChange(value);
 
   return (
     <ToggleButtonGroup

@@ -6,9 +6,7 @@ import { ErrorContext } from '../pages/Layout';
 const Alert: React.FC = () => {
   const { errors, errorDispatch } = useContext(ErrorContext);
 
-  const handleClose = (): void => (
-    errorDispatch({ type: 'reset' })
-  );
+  const handleClose = (): void => errorDispatch({ type: 'reset' });
 
   return (
     <>

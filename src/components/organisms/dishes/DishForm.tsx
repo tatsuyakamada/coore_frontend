@@ -37,9 +37,7 @@ const DishForm: React.FC<Props> = (props) => {
     dishModalDispatch({ type: 'close' });
   };
 
-  const handleAlertClose = (): void => (
-    setErrors(null)
-  );
+  const handleAlertClose = (): void => setErrors(null);
 
   const handleClose = (): void => {
     dishDispatch({ type: 'reset' });
@@ -66,11 +64,11 @@ const DishForm: React.FC<Props> = (props) => {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => (
-    setDraftDish({ id: draftDish.id, name: event.target.value, genre: draftDish.genre })
+    setDraftDish({ ...draftDish, name: event.target.value })
   );
 
   const handleSelect = (value: Genre): void => (
-    setDraftDish({ id: draftDish.id, name: draftDish.name, genre: value })
+    setDraftDish({ ...draftDish, genre: value })
   );
 
   return (

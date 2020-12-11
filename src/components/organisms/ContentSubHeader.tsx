@@ -7,6 +7,7 @@ type Props = {
 
 const ContentSubHeader: React.FC<Props> = (props) => {
   const { subtitle, children } = props;
+
   return (
     <Container>
       <Subtitle>
@@ -14,7 +15,6 @@ const ContentSubHeader: React.FC<Props> = (props) => {
       </Subtitle>
       {children}
     </Container>
-
   );
 };
 

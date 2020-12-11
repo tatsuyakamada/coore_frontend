@@ -18,9 +18,7 @@ const MenusForm: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
   const [draftMenu, setDraftMenu] = useState<DraftMenu | null>(null);
 
-  const handleAdd = (): void => (
-    setShow(true)
-  );
+  const handleAdd = (): void => setShow(true);
 
   const handleClose = (): void => {
     setDraftMenu(null);

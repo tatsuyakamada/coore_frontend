@@ -23,7 +23,7 @@ import ScheduledMenuForm from '../../organisms/schedules/forms/ScheduledMenuForm
 import ScheduleList from '../../organisms/schedules/ScheduleList';
 import ScheduleSearchBar from '../../organisms/schedules/ScheduleSearchBar';
 import ScheduleSearchModal from '../../organisms/schedules/ScheduleSearchModal';
-import { DeviceContext } from '../Layout';
+import { DeviceContext, ErrorContext } from '../Layout';
 
 export const ScheduledMenuContext = createContext({} as {
   schedule: DraftSchedule;
@@ -37,7 +37,8 @@ export const ScheduledMenuContext = createContext({} as {
 });
 
 const IndexSchedule: React.FC = () => {
-  const isMobile = useContext(DeviceContext);
+  const { errorDispatch } = useContext(ErrorContext);
+  const { isMobile } = useContext(DeviceContext);
 
   const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
   const [scheduleModal, scheduleModalDispatch] = useReducer(scheduleModalReducer, { show: false });
@@ -56,8 +57,8 @@ const IndexSchedule: React.FC = () => {
         setScheduledMenus(results.data);
         setReload(false);
       })
-      .catch((data) => {
-        console.log(data);
+      .catch((error) => {
+        errorDispatch({ type: 'set', value: error.response.data });
       });
   }, [reload]);
 
@@ -86,9 +87,7 @@ const IndexSchedule: React.FC = () => {
     const to = dateFromDayValue(dayRange.to);
     if (from === null && to === null) return true;
     if (from) {
-      if (to) {
-        return from <= targetDate && targetDate <= to;
-      }
+      if (to) return from <= targetDate && targetDate <= to;
       return from <= targetDate;
     }
     return true;

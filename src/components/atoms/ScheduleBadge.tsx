@@ -17,7 +17,7 @@ const ScheduleBadge: React.FC<Props> = (props) => {
     category, height, width, style,
   } = props;
 
-  const badgeStyle = (
+  const badgeStyle: React.CSSProperties = (
     {
       height: height || 20,
       width: width || 65,

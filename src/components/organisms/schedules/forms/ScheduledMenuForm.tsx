@@ -60,13 +60,9 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
     setErrors(null);
   };
 
-  const handleAlertClose = (): void => (
-    setErrors(null)
-  );
+  const handleAlertClose = (): void => setErrors(null);
 
-  const validateMenus = (): boolean => (
-    duplicateDish()
-  );
+  const validateMenus = (): boolean => duplicateDish();
 
   const duplicateDish = (): boolean => {
     const filteredMenus = menus.filter((menu) => (menu.dishId !== null && menu.delete !== true));
