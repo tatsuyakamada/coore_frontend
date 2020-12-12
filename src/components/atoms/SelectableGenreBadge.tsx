@@ -54,7 +54,7 @@ const GenreBadgeIcon = styled(Badge)({
   display: 'flex',
   marginRight: 12,
   height: 30,
-  width: 100,
+  width: 80,
   justifyContent: 'center',
   alignItems: 'center',
   fontSize: 14,

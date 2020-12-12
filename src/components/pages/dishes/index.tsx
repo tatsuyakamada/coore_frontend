@@ -40,7 +40,7 @@ export const DishContext = createContext({} as {
 
 const IndexDish: React.FC = () => {
   const { errorDispatch } = useContext(ErrorContext);
-  const isMobile = useContext(DeviceContext);
+  const { isMobile } = useContext(DeviceContext);
 
   const [targetDish, dishDispatch] = useReducer(dishReducer, initialDish);
   const [dishModal, dishModalDispatch] = useReducer(dishModalReducer, { show: false });
@@ -76,11 +76,13 @@ const IndexDish: React.FC = () => {
 
   const handleCreate = (): void => setReload(true);
 
-  const { genres, words } = searchCondition;
+  const { genres, categories, words } = searchCondition;
 
   const filteredDishes: Dish[] = (
     dishes.filter((dish) => (
-      genres.includes(dish.genre) && (words ? dish.name.indexOf(words) > -1 : true)
+      genres.includes(dish.genre)
+      && categories.includes(dish.category)
+      && (words ? dish.name.indexOf(words) > -1 : true)
     ))
   );
 

@@ -9,7 +9,7 @@ type Props = {
   width?: number;
 }
 
-const SearchButton: React.FC<Props> = (props) => {
+const SeachIcon: React.FC<Props> = (props) => {
   const { onClick, height, width } = props;
 
   const iconStyle: React.CSSProperties = (
@@ -31,4 +31,4 @@ const Search = styled(Button)({
   alignItems: 'center',
 });
 
-export default SearchButton;
+export default SeachIcon;

@@ -16,7 +16,7 @@ const GenreSelector: React.FC<Props> = (props) => {
   const handleChange = (value: Genre): void => onChange(value);
 
   return (
-    <ToggleButtonGroup
+    <ButtonGroup
       type="radio"
       name="option"
       defaultValue={selected || GenreOption[0].value}
@@ -32,9 +32,13 @@ const GenreSelector: React.FC<Props> = (props) => {
           </ButtonItem>
         ))
       }
-    </ToggleButtonGroup>
+    </ButtonGroup>
   );
 };
+
+const ButtonGroup = styled(ToggleButtonGroup)({
+  width: '100%',
+});
 
 const ButtonItem = styled(ToggleButton)({
   width: 75,

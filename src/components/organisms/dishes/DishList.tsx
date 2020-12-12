@@ -15,7 +15,7 @@ type Props = {
 const DishList: React.FC<Props> = (props) => {
   const { dishes, columns } = props;
 
-  const isMobile = useContext(DeviceContext);
+  const { isMobile } = useContext(DeviceContext);
 
   const listStyle: React.CSSProperties | null = (
     isMobile ? { height: '85vh', overflowY: 'scroll' } : null
