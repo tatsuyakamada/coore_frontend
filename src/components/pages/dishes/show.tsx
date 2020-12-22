@@ -1,18 +1,15 @@
 import axios from 'axios';
 import React, {
-  createContext, useState, useEffect, useReducer, useContext,
+  createContext, useContext, useEffect, useReducer, useState,
 } from 'react';
-import { useParams, useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 
 import { Dish } from '../../../interfaces/domains/dish';
 import { Image } from '../../../interfaces/domains/image';
-import { ScheduledMenu, DraftSchedule } from '../../../interfaces/domains/schedule';
+import { ScheduledMenu } from '../../../interfaces/domains/schedule';
 import {
-  initialSchedule, scheduleReducer, ScheduleAction,
-} from '../../../reducers/schedule/scheduleForm';
-import {
-  initialCondition, SearchCondition, scheduleSearchReducer, SearchAction,
+  SearchAction, SearchCondition, initialCondition, scheduleSearchReducer,
 } from '../../../reducers/schedule/search';
 import GenreBadge from '../../atoms/GenreBadge';
 import MenuBadge from '../../atoms/MenuBadge';
@@ -21,8 +18,6 @@ import DishImages from '../../organisms/dishes/DishImages';
 import { ErrorContext } from '../Layout';
 
 export const ScheduledMenuContext = createContext({} as {
-  schedule: DraftSchedule;
-  scheduleDispatch: React.Dispatch<ScheduleAction>;
   searchCondition: SearchCondition;
   searchConditionDispatch: React.Dispatch<SearchAction>;
 });
@@ -30,7 +25,6 @@ export const ScheduledMenuContext = createContext({} as {
 const ShowDish: React.FC = () => {
   const { errorDispatch } = useContext(ErrorContext);
 
-  const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
   const [
     searchCondition, searchConditionDispatch,
   ] = useReducer(scheduleSearchReducer, initialCondition);
@@ -78,8 +72,6 @@ const ShowDish: React.FC = () => {
             <DishImages images={images} />
             <ScheduledMenuContext.Provider
               value={{
-                schedule,
-                scheduleDispatch,
                 searchCondition,
                 searchConditionDispatch,
               }}

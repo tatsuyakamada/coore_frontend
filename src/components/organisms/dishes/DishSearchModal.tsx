@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-  FormControl, FormGroup, Modal, Button, Form,
+  Button, Form, FormControl, FormGroup, Modal,
 } from 'react-bootstrap';
 import styled from 'styled-components';
 

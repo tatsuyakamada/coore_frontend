@@ -1,5 +1,5 @@
 import React, {
-  useContext, useState, useEffect,
+  useContext, useEffect, useState,
 } from 'react';
 import {
   Button, Form, InputGroup, Modal,
@@ -34,7 +34,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
   const { dishList, dishListDispatch } = useContext(MenusContext);
   const { menusDispatch } = useContext(ScheduledMenuContext);
 
-  const [errors, setErrors] = useState<errorMessages | null>(null);
+  const [errors, setErrors] = useState<errorMessages[] | null>(null);
 
   const initialMenu: DraftMenu = {
     id: null,
@@ -127,7 +127,7 @@ const MenuItemForm: React.FC<Props> = (props) => {
       setDraftMenu(initialMenu);
       onHide();
     } else {
-      setErrors({ dishId: ['not selected!'] });
+      setErrors([{ dishId: ['not selected!'] }]);
     }
   };
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
+import styled from 'styled-components';
 
 type Props = {
-  messages: errorMessages | null;
+  messages: errorMessages[] | null;
   onClose: () => void;
 };
 
@@ -21,9 +22,11 @@ const FormAlert: React.FC<Props> = (props) => {
           <Alert variant="danger" onClose={onClose} dismissible>
             <Alert.Heading>Creation failed!</Alert.Heading>
             {
-              Object.keys(messages).map((key) => (
-                Object.values(messages[key]).map((value) => (
-                  <p>{`${key}: ${value}`}</p>
+              messages.map((message) => (
+                Object.keys(message).map((key) => (
+                  Object.values(message[key]).map((value) => (
+                    <Message>{`${key}: ${value}`}</Message>
+                  ))
                 ))
               ))
             }
@@ -33,5 +36,9 @@ const FormAlert: React.FC<Props> = (props) => {
     </>
   );
 };
+
+const Message = styled.p({
+  marginBottom: 0,
+});
 
 export default FormAlert;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button, Form, FormControl, Modal,
 } from 'react-bootstrap';
@@ -13,7 +13,7 @@ import MenuCategorySelector from '../../molecules/MenuCategorySelector';
 import { DishContext } from '../../pages/dishes/index';
 import { DeviceContext } from '../../pages/Layout';
 
-type errorMessages = {
+type ErrorMessages = {
   [key: string]: string[];
 };
 
@@ -31,16 +31,11 @@ const DishForm: React.FC<Props> = (props) => {
   } = useContext(DishContext);
 
   const [draftDish, setDraftDish] = useState<DraftDish>(targetDish);
-  const [errors, setErrors] = useState<errorMessages | null>(null);
+  const [errors, setErrors] = useState<ErrorMessages[] | null>(null);
 
   useEffect(() => {
     if (targetDish) setDraftDish(targetDish);
   }, [targetDish]);
-
-  const handleHide = (): void => {
-    dishDispatch({ type: 'reset' });
-    dishModalDispatch({ type: 'close' });
-  };
 
   const handleAlertClose = (): void => setErrors(null);
 
@@ -83,7 +78,7 @@ const DishForm: React.FC<Props> = (props) => {
   const formStyle: React.CSSProperties = { padding: isMobile ? '0' : '0 16px' };
 
   return (
-    <Modal show={dishModal.show} centered onHide={handleHide}>
+    <Modal show={dishModal.show} centered onHide={handleClose}>
       <FormAlert messages={errors} onClose={handleAlertClose} />
       <Modal.Header closeButton>
         <Modal.Title>DishForm</Modal.Title>

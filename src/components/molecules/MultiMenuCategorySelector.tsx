@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MenuCategories } from '../../enum/scheduled_menu_category';
-import { isMenuCategory, MenuCategory } from '../../interfaces/domains/menu';
+import { MenuCategory, isMenuCategory } from '../../interfaces/domains/menu';
 import SelectableMenuBadge from '../atoms/SelectableMenuBadge';
 
 type Props = {

@@ -1,5 +1,5 @@
 import {
-  DraftImage, DraftSchedule, isScheduleCategory, Schedule,
+  DraftImage, DraftSchedule, Schedule, isScheduleCategory,
 } from '../../interfaces/domains/schedule';
 
 export type ScheduleModal = {
