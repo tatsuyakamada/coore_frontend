@@ -1,23 +1,25 @@
 import React, { useContext } from 'react';
 import {
-  Button, Form, FormControl, FormGroup, Modal,
+  Button, Form, FormGroup, Modal,
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { Genre } from '../../../interfaces/domains/dish';
-import { MenuCategory } from '../../../interfaces/domains/menu';
-import SelectableGenreBadge from '../../atoms/SelectableGenreBadge';
-import SelectableMenuBadge from '../../atoms/SelectableMenuBadge';
+import { GenreOptionWithColor } from '../../../enum/genre';
+import { MenuCategoryOptionWithColor } from '../../../enum/scheduled_menu_category';
+import { isGenre } from '../../../interfaces/domains/dish';
+import { isMenuCategory } from '../../../interfaces/domains/menu';
+import FormInput from '../../molecules/FormInput';
+import SelectableBadge, { Option } from '../../molecules/SelectableBadge';
 import { DishContext } from '../../pages/dishes/index';
 
 const DishSearchModal: React.FC = () => {
   const { searchCondition, searchConditionDispatch } = useContext(DishContext);
 
-  const handleGenreClick = (genre: Genre): void => (
+  const handleGenreClick = (genre: string): void => (
     searchConditionDispatch({ type: 'genre', value: genre })
   );
 
-  const handleCategoryClick = (category: MenuCategory): void => (
+  const handleCategoryClick = (category: string): void => (
     searchConditionDispatch({ type: 'category', value: category })
   );
 
@@ -29,9 +31,28 @@ const DishSearchModal: React.FC = () => {
 
   const handleReset = () => searchConditionDispatch({ type: 'reset' });
 
-  const genreSelected = (genre: Genre): boolean => searchCondition.genres.includes(genre);
-  const categorySelected = (category: MenuCategory): boolean => (
-    searchCondition.categories.includes(category)
+  const genreSelected = (genre: string): boolean => (
+    isGenre(genre) && searchCondition.genres.includes(genre)
+  );
+
+  const categorySelected = (category: string): boolean => (
+    isMenuCategory(category) && searchCondition.categories.includes(category)
+  );
+
+  const GenreBadge = (option: Option) => (
+    <SelectableBadge
+      option={option}
+      selected={genreSelected(option.value)}
+      onClick={handleGenreClick}
+    />
+  );
+
+  const CategoryBadge = (option: Option) => (
+    <SelectableBadge
+      option={option}
+      selected={categorySelected(option.value)}
+      onClick={handleCategoryClick}
+    />
   );
 
   return (
@@ -41,66 +62,30 @@ const DishSearchModal: React.FC = () => {
         <FormGroup>
           <Form.Label>Genre</Form.Label>
           <GenreRow>
-            <SelectableGenreBadge
-              genre="japanese"
-              selected={genreSelected('japanese')}
-              onClick={handleGenreClick}
-            />
-            <SelectableGenreBadge
-              genre="western"
-              selected={genreSelected('western')}
-              onClick={handleGenreClick}
-            />
+            {GenreBadge(GenreOptionWithColor[0])}
+            {GenreBadge(GenreOptionWithColor[1])}
           </GenreRow>
           <GenreRow>
-            <SelectableGenreBadge
-              genre="chinese"
-              selected={genreSelected('chinese')}
-              onClick={handleGenreClick}
-            />
-            <SelectableGenreBadge
-              genre="other"
-              selected={genreSelected('other')}
-              onClick={handleGenreClick}
-            />
+            {GenreBadge(GenreOptionWithColor[2])}
+            {GenreBadge(GenreOptionWithColor[3])}
           </GenreRow>
         </FormGroup>
         <FormGroup>
           <Form.Label>Category</Form.Label>
           <CategoryRow>
-            <SelectableMenuBadge
-              category="main"
-              selected={categorySelected('main')}
-              onClick={handleCategoryClick}
-            />
-            <SelectableMenuBadge
-              category="side"
-              selected={categorySelected('side')}
-              onClick={handleCategoryClick}
-            />
+            {CategoryBadge(MenuCategoryOptionWithColor[0])}
+            {CategoryBadge(MenuCategoryOptionWithColor[1])}
           </CategoryRow>
           <CategoryRow>
-            <SelectableMenuBadge
-              category="dessert"
-              selected={categorySelected('dessert')}
-              onClick={handleCategoryClick}
-            />
-            <SelectableMenuBadge
-              category="other"
-              selected={categorySelected('other')}
-              onClick={handleCategoryClick}
-            />
+            {CategoryBadge(MenuCategoryOptionWithColor[2])}
+            {CategoryBadge(MenuCategoryOptionWithColor[3])}
           </CategoryRow>
         </FormGroup>
-        <FormGroup>
-          <Form.Label>Name</Form.Label>
-          <NameForm
-            placeholder="Name"
-            alia-label="name"
-            aria-describedby="name"
-            onChange={handleChange}
-          />
-        </FormGroup>
+        <FormInput
+          label="Name"
+          value=""
+          onChange={handleChange}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleReset}>
@@ -121,11 +106,6 @@ const CategoryRow = styled.div({
   display: 'flex',
   marginBottom: 16,
   justifyContent: 'space-around',
-});
-
-const NameForm = styled(FormControl)({
-  width: '100%',
-  fontSize: 16,
 });
 
 export default DishSearchModal;

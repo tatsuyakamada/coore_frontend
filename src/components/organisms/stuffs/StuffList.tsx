@@ -17,7 +17,7 @@ const StuffList: React.FC<Props> = (props) => {
       <Accordion>
         {
           categories.map((category) => (
-            <ListIndicator element={category} />
+            <ListIndicator key={category.id} element={category} />
           ))
         }
       </Accordion>

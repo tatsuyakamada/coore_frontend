@@ -48,6 +48,7 @@ const ButtonGroup = styled(ToggleButtonGroup)({
 
 const ButtonItem = styled(ToggleButton)({
   width: 75,
+  padding: '6px 0',
 });
 
 export default ToggleSelector;

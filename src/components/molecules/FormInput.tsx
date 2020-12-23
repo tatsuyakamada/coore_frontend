@@ -9,11 +9,12 @@ type Props = {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   style?: React.CSSProperties;
+  labelStyle?: React.CSSProperties;
 }
 
 const FormInput: React.FC<Props> = (props) => {
   const {
-    label, value, onChange, style,
+    label, value, onChange, style, labelStyle,
   } = props;
 
   const { isMobile } = useContext(DeviceContext);
@@ -22,7 +23,7 @@ const FormInput: React.FC<Props> = (props) => {
 
   return (
     <Form.Group style={{ ...formStyle }}>
-      <Label>{label}</Label>
+      <Label style={{ ...labelStyle }}>{label}</Label>
       <FormControl
         placeholder={label}
         alia-label={label}

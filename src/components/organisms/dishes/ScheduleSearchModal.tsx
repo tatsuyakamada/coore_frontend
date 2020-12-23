@@ -3,9 +3,10 @@ import { Button, Modal } from 'react-bootstrap';
 import { DayRange } from 'react-modern-calendar-datepicker';
 import styled from 'styled-components';
 
-import { ScheduleCategory } from '../../../interfaces/domains/schedule';
-import SelectableScheduleBadge from '../../atoms/SelectableScheduleBadge';
+import { ScheduleCategoryOptionWithColor } from '../../../enum/schedule_category';
+import { isScheduleCategory } from '../../../interfaces/domains/schedule';
 import DayRangeSelector from '../../molecules/DayRangeSelector';
+import SelectableBadge, { Option } from '../../molecules/SelectableBadge';
 import { ScheduledMenuContext } from '../../pages/dishes/show';
 
 const ScheduleSearchModal: React.FC = () => {
@@ -15,11 +16,13 @@ const ScheduleSearchModal: React.FC = () => {
 
   const handleClose = () => searchConditionDispatch({ type: 'close' });
 
-  const selected = (category: ScheduleCategory): boolean => categories.includes(category);
-
-  const handleClick = (category: ScheduleCategory): void => (
-    searchConditionDispatch({ type: 'category', category })
+  const selected = (category: string): boolean => (
+    isScheduleCategory(category) && categories.includes(category)
   );
+
+  const handleClick = (category: string): void => {
+    if (isScheduleCategory(category)) searchConditionDispatch({ type: 'category', category });
+  };
 
   const handleSelect = (selectedDayRange: DayRange): void => (
     searchConditionDispatch({ type: 'dayRange', dayRange: selectedDayRange })
@@ -27,33 +30,25 @@ const ScheduleSearchModal: React.FC = () => {
 
   const handleReset = () => searchConditionDispatch({ type: 'reset' });
 
+  const ScheduleBadge = (option: Option) => (
+    <SelectableBadge
+      option={option}
+      selected={selected(option.value)}
+      onClick={handleClick}
+    />
+  );
+
   return (
     <Modal show={show} centered onHide={handleClose}>
       <Modal.Header closeButton>Search</Modal.Header>
       <Modal.Body>
         <BadgeRow>
-          <SelectableScheduleBadge
-            category="dinner"
-            selected={selected('dinner')}
-            onClick={handleClick}
-          />
-          <SelectableScheduleBadge
-            category="lunch"
-            selected={selected('lunch')}
-            onClick={handleClick}
-          />
+          {ScheduleBadge(ScheduleCategoryOptionWithColor[0])}
+          {ScheduleBadge(ScheduleCategoryOptionWithColor[1])}
         </BadgeRow>
         <BadgeRow>
-          <SelectableScheduleBadge
-            category="morning"
-            selected={selected('morning')}
-            onClick={handleClick}
-          />
-          <SelectableScheduleBadge
-            category="brunch"
-            selected={selected('brunch')}
-            onClick={handleClick}
-          />
+          {ScheduleBadge(ScheduleCategoryOptionWithColor[2])}
+          {ScheduleBadge(ScheduleCategoryOptionWithColor[3])}
         </BadgeRow>
         <div>
           <DayRangeSelector

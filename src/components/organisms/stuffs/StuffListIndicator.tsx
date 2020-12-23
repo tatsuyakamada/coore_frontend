@@ -111,6 +111,7 @@ const ListIndicator: React.FC<Props> = (props) => {
               {
                 element.childs.map((child) => (
                   <ListIndicator
+                    key={child.id}
                     element={child}
                     parent={[...ancestor]}
                     recursiveCount={level + 1}
