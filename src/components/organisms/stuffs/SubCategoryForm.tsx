@@ -27,7 +27,7 @@ const SubCategoryForm: React.FC<Props> = (props) => {
   const { categories, onCreate } = props;
 
   const {
-    targetSubCategory, subCategoryDispatch, subCategoryModal, subCategoryModalDispatch,
+    targetSubCategory, subCategoryDispatch, stuffRelationModal, stuffRelationModalDispatch,
   } = useContext(StuffContext);
 
   const [draftSubCategory, setDraftSubCategory] = useState<DraftSubCategory>(targetSubCategory);
@@ -39,7 +39,7 @@ const SubCategoryForm: React.FC<Props> = (props) => {
 
   const handleClose = () => {
     subCategoryDispatch({ type: 'reset' });
-    subCategoryModalDispatch({ type: 'close' });
+    stuffRelationModalDispatch({ type: null });
     setErrors(null);
   };
 
@@ -106,7 +106,7 @@ const SubCategoryForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <Modal show={subCategoryModal.show} centerd onHide={handleClose}>
+    <Modal show={stuffRelationModal.type === 'sub_category'} centered onHide={handleClose}>
       <FormAlert messages={errors} onClose={handleAlertClose} />
       <Modal.Header closeButton>
         <Modal.Title>SubCategoryForm</Modal.Title>

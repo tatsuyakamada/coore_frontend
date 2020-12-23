@@ -8,16 +8,14 @@ import {
   DraftCategory, DraftStuff, DraftSubCategory, StuffRelations,
 } from '../../../interfaces/domains/stuff';
 import {
-  CategoryAction, CategoryModal, CategoryModalAction,
-  categoryModalReducer, categoryReducer, initialCategory,
+  CategoryAction, categoryReducer, initialCategory,
 } from '../../../reducers/stuff/categoryForm';
+import { StuffRelationModal, stuffModalReducer } from '../../../reducers/stuff/form';
 import {
-  StuffAction, StuffModal, StuffModalAction,
-  initialStuff, stuffModalReducer, stuffReducer,
+  StuffAction, initialStuff, stuffReducer,
 } from '../../../reducers/stuff/stuffForm';
 import {
-  SubCategoryAction, SubCategoryModal, SubCategoryModalAction,
-  initialSubCategory, subCategoryModalReducer, subCategoryReducer,
+  SubCategoryAction, initialSubCategory, subCategoryReducer,
 } from '../../../reducers/stuff/subCategoryForm';
 import AddButton from '../../atoms/AddButton';
 import ContentHeader from '../../organisms/ContentHeader';
@@ -30,31 +28,25 @@ import { ErrorContext } from '../Layout';
 export const StuffContext = createContext({} as {
   targetCategory: DraftCategory;
   categoryDispatch: React.Dispatch<CategoryAction>;
-  categoryModal: CategoryModal;
-  categoryModalDispatch: React.Dispatch<CategoryModalAction>;
   targetSubCategory: DraftSubCategory;
   subCategoryDispatch: React.Dispatch<SubCategoryAction>;
-  subCategoryModal: SubCategoryModal;
-  subCategoryModalDispatch: React.Dispatch<SubCategoryModalAction>;
   targetStuff: DraftStuff;
   stuffDispatch: React.Dispatch<StuffAction>;
-  stuffModal: StuffModal;
-  stuffModalDispatch: React.Dispatch<StuffModalAction>;
+  stuffRelationModal: StuffRelationModal;
+  stuffRelationModalDispatch: React.Dispatch<StuffRelationModal>;
 });
 
 const IndexStuff: React.FC = () => {
   const { errorDispatch } = useContext(ErrorContext);
 
   const [targetCategory, categoryDispatch] = useReducer(categoryReducer, initialCategory);
-  const [categoryModal, categoryModalDispatch] = useReducer(categoryModalReducer, { show: false });
   const [
     targetSubCategory, subCategoryDispatch,
   ] = useReducer(subCategoryReducer, initialSubCategory);
-  const [
-    subCategoryModal, subCategoryModalDispatch,
-  ] = useReducer(subCategoryModalReducer, { show: false });
   const [targetStuff, stuffDispatch] = useReducer(stuffReducer, initialStuff);
-  const [stuffModal, stuffModalDispatch] = useReducer(stuffModalReducer, { show: false });
+  const [
+    stuffRelationModal, stuffRelationModalDispatch
+  ] = useReducer(stuffModalReducer, { type: null })
 
   const [categories, setCategories] = useState<StuffRelations[]>([]);
   const [reload, setReload] = useState<boolean>(false);
@@ -72,7 +64,7 @@ const IndexStuff: React.FC = () => {
 
   const handleNew = (): void => {
     stuffDispatch({ type: 'new' });
-    stuffModalDispatch({ type: 'open' });
+    stuffRelationModalDispatch({ type: 'stuff' });
   };
 
   const handleCreate = () => (
@@ -84,16 +76,12 @@ const IndexStuff: React.FC = () => {
       value={{
         targetCategory,
         categoryDispatch,
-        categoryModal,
-        categoryModalDispatch,
         targetSubCategory,
         subCategoryDispatch,
-        subCategoryModal,
-        subCategoryModalDispatch,
         targetStuff,
         stuffDispatch,
-        stuffModal,
-        stuffModalDispatch,
+        stuffRelationModal,
+        stuffRelationModalDispatch,
       }}
     >
       <ContentHeader title="Stuff">

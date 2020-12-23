@@ -20,11 +20,9 @@ const ListIndicator: React.FC<Props> = (props) => {
 
   const {
     categoryDispatch,
-    categoryModalDispatch,
     subCategoryDispatch,
-    subCategoryModalDispatch,
     stuffDispatch,
-    stuffModalDispatch,
+    stuffRelationModalDispatch,
   } = useContext(StuffContext);
 
   const listColor = (): React.CSSProperties => {
@@ -46,7 +44,7 @@ const ListIndicator: React.FC<Props> = (props) => {
         name: element.name,
       },
     });
-    categoryModalDispatch({ type: 'open' });
+    stuffRelationModalDispatch({ type: 'category' });
   };
 
   const handleSubCategoryEdit = (): void => {
@@ -58,7 +56,7 @@ const ListIndicator: React.FC<Props> = (props) => {
         category: ancestor[0],
       },
     });
-    subCategoryModalDispatch({ type: 'open' });
+    stuffRelationModalDispatch({ type: 'sub_category' });
   };
 
   const handleStuffEdit = (): void => {
@@ -71,7 +69,7 @@ const ListIndicator: React.FC<Props> = (props) => {
         name: element.name,
       },
     });
-    stuffModalDispatch({ type: 'open' });
+    stuffRelationModalDispatch({ type: 'stuff' });
   };
 
   const handleEdit = (event: React.MouseEvent<HTMLInputElement>): void => {

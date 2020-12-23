@@ -1,24 +1,5 @@
 import { DraftStuff } from '../../interfaces/domains/stuff';
 
-export type StuffModal = {
-  show: boolean;
-};
-
-export type StuffModalAction = {
-  type: 'open' | 'close';
-};
-
-export const stuffModalReducer = (state: StuffModal, action: StuffModalAction): StuffModal => {
-  switch (action.type) {
-    case 'open':
-      return { show: true };
-    case 'close':
-      return { show: false };
-    default:
-      return state;
-  }
-};
-
 export const initialStuff: DraftStuff = {
   id: null,
   category: null,

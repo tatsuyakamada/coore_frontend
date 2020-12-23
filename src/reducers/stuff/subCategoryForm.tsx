@@ -1,27 +1,5 @@
 import { DraftSubCategory } from '../../interfaces/domains/stuff';
 
-export type SubCategoryModal = {
-  show: boolean;
-};
-
-export type SubCategoryModalAction = {
-  type: 'open' | 'close';
-};
-
-export const subCategoryModalReducer = (
-  state: SubCategoryModal,
-  action: SubCategoryModalAction,
-): SubCategoryModal => {
-  switch (action.type) {
-    case 'open':
-      return { show: true };
-    case 'close':
-      return { show: false };
-    default:
-      return state;
-  }
-};
-
 export const initialSubCategory: DraftSubCategory = {
   id: null,
   name: '',

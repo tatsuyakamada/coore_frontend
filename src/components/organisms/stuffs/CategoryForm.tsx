@@ -19,7 +19,7 @@ const CategoryForm: React.FC<Props> = (props) => {
   const { onCreate } = props;
 
   const {
-    targetCategory, categoryDispatch, categoryModal, categoryModalDispatch,
+    targetCategory, categoryDispatch, stuffRelationModal, stuffRelationModalDispatch,
   } = useContext(StuffContext);
 
   const [draftCategory, setDraftCategory] = useState<DraftCategory>(targetCategory);
@@ -31,7 +31,7 @@ const CategoryForm: React.FC<Props> = (props) => {
 
   const handleClose = () => {
     categoryDispatch({ type: 'reset' });
-    categoryModalDispatch({ type: 'close' });
+    stuffRelationModalDispatch({ type: null });
     setErrors(null);
   };
 
@@ -72,7 +72,7 @@ const CategoryForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <Modal show={categoryModal.show} centerd onHide={handleClose}>
+    <Modal show={stuffRelationModal.type === 'category'} centered onHide={handleClose}>
       <FormAlert messages={errors} onClose={handleAlertClose} />
       <Modal.Header closeButton>
         <Modal.Title>CategoryForm</Modal.Title>
