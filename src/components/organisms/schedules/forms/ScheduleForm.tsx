@@ -4,10 +4,10 @@ import { BiImages } from 'react-icons/bi';
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker';
 import styled from 'styled-components';
 
-import { ScheduleCategory } from '../../../../interfaces/domains/schedule';
+import ScheduleCategoryOption from '../../../../enum/schedule_category';
 import { FormProps } from '../../../../interfaces/domains/utils';
 import DeleteIcon from '../../../atoms/DeleteIcon';
-import ScheduleCategorySelector from '../../../molecules/ScheduleCategorySelector';
+import ToggleSelector from '../../../molecules/ToggleSelector';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
 
 const ScheduleForm: React.FC = () => {
@@ -46,7 +46,7 @@ const ScheduleForm: React.FC = () => {
     />
   );
 
-  const handleCategorySelect = (category: ScheduleCategory): void => (
+  const handleCategorySelect = (category: string): void => (
     scheduleDispatch({ type: 'category', value: category })
   );
 
@@ -82,7 +82,8 @@ const ScheduleForm: React.FC = () => {
       </FormItem>
       <FormItem style={{ marginBottom: 8 }}>
         <Label>Category</Label>
-        <ScheduleCategorySelector
+        <ToggleSelector
+          options={ScheduleCategoryOption}
           onChange={handleCategorySelect}
           selected={schedule.category}
         />

@@ -1,22 +1,24 @@
 import React, { useContext } from 'react';
-import { Button, Form, FormControl } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { Genre } from '../../../interfaces/domains/dish';
-import { MenuCategory } from '../../../interfaces/domains/menu';
-import MultipleGenreSelector from '../../molecules/MultiGenreSelector';
-import MultiMenuCategorySelector from '../../molecules/MultiMenuCategorySelector';
+import { GenreOptionWithColor } from '../../../enum/genre';
+import { MenuCategoryOptionWithColor } from '../../../enum/scheduled_menu_category';
+import { isGenre } from '../../../interfaces/domains/dish';
+import { isMenuCategory } from '../../../interfaces/domains/menu';
+import FormInput from '../../molecules/FormInput';
 import SearchBar from '../../molecules/SearchBar';
+import SelectableBadge from '../../molecules/SelectableBadge';
 import { DishContext } from '../../pages/dishes/index';
 
 const DishSearchBar: React.FC = () => {
   const { searchCondition, searchConditionDispatch } = useContext(DishContext);
 
-  const handleGenreClick = (genre: Genre): void => (
-    searchConditionDispatch({ type: 'genre', value: genre })
-  );
+  const handleGenreClick = (genre: string): void => {
+    searchConditionDispatch({ type: 'genre', value: genre });
+  };
 
-  const handleCategoryClick = (category: MenuCategory): void => (
+  const handleCategoryClick = (category: string): void => (
     searchConditionDispatch({ type: 'category', value: category })
   );
 
@@ -26,31 +28,49 @@ const DishSearchBar: React.FC = () => {
 
   const handleReset = () => searchConditionDispatch({ type: 'reset' });
 
+  const genreSelected = (genre: string): boolean => (
+    isGenre(genre) && searchCondition.genres.includes(genre)
+  );
+
+  const categorySelected = (category: string): boolean => (
+    isMenuCategory(category) && searchCondition.categories.includes(category)
+  );
+
   return (
     <SearchBar>
       <Form.Group>
         <Label>Genre</Label>
-        <MultipleGenreSelector
-          genres={searchCondition.genres}
-          onClick={handleGenreClick}
-        />
+        {
+          GenreOptionWithColor.map((option) => (
+            <SelectableBadge
+              key={option.value}
+              option={option}
+              selected={genreSelected(option.value)}
+              onClick={handleGenreClick}
+            />
+          ))
+        }
       </Form.Group>
       <CategorySelect>
         <Label>Category</Label>
-        <MultiMenuCategorySelector
-          categories={searchCondition.categories}
-          onClick={handleCategoryClick}
-        />
+        {
+          MenuCategoryOptionWithColor.map((option) => (
+            <SelectableBadge
+              key={option.value}
+              option={option}
+              selected={categorySelected(option.value)}
+              onClick={handleCategoryClick}
+            />
+          ))
+        }
       </CategorySelect>
-      <NameForm>
-        <Label>Name</Label>
-        <NameInput
-          placeholder="Name"
-          alia-label="name"
-          aria-describedby="name"
-          onChange={handleChange}
-        />
-      </NameForm>
+      <FormInput
+        label="Name"
+        value=""
+        onChange={handleChange}
+        style={{ marginLeft: 30, width: 300, fontSize: 14 }}
+        labelStyle={{ marginBottom: 4, fontSize: 12 }}
+      />
       <ResetButton onClick={handleReset}>
         reset
       </ResetButton>
@@ -62,19 +82,10 @@ const CategorySelect = styled(Form.Group)({
   marginLeft: 20,
 });
 
-const NameForm = styled(Form.Group)({
-  marginLeft: 30,
-});
-
 const Label = styled(Form.Label)({
   display: 'block',
   marginBottom: 4,
   fontSize: 12,
-});
-
-const NameInput = styled(FormControl)({
-  width: 300,
-  fontSize: 14,
 });
 
 const ResetButton = styled(Button)({

@@ -3,17 +3,22 @@ import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import GenreOption from '../../enum/genre';
-import { Genre } from '../../interfaces/domains/dish';
 
 type Props = {
-  onChange: (value: Genre) => void;
+  options: Option[];
+  onChange: (value: string) => void;
   selected?: string | number;
 };
 
-const GenreSelector: React.FC<Props> = (props) => {
-  const { onChange, selected } = props;
+type Option = {
+  value: string;
+  label: string;
+};
 
-  const handleChange = (value: Genre): void => onChange(value);
+const ToggleSelector: React.FC<Props> = (props) => {
+  const { options, onChange, selected } = props;
+
+  const handleChange = (value: string): void => onChange(value);
 
   return (
     <ButtonGroup
@@ -23,8 +28,9 @@ const GenreSelector: React.FC<Props> = (props) => {
       onChange={handleChange}
     >
       {
-        GenreOption.map((option) => (
+        options.map((option) => (
           <ButtonItem
+            key={option.value}
             variant="outline-info"
             value={option.value}
           >
@@ -42,6 +48,7 @@ const ButtonGroup = styled(ToggleButtonGroup)({
 
 const ButtonItem = styled(ToggleButton)({
   width: 75,
+  padding: '6px 0',
 });
 
-export default GenreSelector;
+export default ToggleSelector;

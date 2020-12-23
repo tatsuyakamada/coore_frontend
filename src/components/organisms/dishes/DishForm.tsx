@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button, Form, FormControl, Modal,
-} from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { DraftDish, Genre } from '../../../interfaces/domains/dish';
+import GenreOption from '../../../enum/genre';
+import { DraftDish, isGenre } from '../../../interfaces/domains/dish';
 import { MenuCategory } from '../../../interfaces/domains/menu';
 import FormAlert from '../../molecules/FormAlert';
-import GenreSelector from '../../molecules/GenreSelector';
+import FormInput from '../../molecules/FormInput';
 import MenuCategorySelector from '../../molecules/MenuCategorySelector';
+import ToggleSelector from '../../molecules/ToggleSelector';
 import { DishContext } from '../../pages/dishes/index';
 import { DeviceContext } from '../../pages/Layout';
 
@@ -67,9 +67,9 @@ const DishForm: React.FC<Props> = (props) => {
     setDraftDish({ ...draftDish, name: event.target.value })
   );
 
-  const handleGenreSelect = (value: Genre): void => (
-    setDraftDish({ ...draftDish, genre: value })
-  );
+  const handleGenreSelect = (value: string): void => {
+    if (isGenre(value)) setDraftDish({ ...draftDish, genre: value });
+  };
 
   const handleCategorySelect = (value: MenuCategory): void => (
     setDraftDish({ ...draftDish, category: value })
@@ -86,21 +86,17 @@ const DishForm: React.FC<Props> = (props) => {
       <Modal.Body>
         <Form.Group style={{ ...formStyle }}>
           <Label>Genre</Label>
-          <GenreSelector
+          <ToggleSelector
+            options={GenreOption}
             onChange={handleGenreSelect}
             selected={targetDish.genre}
           />
         </Form.Group>
-        <Form.Group style={{ ...formStyle }}>
-          <Label>Name</Label>
-          <FormControl
-            placeholder="name"
-            alia-label="name"
-            aria-describedby="name"
-            value={draftDish.name}
-            onChange={handleChange}
-          />
-        </Form.Group>
+        <FormInput
+          label="Name"
+          value={draftDish.name}
+          onChange={handleChange}
+        />
         <Form.Group style={{ ...formStyle }}>
           <Label>Category</Label>
           <MenuCategorySelector
