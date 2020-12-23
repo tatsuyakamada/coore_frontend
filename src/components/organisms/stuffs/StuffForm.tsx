@@ -27,7 +27,7 @@ const StuffForm: React.FC<Props> = (props) => {
   const { isMobile } = useContext(DeviceContext);
 
   const {
-    targetStuff, stuffDispatch, stuffModal, stuffModalDispatch,
+    targetStuff, stuffDispatch, stuffRelationModal, stuffRelationModalDispatch,
   } = useContext(StuffContext);
 
   const [draftStuff, setDraftStuff] = useState<DraftStuff>(targetStuff);
@@ -39,7 +39,7 @@ const StuffForm: React.FC<Props> = (props) => {
 
   const handleClose = () => {
     stuffDispatch({ type: 'reset' });
-    stuffModalDispatch({ type: 'close' });
+    stuffRelationModalDispatch({ type: null });
     setErrors(null);
   };
 
@@ -132,7 +132,7 @@ const StuffForm: React.FC<Props> = (props) => {
   const subCategoryRef: React.RefObject<Typeahead<SelectItem>> = React.createRef();
 
   return (
-    <Modal show={stuffModal.show} centerd onHide={handleClose}>
+    <Modal show={stuffRelationModal.type === 'stuff'} centered onHide={handleClose}>
       <FormAlert messages={errors} onClose={handleAlertClose} />
       <Modal.Header closeButton>
         <Modal.Title>StuffForm</Modal.Title>

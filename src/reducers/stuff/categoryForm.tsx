@@ -1,27 +1,5 @@
 import { DraftCategory } from '../../interfaces/domains/stuff';
 
-export type CategoryModal = {
-  show: boolean;
-};
-
-export type CategoryModalAction = {
-  type: 'open' | 'close';
-};
-
-export const categoryModalReducer = (
-  state: CategoryModal,
-  action: CategoryModalAction,
-): CategoryModal => {
-  switch (action.type) {
-    case 'open':
-      return { show: true };
-    case 'close':
-      return { show: false };
-    default:
-      return state;
-  }
-};
-
 export const initialCategory: DraftCategory = {
   id: null,
   name: '',
