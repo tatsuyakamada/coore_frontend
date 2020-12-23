@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ScheduleCategories } from '../../enum/schedule_category';
-import { isScheduleCategory, ScheduleCategory } from '../../interfaces/domains/schedule';
+import { ScheduleCategory, isScheduleCategory } from '../../interfaces/domains/schedule';
 import SelectableScheduleBadge from '../atoms/SelectableScheduleBadge';
 
 type Props = {

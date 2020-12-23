@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Genres } from '../../enum/genre';
-import { isGenre, Genre } from '../../interfaces/domains/dish';
+import { Genre, isGenre } from '../../interfaces/domains/dish';
 import SelectableGenreBadge from '../atoms/SelectableGenreBadge';
 
 type Props = {

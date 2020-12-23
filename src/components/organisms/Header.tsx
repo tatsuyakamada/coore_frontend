@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 
 const Header: React.FC = () => (
   <Navbar bg="dark" variant="dark">
@@ -7,6 +7,7 @@ const Header: React.FC = () => (
     <Nav>
       <Nav.Link href="/schedules">Schedule</Nav.Link>
       <Nav.Link href="/dishes">Dish</Nav.Link>
+      <Nav.Link href="/stuffs">Stuff</Nav.Link>
     </Nav>
   </Navbar>
 );

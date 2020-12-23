@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { DayRange } from 'react-modern-calendar-datepicker';
 import styled from 'styled-components';
 

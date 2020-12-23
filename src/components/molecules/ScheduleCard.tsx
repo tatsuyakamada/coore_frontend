@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { MenuCategories } from '../../enum/scheduled_menu_category';
 import { Image } from '../../interfaces/domains/image';
-import { isMenuCategory, MenuCategory } from '../../interfaces/domains/menu';
+import { MenuCategory, isMenuCategory } from '../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../interfaces/domains/schedule';
 import ScheduleBadge from '../atoms/ScheduleBadge';
 import ShowSchedule from '../organisms/schedules/ShowSchedule';

@@ -1,7 +1,7 @@
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import axios from 'axios';
 import React, {
-  useEffect, useReducer, useState, createContext, useContext,
+  createContext, useContext, useEffect, useReducer, useState,
 } from 'react';
 import {
   Button, Form, Modal,
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import { DishItem } from '../../../../interfaces/domains/dish';
 import { DraftMenu } from '../../../../interfaces/domains/menu';
-import { dishListReducer, DishListAction } from '../../../../reducers/dish/list';
+import { DishListAction, dishListReducer } from '../../../../reducers/dish/list';
 import FormAlert from '../../../molecules/FormAlert';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
 
@@ -44,7 +44,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
 
   const [dishList, dishListDispatch] = useReducer(dishListReducer, []);
 
-  const [errors, setErrors] = useState<errorMessages | null>(null);
+  const [errors, setErrors] = useState<errorMessages[] | null>(null);
 
   useEffect(() => {
     axios.get('http://localhost:3100/api/v1/dishes/dish_list.json')
@@ -69,7 +69,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
     const dishIds = filteredMenus.map((menu) => (menu.dishId));
     const uniqueIds = new Set(dishIds);
     if (dishIds.length !== uniqueIds.size) {
-      setErrors({ dishId: ['duplicated!'] });
+      setErrors([{ dishId: ['duplicated!'] }]);
       return false;
     }
     return true;
@@ -122,7 +122,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
       })
       .catch((error) => {
         const response = error.response.data;
-        setErrors({ error: [response.message] });
+        setErrors([{ error: [response.message] }]);
       });
   };
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Form } from 'react-bootstrap';
-import DatePicker, { DayValue, DayRange } from 'react-modern-calendar-datepicker';
+import DatePicker, { DayRange, DayValue } from 'react-modern-calendar-datepicker';
 import styled from 'styled-components';
 
 import { DeviceContext } from '../pages/Layout';

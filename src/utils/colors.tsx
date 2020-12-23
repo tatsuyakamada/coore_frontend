@@ -28,4 +28,10 @@ export const GenreColor = {
   other: '#39A7DE',
 };
 
+export const LayerColor = {
+  0: '#E8E8E8',
+  1: '#F8F8F8',
+  2: '#fff',
+};
+
 export default Color;
