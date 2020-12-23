@@ -1,13 +1,12 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button, Form, FormControl, Modal,
-} from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { DraftDish, Genre } from '../../../interfaces/domains/dish';
 import { MenuCategory } from '../../../interfaces/domains/menu';
 import FormAlert from '../../molecules/FormAlert';
+import FormInput from '../../molecules/FormInput';
 import GenreSelector from '../../molecules/GenreSelector';
 import MenuCategorySelector from '../../molecules/MenuCategorySelector';
 import { DishContext } from '../../pages/dishes/index';
@@ -91,16 +90,11 @@ const DishForm: React.FC<Props> = (props) => {
             selected={targetDish.genre}
           />
         </Form.Group>
-        <Form.Group style={{ ...formStyle }}>
-          <Label>Name</Label>
-          <FormControl
-            placeholder="name"
-            alia-label="name"
-            aria-describedby="name"
-            value={draftDish.name}
-            onChange={handleChange}
-          />
-        </Form.Group>
+        <FormInput
+          label="Name"
+          value={draftDish.name}
+          onChange={handleChange}
+        />
         <Form.Group style={{ ...formStyle }}>
           <Label>Category</Label>
           <MenuCategorySelector
