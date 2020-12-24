@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import { DraftCategory } from '../../../interfaces/domains/stuff';
+import SubmitButton from '../../atoms/SubmitButton';
 import FormAlert from '../../molecules/FormAlert';
 import FormInput from '../../molecules/FormInput';
+import { InfoContext } from '../../pages/Layout';
 import { StuffContext } from '../../pages/stuffs/index';
 
 type ErrorMessages = {
@@ -17,6 +19,8 @@ type Props = {
 
 const CategoryForm: React.FC<Props> = (props) => {
   const { onCreate } = props;
+
+  const { infoDispatch } = useContext(InfoContext);
 
   const {
     targetCategory, categoryDispatch, stuffRelationModal, stuffRelationModalDispatch,
@@ -51,6 +55,8 @@ const CategoryForm: React.FC<Props> = (props) => {
       const baseUrl = 'http://localhost:3100/api/v1/categories';
       const url = draftCategory.id ? baseUrl.concat(`/${draftCategory.id}`) : baseUrl;
       const method = draftCategory.id ? 'put' : 'post';
+      const methodMessage = method === 'put' ? '更新' : '登録';
+
       axios.request({
         method,
         url,
@@ -61,7 +67,15 @@ const CategoryForm: React.FC<Props> = (props) => {
           },
         },
       })
-        .then(() => {
+        .then((response) => {
+          infoDispatch({
+            type: 'set',
+            value: {
+              type: 'info',
+              status: response.status,
+              message: `${response.data.name}を${methodMessage}しました`,
+            },
+          });
           onCreate();
           handleClose();
         })
@@ -85,12 +99,7 @@ const CategoryForm: React.FC<Props> = (props) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          { draftCategory.id ? 'Update' : 'Save' }
-        </Button>
+        <SubmitButton id={draftCategory.id} onClick={handleSubmit} />
       </Modal.Footer>
     </Modal>
   );

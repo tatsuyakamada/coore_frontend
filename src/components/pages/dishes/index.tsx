@@ -25,7 +25,7 @@ import DishForm from '../../organisms/dishes/DishForm';
 import DishList from '../../organisms/dishes/DishList';
 import DishSearchBar from '../../organisms/dishes/DishSearchBar';
 import DishSearchModal from '../../organisms/dishes/DishSearchModal';
-import { DeviceContext, ErrorContext } from '../Layout';
+import { DeviceContext, InfoContext } from '../Layout';
 
 export const DishContext = createContext({} as {
   targetDish: DraftDish;
@@ -39,8 +39,8 @@ export const DishContext = createContext({} as {
 });
 
 const IndexDish: React.FC = () => {
-  const { errorDispatch } = useContext(ErrorContext);
   const { isMobile } = useContext(DeviceContext);
+  const { infoDispatch } = useContext(InfoContext);
 
   const [targetDish, dishDispatch] = useReducer(dishReducer, initialDish);
   const [dishModal, dishModalDispatch] = useReducer(dishModalReducer, { show: false });
@@ -63,7 +63,7 @@ const IndexDish: React.FC = () => {
         setReload(false);
       })
       .catch((error) => {
-        errorDispatch({ type: 'set', value: error.response.data });
+        infoDispatch({ type: 'set', value: error.response.data });
       });
   }, [reload]);
 

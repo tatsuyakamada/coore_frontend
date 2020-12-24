@@ -15,7 +15,7 @@ import GenreBadge from '../../atoms/GenreBadge';
 import MenuBadge from '../../atoms/MenuBadge';
 import DishHistories from '../../organisms/dishes/DishHistories';
 import DishImages from '../../organisms/dishes/DishImages';
-import { ErrorContext } from '../Layout';
+import { InfoContext } from '../Layout';
 
 export const ScheduledMenuContext = createContext({} as {
   searchCondition: SearchCondition;
@@ -23,7 +23,7 @@ export const ScheduledMenuContext = createContext({} as {
 });
 
 const ShowDish: React.FC = () => {
-  const { errorDispatch } = useContext(ErrorContext);
+  const { infoDispatch } = useContext(InfoContext);
 
   const [
     searchCondition, searchConditionDispatch,
@@ -40,13 +40,13 @@ const ShowDish: React.FC = () => {
   useEffect(() => {
     axios.get(`http://localhost:3100/api/v1/dishes/${id}.json`)
       .then((result) => {
-        errorDispatch({ type: 'reset' });
+        infoDispatch({ type: 'reset' });
         setDish(result.data.dish);
         setImages(result.data.images);
         setScheduledMenus(result.data.schedules);
       })
       .catch((error) => {
-        errorDispatch({ type: 'set', value: error.response.data });
+        infoDispatch({ type: 'set', value: error.response.data });
         history.push('/dishes');
       });
   }, [id]);

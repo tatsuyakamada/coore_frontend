@@ -70,7 +70,6 @@ const MenusForm: React.FC = () => {
 
 const MenuForm = styled(Form.Group)({
   marginTop: 20,
-  width: '90%',
 });
 
 const FormHeader = styled.div({

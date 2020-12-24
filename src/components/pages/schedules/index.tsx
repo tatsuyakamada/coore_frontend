@@ -23,7 +23,7 @@ import ScheduledMenuForm from '../../organisms/schedules/forms/ScheduledMenuForm
 import ScheduleList from '../../organisms/schedules/ScheduleList';
 import ScheduleSearchBar from '../../organisms/schedules/ScheduleSearchBar';
 import ScheduleSearchModal from '../../organisms/schedules/ScheduleSearchModal';
-import { DeviceContext, ErrorContext } from '../Layout';
+import { DeviceContext, InfoContext } from '../Layout';
 
 export const ScheduledMenuContext = createContext({} as {
   schedule: DraftSchedule;
@@ -37,7 +37,7 @@ export const ScheduledMenuContext = createContext({} as {
 });
 
 const IndexSchedule: React.FC = () => {
-  const { errorDispatch } = useContext(ErrorContext);
+  const { infoDispatch } = useContext(InfoContext);
   const { isMobile } = useContext(DeviceContext);
 
   const [schedule, scheduleDispatch] = useReducer(scheduleReducer, initialSchedule);
@@ -58,7 +58,7 @@ const IndexSchedule: React.FC = () => {
         setReload(false);
       })
       .catch((error) => {
-        errorDispatch({ type: 'set', value: error.response.data });
+        infoDispatch({ type: 'set', value: error.response.data });
       });
   }, [reload]);
 

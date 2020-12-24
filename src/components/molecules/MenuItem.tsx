@@ -45,6 +45,7 @@ const MenuItem: React.FC<Props> = (props) => {
 const Menu = styled.div({
   display: 'flex',
   marginBottom: 4,
+  padding: '0 16px',
 });
 
 const Name = styled.span({

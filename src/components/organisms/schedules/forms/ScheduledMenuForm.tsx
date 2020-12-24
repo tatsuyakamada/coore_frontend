@@ -3,15 +3,16 @@ import axios from 'axios';
 import React, {
   createContext, useContext, useEffect, useReducer, useState,
 } from 'react';
-import {
-  Button, Form, Modal,
-} from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { DishItem } from '../../../../interfaces/domains/dish';
 import { DraftMenu } from '../../../../interfaces/domains/menu';
 import { DishListAction, dishListReducer } from '../../../../reducers/dish/list';
+import DeleteButton from '../../../atoms/DeleteButton';
+import SubmitButton from '../../../atoms/SubmitButton';
 import FormAlert from '../../../molecules/FormAlert';
+import { InfoContext } from '../../../pages/Layout';
 import { ScheduledMenuContext } from '../../../pages/schedules/index';
 
 import MenuForm from './MenusForm';
@@ -32,6 +33,8 @@ export const MenusContext = createContext({} as {
 
 const ScheduledMenuForm: React.FC<Props> = (props) => {
   const { onCreate } = props;
+
+  const { infoDispatch } = useContext(InfoContext);
 
   const {
     schedule,
@@ -110,13 +113,22 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
     const baseUrl = 'http://localhost:3100/api/v1/schedules';
     const url = schedule.id ? baseUrl.concat(`/${schedule.id}`) : baseUrl;
     const method = schedule.id ? 'put' : 'post';
+    const methodMessage = method === 'put' ? '更新' : '登録';
 
     axios.request({
       method,
       url,
       data: formData,
     })
-      .then(() => {
+      .then((response) => {
+        infoDispatch({
+          type: 'set',
+          value: {
+            type: 'info',
+            status: response.status,
+            message: `${response.data.date}の${response.data.category}を${methodMessage}しました`,
+          },
+        });
         onCreate();
         handleClose();
       })
@@ -128,6 +140,36 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
 
   const handleSubmit = (): void => {
     if (validateMenus()) submitSchedule();
+  };
+
+  const handleDelete = (): void => {
+    axios.delete(`http://localhost:3100/api/v1/schedules/${schedule.id}`)
+      .then((response) => {
+        infoDispatch(
+          {
+            type: 'set',
+            value: {
+              type: 'info',
+              status: response.status,
+              message: `${response.data.date}の${response.data.category}を削除しました`,
+            },
+          },
+        );
+        handleClose();
+        onCreate();
+      })
+      .catch((error) => (
+        error.response.data.messages.map((message: string) => (
+          infoDispatch({
+            type: 'set',
+            value: {
+              type: 'error',
+              status: error.response.status,
+              message,
+            },
+          })
+        ))
+      ));
   };
 
   return (
@@ -142,16 +184,13 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
           <MenusContext.Provider value={{ dishList, dishListDispatch }}>
             <MenuForm />
           </MenusContext.Provider>
-          <FormButtons>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <SaveButton variant="primary" onClick={handleSubmit}>
-              {schedule.id ? 'Update' : 'Save'}
-            </SaveButton>
-          </FormButtons>
+          <FormButtons />
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        <SubmitButton id={schedule.id} onClick={handleSubmit} />
+        { schedule.id && <DeleteButton onClick={handleDelete} />}
+      </Modal.Footer>
     </Modal>
   );
 };
@@ -160,10 +199,6 @@ const FormButtons = styled.div({
   display: 'flex',
   paddingRight: 16,
   justifyContent: 'flex-end',
-});
-
-const SaveButton = styled(Button)({
-  marginLeft: 8,
 });
 
 export default ScheduledMenuForm;

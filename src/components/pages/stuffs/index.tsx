@@ -23,7 +23,7 @@ import CategoryForm from '../../organisms/stuffs/CategoryForm';
 import StuffForm from '../../organisms/stuffs/StuffForm';
 import StuffList from '../../organisms/stuffs/StuffList';
 import SubCategoryForm from '../../organisms/stuffs/SubCategoryForm';
-import { ErrorContext } from '../Layout';
+import { InfoContext } from '../Layout';
 
 export const StuffContext = createContext({} as {
   targetCategory: DraftCategory;
@@ -37,7 +37,7 @@ export const StuffContext = createContext({} as {
 });
 
 const IndexStuff: React.FC = () => {
-  const { errorDispatch } = useContext(ErrorContext);
+  const { infoDispatch } = useContext(InfoContext);
 
   const [targetCategory, categoryDispatch] = useReducer(categoryReducer, initialCategory);
   const [
@@ -45,8 +45,8 @@ const IndexStuff: React.FC = () => {
   ] = useReducer(subCategoryReducer, initialSubCategory);
   const [targetStuff, stuffDispatch] = useReducer(stuffReducer, initialStuff);
   const [
-    stuffRelationModal, stuffRelationModalDispatch
-  ] = useReducer(stuffModalReducer, { type: null })
+    stuffRelationModal, stuffRelationModalDispatch,
+  ] = useReducer(stuffModalReducer, { type: null });
 
   const [categories, setCategories] = useState<StuffRelations[]>([]);
   const [reload, setReload] = useState<boolean>(false);
@@ -58,7 +58,7 @@ const IndexStuff: React.FC = () => {
         setReload(false);
       })
       .catch((error) => {
-        errorDispatch({ type: 'set', value: error.response.data });
+        infoDispatch({ type: 'set', value: error.response.data });
       });
   }, [reload]);
 

@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button, Modal,
-} from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import { DraftStuff, StuffRelations } from '../../../interfaces/domains/stuff';
+import DeleteButton from '../../atoms/DeleteButton';
+import SubmitButton from '../../atoms/SubmitButton';
 import AutoFillSelector, { SelectItem } from '../../molecules/AutoFillSelector';
 import FormAlert from '../../molecules/FormAlert';
 import FormInput from '../../molecules/FormInput';
-import { DeviceContext } from '../../pages/Layout';
+import { DeviceContext, InfoContext } from '../../pages/Layout';
 import { StuffContext } from '../../pages/stuffs';
 
 type ErrorMessages = {
@@ -25,6 +25,7 @@ const StuffForm: React.FC<Props> = (props) => {
   const { categories, onCreate } = props;
 
   const { isMobile } = useContext(DeviceContext);
+  const { infoDispatch } = useContext(InfoContext);
 
   const {
     targetStuff, stuffDispatch, stuffRelationModal, stuffRelationModalDispatch,
@@ -108,6 +109,8 @@ const StuffForm: React.FC<Props> = (props) => {
       const baseUrl = 'http://localhost:3100/api/v1/stuffs';
       const url = draftStuff.id ? baseUrl.concat(`/${draftStuff.id}`) : baseUrl;
       const method = draftStuff.id ? 'put' : 'post';
+      const methodMessage = method === 'put' ? '更新' : '登録';
+
       axios.request({
         method,
         url,
@@ -119,7 +122,15 @@ const StuffForm: React.FC<Props> = (props) => {
           },
         },
       })
-        .then(() => {
+        .then((response) => {
+          infoDispatch({
+            type: 'set',
+            value: {
+              type: 'info',
+              status: response.status,
+              message: `${response.data.name}を${methodMessage}しました`,
+            },
+          });
           onCreate();
           handleClose();
         })
@@ -130,6 +141,36 @@ const StuffForm: React.FC<Props> = (props) => {
   };
 
   const subCategoryRef: React.RefObject<Typeahead<SelectItem>> = React.createRef();
+
+  const handleDelete = (): void => {
+    axios.delete(`http://localhost:3100/api/v1/stuffs/${draftStuff.id}`)
+      .then((response) => {
+        infoDispatch(
+          {
+            type: 'set',
+            value: {
+              type: 'info',
+              status: response.status,
+              message: `${response.data.name}を削除しました`,
+            },
+          },
+        );
+        handleClose();
+        onCreate();
+      })
+      .catch((error) => (
+        error.response.data.messages.map((message: string) => (
+          infoDispatch({
+            type: 'set',
+            value: {
+              type: 'error',
+              status: error.response.status,
+              message,
+            },
+          })
+        ))
+      ));
+  };
 
   return (
     <Modal show={stuffRelationModal.type === 'stuff'} centered onHide={handleClose}>
@@ -162,12 +203,8 @@ const StuffForm: React.FC<Props> = (props) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          { draftStuff.id ? 'Update' : 'Save' }
-        </Button>
+        <SubmitButton id={draftStuff.id} onClick={handleSubmit} />
+        {draftStuff.id && <DeleteButton onClick={handleDelete} />}
       </Modal.Footer>
     </Modal>
   );
