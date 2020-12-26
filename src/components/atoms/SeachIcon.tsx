@@ -23,12 +23,12 @@ const SeachIcon: React.FC<Props> = (props) => {
   );
 };
 
-const Search = styled(Button)({
-  display: 'flex',
-  marginRight: 8,
-  padding: 8,
-  justifyContent: 'center',
-  alignItems: 'center',
-});
+const Search = styled(Button)`
+  display: flex;
+  margin-right: 8px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default SeachIcon;

@@ -61,25 +61,25 @@ const DishSearchModal: React.FC = () => {
       <Modal.Body>
         <FormGroup>
           <Form.Label>Genre</Form.Label>
-          <GenreRow>
+          <BadgeRow>
             {GenreBadge(GenreOptionWithColor[0])}
             {GenreBadge(GenreOptionWithColor[1])}
-          </GenreRow>
-          <GenreRow>
+          </BadgeRow>
+          <BadgeRow>
             {GenreBadge(GenreOptionWithColor[2])}
             {GenreBadge(GenreOptionWithColor[3])}
-          </GenreRow>
+          </BadgeRow>
         </FormGroup>
         <FormGroup>
           <Form.Label>Category</Form.Label>
-          <CategoryRow>
+          <BadgeRow>
             {CategoryBadge(MenuCategoryOptionWithColor[0])}
             {CategoryBadge(MenuCategoryOptionWithColor[1])}
-          </CategoryRow>
-          <CategoryRow>
+          </BadgeRow>
+          <BadgeRow>
             {CategoryBadge(MenuCategoryOptionWithColor[2])}
             {CategoryBadge(MenuCategoryOptionWithColor[3])}
-          </CategoryRow>
+          </BadgeRow>
         </FormGroup>
         <FormInput
           label="Name"
@@ -96,16 +96,10 @@ const DishSearchModal: React.FC = () => {
   );
 };
 
-const GenreRow = styled.div({
-  display: 'flex',
-  marginBottom: 16,
-  justifyContent: 'space-around',
-});
-
-const CategoryRow = styled.div({
-  display: 'flex',
-  marginBottom: 16,
-  justifyContent: 'space-around',
-});
+const BadgeRow = styled.div`
+display: flex;
+  margin-bottom: 16px;
+  justify-content: space-around;
+`;
 
 export default DishSearchModal;

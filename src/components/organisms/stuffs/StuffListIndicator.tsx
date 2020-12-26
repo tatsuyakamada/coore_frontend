@@ -124,22 +124,22 @@ const ListIndicator: React.FC<Props> = (props) => {
   );
 };
 
-const ListItem = styled(ListGroup.Item)({
-  margin: 0,
-  padding: 0,
-});
+const ListItem = styled(ListGroup.Item)`
+  margin: 0;
+  padding: 0;
+`;
 
-const Content = styled.div({
-  display: 'flex',
-  height: '100%',
-  width: '100%',
-  margin: 0,
-  padding: '12px 20px',
-  alignItems: 'center',
-});
+const Content = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 12px 20px;
+  align-items: center;
+`;
 
-const Label = styled.p({
-  margin: 0,
-});
+const Label = styled.p`
+  margin: 0;
+`;
 
 export default ListIndicator;

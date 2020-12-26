@@ -3,9 +3,11 @@ import { Card } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
+import { Genres } from '../../../enum/genre';
 import { Dish } from '../../../interfaces/domains/dish';
+import { GenreColor } from '../../../utils/colors';
 import EditIcon from '../../atoms/EditIcon';
-import GenreBadge from '../../atoms/GenreBadge';
+import LabelBadge from '../../atoms/LabelBadge';
 import { DishContext } from '../../pages/dishes/index';
 
 type Props = {
@@ -32,7 +34,11 @@ const DishCard: React.FC<Props> = (props) => {
   return (
     <Content onClick={handleClick}>
       <Label>
-        <GenreBadge genre={dish.genre} />
+        <LabelBadge
+          label={Genres[dish.genre]}
+          color={GenreColor[dish.genre]}
+          style={{ width: 55 }}
+        />
         <Name>{dish.name}</Name>
         <EditIcon
           onClick={handleEdit}
@@ -43,20 +49,20 @@ const DishCard: React.FC<Props> = (props) => {
   );
 };
 
-const Content = styled(Card)({
-  marginBottom: 8,
-});
+const Content = styled(Card)`
+  margin-bottom: 8px;
+`;
 
-const Label = styled(Card.Body)({
-  display: 'flex',
-  padding: 12,
-});
+const Label = styled(Card.Body)`
+  display: flex;
+  padding: 12px;
+`;
 
-const Name = styled.span({
-  display: 'flex',
-  paddingLeft: 4,
-  alignItems: 'center',
-  fontSize: 14,
-});
+const Name = styled.span`
+  display: flex;
+  padding-left: 4px;
+  align-items: center;
+  font-size: 14px;
+`;
 
 export default DishCard;

@@ -23,11 +23,11 @@ const AddButton: React.FC<Props> = (props) => {
   );
 };
 
-const Add = styled(Button)({
-  display: 'flex',
-  padding: 8,
-  justifyContent: 'center',
-  alignItems: 'center',
-});
+const Add = styled(Button)`
+  display: flex;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default AddButton;

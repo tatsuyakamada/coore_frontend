@@ -50,6 +50,7 @@ const MenusForm: React.FC = () => {
             id={menu.index}
             category={menu.category}
             name={menu.dishName}
+            style={{ padding: '0 16px' }}
           >
             <MenuItemIcons>
               {
@@ -68,26 +69,26 @@ const MenusForm: React.FC = () => {
   );
 };
 
-const MenuForm = styled(Form.Group)({
-  marginTop: 20,
-});
+const MenuForm = styled(Form.Group)`
+  margin-top: 20px;
+`;
 
-const FormHeader = styled.div({
-  display: 'flex',
-});
+const FormHeader = styled.div`
+  display: flex;
+`;
 
-const Label = styled(Form.Label)({
-  fontWeight: 'bold',
-  marginRight: 16,
-});
+const Label = styled(Form.Label)`
+  font-weight: bold;
+  margin-right: 16px;
+`;
 
-const MenuItemIcons = styled.div({
-  display: 'inherit',
-  marginLeft: 'auto',
-});
+const MenuItemIcons = styled.div`
+  display: inherit;
+  margin-left: auto;
+`;
 
-const ImageIcon = styled.span({
-  color: '#1e71cc',
-});
+const ImageIcon = styled.span`
+  color: #1e71cc;
+`;
 
 export default MenusForm;

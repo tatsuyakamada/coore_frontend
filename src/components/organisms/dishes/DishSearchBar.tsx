@@ -78,21 +78,20 @@ const DishSearchBar: React.FC = () => {
   );
 };
 
-const CategorySelect = styled(Form.Group)({
-  marginLeft: 20,
-});
+const CategorySelect = styled(Form.Group)`
+  margin-left: 20px;
+`;
 
-const Label = styled(Form.Label)({
-  display: 'block',
-  marginBottom: 4,
-  fontSize: 12,
-});
+const Label = styled(Form.Label)`
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+`;
 
-const ResetButton = styled(Button)({
-  display: 'flex',
-  height: 35,
-  marginLeft: 42,
-  alignItems: 'center',
-});
+const ResetButton = styled(Button)`
+  display: flex;
+  margin-left: 42px;
+  align-items: center;
+`;
 
 export default DishSearchBar;

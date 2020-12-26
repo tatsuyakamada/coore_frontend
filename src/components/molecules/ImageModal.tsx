@@ -30,23 +30,23 @@ const ImageModal: React.FC<Props> = (props) => {
   );
 };
 
-const ImageModals = styled(Modal)({
-  '.modal-content': {
-    maxWidth: 'none',
-    backgroundColor: 'rgba(0,0,0,0)',
-    border: 'none',
-  },
+const ImageModals = styled(Modal)`
+  .modal-content {
+    max-width: none;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+  };
 
-  '.modal-dialog': {
-    maxWidth: 'none',
-    width: 'fit-content',
-  },
-});
+  .modal-dialog {
+    max-width: none;
+    width: fit-content;
+  };
+`;
 
-const ImageContent = styled(Image)({
-  maxHeight: '80vh',
-  width: '100%',
-  margin: '0 auto',
-});
+const ImageContent = styled(Image)`
+  max-height: 80vh;
+  width: 100%;
+  margin: 0 auto;
+`;
 
 export default ImageModal;

@@ -144,29 +144,29 @@ const ScheduleForm: React.FC = () => {
   );
 };
 
-const FormItem = styled(Form.Group)({
-  padding: '0 16px',
-});
+const FormItem = styled(Form.Group)`
+  padding: 0 16px;
+`;
 
-const Label = styled(Form.Label)({
-  display: 'block',
-});
+const Label = styled(Form.Label)`
+  display: block;
+`;
 
-const DateSelector = styled(Form.Control)({
-  width: '118%',
-});
+const DateSelector = styled(Form.Control)`
+  width: 118%;
+`;
 
-const UploadIcon = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 10,
-  color: '#509aea',
-  cursor: 'pointer',
-});
+const UploadIcon = styled.span`
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  color: #509aea;
+  cursor: pointer;
+`;
 
-const ImageItem = styled.li({
-  display: 'flex',
-  fontSize: 14,
-});
+const ImageItem = styled.li`
+  display: flex;
+  font-size: 14px;
+`;
 
 export default ScheduleForm;

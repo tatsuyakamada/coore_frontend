@@ -18,13 +18,13 @@ const ContentHeader: React.FC<Props> = (props) => {
   );
 };
 
-const Container = styled.div({
-  display: 'flex',
-  marginTop: 20,
-});
+const Container = styled.div`
+  display: flex;
+  margin-top: 20px;
+`;
 
-const Title = styled.div({
-  width: '100%',
-});
+const Title = styled.div`
+  width: 100%;
+`;
 
 export default ContentHeader;

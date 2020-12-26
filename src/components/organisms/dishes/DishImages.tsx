@@ -45,19 +45,19 @@ const DishImages: React.FC<Props> = (props) => {
   );
 };
 
-const Images = styled.div({
-  marginTop: 12,
-});
+const Images = styled.div`
+  margin-top: 12px;
+`;
 
-const ImageCards = styled.div({
-  display: 'flex',
-});
+const ImageCards = styled.div`
+  display: flex;
+`;
 
-const ImageCard = styled.div({
-  display: 'flex',
-  margin: 8,
-  justifyContent: 'center',
-  alignItems: 'center',
-});
+const ImageCard = styled.div`
+  display: flex;
+  margin: 8px;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default DishImages;

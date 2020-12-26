@@ -63,8 +63,8 @@ const DishHistories: React.FC<Props> = (props) => {
   );
 };
 
-const History = styled.div({
-  marginTop: 12,
-});
+const History = styled.div`
+  margin-top: 12px,
+`;
 
 export default DishHistories;

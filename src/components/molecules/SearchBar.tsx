@@ -20,9 +20,9 @@ const SearchBar: React.FC<Props> = (props) => {
   );
 };
 
-const Bar = styled(Navbar)({
-  marginBottom: 16,
-  borderRadius: 4,
-});
+const Bar = styled(Navbar)`
+  margin-bottom: 16px;
+  border-radius: 4px;
+`;
 
 export default SearchBar;

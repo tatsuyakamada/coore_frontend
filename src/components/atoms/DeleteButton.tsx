@@ -17,8 +17,8 @@ const DeleteButton: React.FC<Props> = (props) => {
   );
 };
 
-const Delete = styled(Button)({
-  marginRight: 16,
-});
+const Delete = styled(Button)`
+  margin-right: 16px,
+`;
 
 export default DeleteButton;
