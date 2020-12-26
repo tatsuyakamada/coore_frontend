@@ -70,10 +70,10 @@ const ScheduleSearchModal: React.FC = () => {
   );
 };
 
-const BadgeRow = styled.div({
-  display: 'flex',
-  marginBottom: 16,
-  justifyContent: 'space-around',
-});
+const BadgeRow = styled.div`
+  display: flex;
+  margin-bottom: 16px;
+  justify-content: space-around;
+`;
 
 export default ScheduleSearchModal;

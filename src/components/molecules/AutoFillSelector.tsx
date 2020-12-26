@@ -46,8 +46,8 @@ const AutoFillSelector: React.FC<Props> = (props) => {
   );
 };
 
-const Label = styled(Form.Label)({
-  display: 'block',
-});
+const Label = styled(Form.Label)`
+  display: block,
+`;
 
 export default AutoFillSelector;

@@ -43,28 +43,28 @@ const SelectableBadge: React.FC<Props> = (props) => {
   );
 };
 
-const Button = styled.button({
-  backgroundColor: 'transparent',
-  border: 'none',
-  cursor: 'pointer',
-  outline: 'none',
-  padding: 0,
-  appearance: 'none',
-  '&:focus': {
-    outline: 'none',
-  },
-});
+const Button = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+  &:focus {
+    outline: none;
+  };
+`;
 
-const BadgeIcon = styled(Badge)({
-  display: 'flex',
-  marginRight: 12,
-  height: 30,
-  width: 80,
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: 14,
-  color: 'white',
-  cursor: 'pointer',
-});
+const BadgeIcon = styled(Badge)`
+  display: flex;
+  margin-right: 12px;
+  height: 30px;
+  width: 80px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+`;
 
 export default SelectableBadge;

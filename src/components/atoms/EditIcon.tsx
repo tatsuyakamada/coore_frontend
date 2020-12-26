@@ -27,12 +27,12 @@ const EditIcon: React.FC<Props> = (props) => {
   );
 };
 
-const Edit = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 10,
-  color: `${Color.green}`,
-  cursor: 'pointer',
-});
+const Edit = styled.span`
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  color: ${Color.green};
+  cursor: pointer;
+`;
 
 export default EditIcon;

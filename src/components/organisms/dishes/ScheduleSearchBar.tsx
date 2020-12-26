@@ -48,11 +48,10 @@ const ScheduleSearchBar: React.FC = () => {
   );
 };
 
-const ResetButton = styled(Button)({
-  display: 'flex',
-  height: 35,
-  marginLeft: 42,
-  alignItems: 'center',
-});
+const ResetButton = styled(Button)`
+  display: flex;
+  margin-left: 42px;
+  align-items: center;
+`;
 
 export default ScheduleSearchBar;

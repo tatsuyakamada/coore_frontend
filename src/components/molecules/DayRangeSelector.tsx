@@ -60,20 +60,20 @@ const DayRangeSelector: React.FC<Props> = (props) => {
   );
 };
 
-const DayRangeSelect = styled.div({
-  display: 'flex',
-  marginTop: -22,
-  marginLeft: 30,
-});
+const DayRangeSelect = styled.div`
+  display: flex;
+  margin-top: -22px;
+  margin-left: 30px;
+`;
 
-const DayLabel = styled(Form.Label)({
-  fontSize: 12,
-  margin: 0,
-});
+const DayLabel = styled(Form.Label)`
+  font-size: 12px;
+  margin: 0;
+`;
 
-const DateSelector = styled(Form.Control)({
-  width: 200,
-  textAlign: 'center',
-});
+const DateSelector = styled(Form.Control)`
+  width: 200px;
+  text-align: center;
+`;
 
 export default DayRangeSelector;

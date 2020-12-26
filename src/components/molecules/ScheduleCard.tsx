@@ -6,7 +6,8 @@ import { MenuCategories } from '../../enum/scheduled_menu_category';
 import { Image } from '../../interfaces/domains/image';
 import { MenuCategory, isMenuCategory } from '../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../interfaces/domains/schedule';
-import ScheduleBadge from '../atoms/ScheduleBadge';
+import { ScheduleCategoryColor } from '../../utils/colors';
+import LabelBadge from '../atoms/LabelBadge';
 import ShowSchedule from '../organisms/schedules/ShowSchedule';
 
 import FormedImage from './FormedImage';
@@ -75,7 +76,11 @@ const ScheduleCard: React.FC<Props> = (props) => {
         <CardHeader>
           <div>{scheduledMenu.schedule.date}</div>
           <Type>
-            <ScheduleBadge category={scheduledMenu.schedule.category} />
+            <LabelBadge
+              label={scheduledMenu.schedule.category}
+              color={ScheduleCategoryColor[scheduledMenu.schedule.category]}
+              width={65}
+            />
           </Type>
         </CardHeader>
         <ScheduleImage>
@@ -101,31 +106,31 @@ const ScheduleCard: React.FC<Props> = (props) => {
   );
 };
 
-const Content = styled(Card)({
-  height: 300,
-  width: 320,
-  margin: 4,
-});
+const Content = styled(Card)`
+  height: 300px;
+  width: 320px;
+  margin: 4px;
+`;
 
-const CardHeader = styled(Card.Header)({
-  display: 'flex',
-  padding: 8,
-  alignItems: 'center',
-});
+const CardHeader = styled(Card.Header)`
+  display: flex;
+  padding: 8px;
+  align-items: center;
+`;
 
-const Type = styled.div({
-  marginLeft: 'auto',
-});
+const Type = styled.div`
+  margin-left: auto;
+`;
 
-const ScheduleImage = styled.div({
-  display: 'flex',
-  width: '100%',
-  height: 150,
-  justifyContent: 'center',
-});
+const ScheduleImage = styled.div`
+  display: flex;
+  width: 100%;
+  height: 150px;
+  justify-content: center;
+`;
 
-const MenuList = styled(Card.Body)({
-  padding: 8,
-});
+const MenuList = styled(Card.Body)`
+  padding: 8px;
+`;
 
 export default ScheduleCard;

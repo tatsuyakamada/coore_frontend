@@ -97,12 +97,12 @@ const IndexStuff: React.FC = () => {
   );
 };
 
-const RightContent = styled.div({
-  display: 'flex',
-  margin: 'auto',
-  textAlign: 'right',
-  width: '100%',
-  justifyContent: 'flex-end',
-});
+const RightContent = styled.div`
+  display: flex;
+  margin: auto;
+  text-align: right;
+  width: 100%;
+  justify-content: flex-end;
+`;
 
 export default IndexStuff;

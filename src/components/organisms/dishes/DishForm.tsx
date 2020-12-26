@@ -52,6 +52,8 @@ const DishForm: React.FC<Props> = (props) => {
     const baseUrl = 'http://localhost:3100/api/v1/dishes';
     const url = draftDish.id ? baseUrl.concat(`/${draftDish.id}`) : baseUrl;
     const method = draftDish.id ? 'put' : 'post';
+    const methodMessage = method === 'put' ? '更新' : '登録';
+
     axios.request({
       method,
       url,
@@ -63,7 +65,7 @@ const DishForm: React.FC<Props> = (props) => {
           value: {
             type: 'info',
             status: response.status,
-            message: `${response.data.name}を登録しました`,
+            message: `${response.data.name}を${methodMessage}しました`,
           },
         });
         onCreate();
@@ -155,8 +157,8 @@ const DishForm: React.FC<Props> = (props) => {
   );
 };
 
-const Label = styled(Form.Label)({
-  display: 'block',
-});
+const Label = styled(Form.Label)`
+  display: block,
+`;
 
 export default DishForm;

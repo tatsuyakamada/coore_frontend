@@ -228,44 +228,44 @@ const MenuItemForm: React.FC<Props> = (props) => {
   );
 };
 
-const MenuModal = styled(Modal)({
-  backgroundColor: 'rgba(52, 58, 64, 0.7)',
-});
+const MenuModal = styled(Modal)`
+  background-color: rgba(52, 58, 64, 0.7);
+`;
 
-const ModalContent = styled.div({
-  padding: 16,
-});
+const ModalContent = styled.div`
+  padding: 16px;
+`;
 
-const Label = styled(Form.Label)({
-  display: 'block',
-});
+const Label = styled(Form.Label)`
+  display: block;
+`;
 
-const UploadIcon = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 10,
-  color: '#509aea',
-  cursor: 'pointer',
-});
+const UploadIcon = styled.span`
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  color: #509aea;
+  cursor: pointer;
+`;
 
-const ImageList = styled.div({
-  display: 'flex',
-  fontSize: 14,
-});
+const ImageList = styled.div`
+  display: flex;
+  font-size: 14px;
+`;
 
-const FormButtons = styled.div({
-  display: 'flex',
-  paddingRight: 16,
-  justifyContent: 'flex-end',
-});
+const FormButtons = styled.div`
+  display: flex;
+  padding-right: 16px;
+  justify-content: flex-end;
+`;
 
-const FormButton = styled(Button)({
-  marginLeft: 8,
-});
+const FormButton = styled(Button)`
+  margin-left: 8px;
+`;
 
-const ImageItem = styled.li({
-  display: 'flex',
-  fontSize: 14,
-});
+const ImageItem = styled.li`
+  display: flex;
+  font-size: 14px;
+`;
 
 export default MenuItemForm;

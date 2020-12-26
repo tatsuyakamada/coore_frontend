@@ -27,12 +27,12 @@ const DeleteIcon: React.FC<Props> = (props) => {
   );
 };
 
-const Delete = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 10,
-  color: `${Color.red}`,
-  cursor: 'pointer',
-});
+const Delete = styled.span`
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  color: ${Color.red};
+  cursor: pointer;
+`;
 
 export default DeleteIcon;

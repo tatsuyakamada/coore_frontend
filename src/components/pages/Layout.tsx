@@ -34,8 +34,8 @@ const Layout: React.FC = (props) => {
   );
 };
 
-const MainContent = styled(Container)({
-  marginTop: 20,
-});
+const MainContent = styled(Container)`
+  margin-top: 20px;
+`;
 
 export default Layout;

@@ -18,13 +18,13 @@ const ContentSubHeader: React.FC<Props> = (props) => {
   );
 };
 
-const Container = styled.div({
-  display: 'flex',
-  marginTop: 20,
-});
+const Container = styled.div`
+  display: flex;
+  margin-top: 20px;
+`;
 
-const Subtitle = styled.div({
-  width: '100%',
-});
+const Subtitle = styled.div`
+  width: 100%;
+`;
 
 export default ContentSubHeader;

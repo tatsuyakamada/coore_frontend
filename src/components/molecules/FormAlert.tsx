@@ -37,8 +37,8 @@ const FormAlert: React.FC<Props> = (props) => {
   );
 };
 
-const Message = styled.p({
-  marginBottom: 0,
-});
+const Message = styled.p`
+  margin-bottom: 0,
+`;
 
 export default FormAlert;

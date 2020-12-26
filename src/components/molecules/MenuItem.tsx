@@ -3,18 +3,20 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { MenuCategory } from '../../interfaces/domains/menu';
-import MenuBadge from '../atoms/MenuBadge';
+import { MenuCategoryColor } from '../../utils/colors';
+import LabelBadge from '../atoms/LabelBadge';
 
 type Props = {
   id: number | string;
   category: MenuCategory;
   name: string;
   onClick?: () => void;
+  style?: React.CSSProperties;
 };
 
 const MenuItem: React.FC<Props> = (props) => {
   const {
-    id, category, name, children,
+    id, category, name, children, style,
   } = props;
 
   const handleHover = (
@@ -28,8 +30,11 @@ const MenuItem: React.FC<Props> = (props) => {
   );
 
   return (
-    <Menu id={`menu-${id}`} key={id}>
-      <MenuBadge category={category} />
+    <Menu id={`menu-${id}`} key={id} style={{ ...style }}>
+      <LabelBadge
+        label={category}
+        color={MenuCategoryColor[category]}
+      />
       <OverlayTrigger
         placement="right"
         delay={{ show: 250, hide: 0 }}
@@ -42,19 +47,18 @@ const MenuItem: React.FC<Props> = (props) => {
   );
 };
 
-const Menu = styled.div({
-  display: 'flex',
-  marginBottom: 4,
-  padding: '0 16px',
-});
+const Menu = styled.div`
+  display: flex;
+  margin-bottom: 4px;
+`;
 
-const Name = styled.span({
-  display: 'inline-block',
-  paddingLeft: 4,
-  alignItems: 'center',
-  whiteSpace: 'nowrap',
-  overflowX: 'hidden',
-  fontSize: 14,
-});
+const Name = styled.span`
+  display: inline-block;
+  padding-left: 4px;
+  align-items: center;
+  white-space: nowrap;
+  overflow-x: hidden;
+  font-size: 14px;
+`;
 
 export default MenuItem;

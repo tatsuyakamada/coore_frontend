@@ -195,10 +195,10 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
   );
 };
 
-const FormButtons = styled.div({
-  display: 'flex',
-  paddingRight: 16,
-  justifyContent: 'flex-end',
-});
+const FormButtons = styled.div`
+  display: flex;
+  padding-right: 16px;
+  justify-content: flex-end;
+`;
 
 export default ScheduledMenuForm;

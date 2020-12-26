@@ -122,11 +122,11 @@ const IndexSchedule: React.FC = () => {
   );
 };
 
-const RightContent = styled.div({
-  display: 'flex',
-  margin: 'auto',
-  width: '100%',
-  justifyContent: 'flex-end',
-});
+const RightContent = styled.div`
+  display: flex;
+  margin: auto;
+  width: 100%;
+  justify-content: flex-end;
+`;
 
 export default IndexSchedule;

@@ -35,11 +35,11 @@ const GenreBadge: React.FC<Props> = (props) => {
   );
 };
 
-const GenreBadgeIcon = styled(Badge)({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  color: 'white',
-});
+const GenreBadgeIcon = styled(Badge)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+`;
 
 export default GenreBadge;

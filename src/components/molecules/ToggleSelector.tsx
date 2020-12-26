@@ -42,13 +42,13 @@ const ToggleSelector: React.FC<Props> = (props) => {
   );
 };
 
-const ButtonGroup = styled(ToggleButtonGroup)({
-  width: '100%',
-});
+const ButtonGroup = styled(ToggleButtonGroup)`
+  width: 100%;
+`;
 
-const ButtonItem = styled(ToggleButton)({
-  width: 75,
-  padding: '6px 0',
-});
+const ButtonItem = styled(ToggleButton)`
+  width: 75px;
+  padding: 6px 0;
+`;
 
 export default ToggleSelector;

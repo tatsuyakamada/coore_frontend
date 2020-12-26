@@ -8,10 +8,10 @@ import styled from 'styled-components';
 import { Image } from '../../../interfaces/domains/image';
 import { DraftMenu, Menu } from '../../../interfaces/domains/menu';
 import { ScheduledMenu } from '../../../interfaces/domains/schedule';
+import { MenuCategoryColor, ScheduleCategoryColor } from '../../../utils/colors';
 import { hasVerticalImage } from '../../../utils/image';
 import EditIcon from '../../atoms/EditIcon';
-import MenuBadge from '../../atoms/MenuBadge';
-import ScheduleBadge from '../../atoms/ScheduleBadge';
+import LabelBadge from '../../atoms/LabelBadge';
 import FormedImage from '../../molecules/FormedImage';
 import { DeviceContext } from '../../pages/Layout';
 import { ScheduledMenuContext } from '../../pages/schedules/index';
@@ -98,7 +98,11 @@ const ShowSchedule: React.FC<Props> = (props) => {
         <CardHeader>
           <div>{scheduledMenu.schedule.date}</div>
           <Type>
-            <ScheduleBadge category={scheduledMenu.schedule.category} />
+            <LabelBadge
+              label={scheduledMenu.schedule.category}
+              color={ScheduleCategoryColor[scheduledMenu.schedule.category]}
+              width={55}
+            />
             {
               !location.state && <EditIcon onClick={handleEdit} />
             }
@@ -129,7 +133,7 @@ const ShowSchedule: React.FC<Props> = (props) => {
           {
             scheduledMenu.menus.map((menu) => (
               <MenuList key={menu.id}>
-                <MenuBadge category={menu.category} />
+                <LabelBadge label={menu.category} color={MenuCategoryColor[menu.category]} />
                 <DishName>{menu.dishName}</DishName>
               </MenuList>
             ))
@@ -140,45 +144,45 @@ const ShowSchedule: React.FC<Props> = (props) => {
   );
 };
 
-const CardHeader = styled(Card.Header)({
-  display: 'flex',
-  padding: 8,
-});
+const CardHeader = styled(Card.Header)`
+  display: flex;
+  padding: 8px;
+`;
 
-const Type = styled.div({
-  display: 'flex',
-  marginLeft: 'auto',
-});
+const Type = styled.div`
+  display: flex;
+  margin-left: auto;
+`;
 
-const ImageSlide = styled(Carousel)({
-  width: '100%',
-});
+const ImageSlide = styled(Carousel)`
+  width: 100%;
+`;
 
-const ImageItem = styled.div({
-  display: 'flex',
-  justifyContent: 'center',
-});
+const ImageItem = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
-const ScheduleContent = styled(Card.Body)({
-  padding: 8,
-});
+const ScheduleContent = styled(Card.Body)`
+  padding: 8px;
+`;
 
-const MemoTitle = styled(Card.Title)({
-  fontSize: 18,
-});
+const MemoTitle = styled(Card.Title)`
+  font-size: 18px;
+`;
 
-const MemoText = styled(Card.Text)({
-  padding: '0 16px',
-});
+const MemoText = styled(Card.Text)`
+  padding: 0 16px;
+`;
 
-const MenuList = styled.div({
-  display: 'flex',
-  marginBottom: 8,
-  paddingLeft: 16,
-});
+const MenuList = styled.div`
+  display: flex;
+  margin-bottom: 8px;
+  padding-left: 16px;
+`;
 
-const DishName = styled(Card.Text)({
-  paddingLeft: 8,
-});
+const DishName = styled(Card.Text)`
+  padding-left: 8px;
+`;
 
 export default ShowSchedule;

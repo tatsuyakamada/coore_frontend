@@ -5,14 +5,15 @@ import React, {
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 
+import { Genres } from '../../../enum/genre';
 import { Dish } from '../../../interfaces/domains/dish';
 import { Image } from '../../../interfaces/domains/image';
 import { ScheduledMenu } from '../../../interfaces/domains/schedule';
 import {
   SearchAction, SearchCondition, initialCondition, scheduleSearchReducer,
 } from '../../../reducers/schedule/search';
-import GenreBadge from '../../atoms/GenreBadge';
-import MenuBadge from '../../atoms/MenuBadge';
+import { GenreColor, MenuCategoryColor } from '../../../utils/colors';
+import LabelBadge from '../../atoms/LabelBadge';
 import DishHistories from '../../organisms/dishes/DishHistories';
 import DishImages from '../../organisms/dishes/DishImages';
 import { InfoContext } from '../Layout';
@@ -57,12 +58,16 @@ const ShowDish: React.FC = () => {
         dish && (
           <>
             <DishLabel>
-              <GenreBadge
-                genre={dish.genre}
+              <LabelBadge
+                label={Genres[dish.genre]}
+                width={55}
+                color={GenreColor[dish.genre]}
                 style={{ height: 30, width: 120, fontSize: 18 }}
               />
-              <MenuBadge
-                category={dish.category}
+              <LabelBadge
+                label={dish.category}
+                color={MenuCategoryColor[dish.category]}
+                width={65}
                 style={{
                   marginLeft: 12, height: 30, width: 120, fontSize: 18,
                 }}
@@ -85,15 +90,15 @@ const ShowDish: React.FC = () => {
   );
 };
 
-const DishLabel = styled.div({
-  display: 'flex',
-  alignItems: 'flex-end',
-});
+const DishLabel = styled.div`
+  display: flex;
+  align-items: flex-end;
+`;
 
-const Name = styled.span({
-  marginLeft: 12,
-  fontSize: 20,
-  fontWeight: 'bold',
-});
+const Name = styled.span`
+  margin-left: 12px;
+  font-size: 20px;
+  font-weight: bold;
+`;
 
 export default ShowDish;

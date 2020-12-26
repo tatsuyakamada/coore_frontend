@@ -57,13 +57,13 @@ const MenuCategorySelector: React.FC<Props> = (props) => {
   );
 };
 
-const ButtonGroup = styled(ToggleButtonGroup)({
-  width: '100%',
-});
+const ButtonGroup = styled(ToggleButtonGroup)`
+  width: 100%;
+`;
 
-const ButtonItem = styled(ToggleButton)({
-  width: 75,
-  padding: '6px 4px',
-});
+const ButtonItem = styled(ToggleButton)`
+  width: 75px;
+  padding: 6px 4px;
+`;
 
 export default MenuCategorySelector;
