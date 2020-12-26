@@ -34,14 +34,14 @@ export type DishAction = {
 export const dishReducer = (state: DraftDish, action: DishAction): DraftDish => {
   switch (action.type) {
     case 'new':
-      return initialDish;
+      return { ...initialDish };
     case 'edit':
       if (action.dish) {
         return action.dish;
       }
       return state;
     case 'reset':
-      return initialDish;
+      return { ...initialDish };
     default:
       return state;
   }

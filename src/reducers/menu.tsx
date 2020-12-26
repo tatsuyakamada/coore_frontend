@@ -23,9 +23,7 @@ export const menusReducer = (state: DraftMenu[], action: MenusAction): DraftMenu
   const newState = state;
   switch (action.type) {
     case 'set':
-      if (action.menus) {
-        return action.menus;
-      }
+      if (action.menus) return [...action.menus];
       return state;
     case 'add':
       if (action.value !== null) {

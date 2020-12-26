@@ -20,6 +20,8 @@ type Props = {
 const ScheduleCard: React.FC<Props> = (props) => {
   const { scheduledMenu } = props;
 
+  const { schedule, menus } = scheduledMenu;
+
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const handleClose = (): void => setShowDetail(false);
@@ -35,12 +37,12 @@ const ScheduleCard: React.FC<Props> = (props) => {
   };
 
   const displayImage = (): Image => {
-    if (scheduledMenu.schedule.images) return scheduledMenu.schedule.images[0];
+    if (schedule.images) return schedule.images[0];
     return menuImage() || defaultImage;
   };
 
   const menuImage = (): Image | null => {
-    const hasImageMenu = scheduledMenu.menus.find((menu) => (!menu.image));
+    const hasImageMenu = menus.find((menu) => (!menu.image));
     return hasImageMenu ? hasImageMenu.image : null;
   };
 
@@ -54,7 +56,7 @@ const ScheduleCard: React.FC<Props> = (props) => {
 
     Object.keys(MenuCategories).forEach((category) => {
       if (isMenuCategory(category)) {
-        categolized[category] = scheduledMenu.menus.filter((menu) => (
+        categolized[category] = menus.filter((menu) => (
           menu.category === category
         )).map((menu) => (menu.dishName)).join('/');
       }
@@ -69,16 +71,13 @@ const ScheduleCard: React.FC<Props> = (props) => {
         scheduledMenu={scheduledMenu}
         onHide={handleClose}
       />
-      <Content
-        key={scheduledMenu.schedule.id}
-        onClick={handleClick}
-      >
+      <Content key={schedule.id} onClick={handleClick}>
         <CardHeader>
-          <div>{scheduledMenu.schedule.date}</div>
+          <div>{schedule.date}</div>
           <Type>
             <LabelBadge
-              label={scheduledMenu.schedule.category}
-              color={ScheduleCategoryColor[scheduledMenu.schedule.category]}
+              label={schedule.category}
+              color={ScheduleCategoryColor[schedule.category]}
               width={65}
             />
           </Type>

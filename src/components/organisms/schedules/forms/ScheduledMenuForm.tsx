@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { DishItem } from '../../../../interfaces/domains/dish';
 import { DraftMenu } from '../../../../interfaces/domains/menu';
 import { DishListAction, dishListReducer } from '../../../../reducers/dish/list';
+import Url from '../../../../utils/api';
 import DeleteButton from '../../../atoms/DeleteButton';
 import SubmitButton from '../../../atoms/SubmitButton';
 import FormAlert from '../../../molecules/FormAlert';
@@ -50,11 +51,16 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
   const [errors, setErrors] = useState<errorMessages[] | null>(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3100/api/v1/dishes/dish_list.json')
+    axios.get(Url(['dish_list.json']))
       .then((results) => {
-        dishListDispatch({ type: 'set', value: results.data });
+        const selectedMenuIds = menus.filter((menu) => (menu.dishId)).map((menu) => (menu.dishId));
+        const list: DishItem[] = results.data;
+        const filteredList: DishItem[] = list.map((dish) => (
+          { ...dish, selectable: !selectedMenuIds.includes(dish.id) }
+        ));
+        dishListDispatch({ type: 'set', value: filteredList });
       });
-  }, []);
+  }, [schedule]);
 
   const handleClose = (): void => {
     scheduleDispatch({ type: 'reset' });
@@ -110,14 +116,13 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
       if (menu.deleteImage && menu.deleteImage.delete) formData.append(`scheduledMenu[menus][0${menu.index}][delete_image]`, menu.deleteImage.id.toString());
     });
 
-    const baseUrl = 'http://localhost:3100/api/v1/schedules';
-    const url = schedule.id ? baseUrl.concat(`/${schedule.id}`) : baseUrl;
+    const paths = schedule.id ? ['schedules', schedule.id.toString()] : ['schedules'];
     const method = schedule.id ? 'put' : 'post';
-    const methodMessage = method === 'put' ? '更新' : '登録';
+    const context = method === 'put' ? '更新' : '登録';
 
     axios.request({
       method,
-      url,
+      url: Url(paths),
       data: formData,
     })
       .then((response) => {
@@ -126,7 +131,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
           value: {
             type: 'info',
             status: response.status,
-            message: `${response.data.date}の${response.data.category}を${methodMessage}しました`,
+            message: `${response.data.date}の${response.data.category}を${context}しました`,
           },
         });
         onCreate();
@@ -143,7 +148,8 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
   };
 
   const handleDelete = (): void => {
-    axios.delete(`http://localhost:3100/api/v1/schedules/${schedule.id}`)
+    if (!schedule.id) return;
+    axios.delete(Url(['schedule', schedule.id.toString()]))
       .then((response) => {
         infoDispatch(
           {

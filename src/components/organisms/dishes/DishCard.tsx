@@ -40,10 +40,7 @@ const DishCard: React.FC<Props> = (props) => {
           style={{ width: 55 }}
         />
         <Name>{dish.name}</Name>
-        <EditIcon
-          onClick={handleEdit}
-          style={{ marginLeft: 'auto' }}
-        />
+        <EditIcon onClick={handleEdit} style={{ marginLeft: 'auto' }} />
       </Label>
     </Content>
   );

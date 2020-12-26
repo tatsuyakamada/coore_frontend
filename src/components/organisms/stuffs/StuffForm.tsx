@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import { DraftStuff, StuffRelations } from '../../../interfaces/domains/stuff';
+import Url from '../../../utils/api';
 import DeleteButton from '../../atoms/DeleteButton';
 import SubmitButton from '../../atoms/SubmitButton';
 import AutoFillSelector, { SelectItem } from '../../molecules/AutoFillSelector';
@@ -106,14 +107,13 @@ const StuffForm: React.FC<Props> = (props) => {
 
   const handleSubmit = (): void => {
     if (validateStuff() && draftStuff.subCategory) {
-      const baseUrl = 'http://localhost:3100/api/v1/stuffs';
-      const url = draftStuff.id ? baseUrl.concat(`/${draftStuff.id}`) : baseUrl;
+      const paths = draftStuff.id ? ['stuffs', draftStuff.id.toString()] : ['stuffs'];
       const method = draftStuff.id ? 'put' : 'post';
-      const methodMessage = method === 'put' ? '更新' : '登録';
+      const context = method === 'put' ? '更新' : '登録';
 
       axios.request({
         method,
-        url,
+        url: Url(paths),
         data: {
           stuff: {
             id: draftStuff.id,
@@ -128,7 +128,7 @@ const StuffForm: React.FC<Props> = (props) => {
             value: {
               type: 'info',
               status: response.status,
-              message: `${response.data.name}を${methodMessage}しました`,
+              message: `${response.data.name}を${context}しました`,
             },
           });
           onCreate();
@@ -143,7 +143,8 @@ const StuffForm: React.FC<Props> = (props) => {
   const subCategoryRef: React.RefObject<Typeahead<SelectItem>> = React.createRef();
 
   const handleDelete = (): void => {
-    axios.delete(`http://localhost:3100/api/v1/stuffs/${draftStuff.id}`)
+    if (!draftStuff.id) return;
+    axios.delete(Url(['stuffs', draftStuff.id.toString()]))
       .then((response) => {
         infoDispatch(
           {

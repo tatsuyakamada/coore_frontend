@@ -18,6 +18,7 @@ import {
   SearchCondition as ScheduleSearchCondition,
   scheduleSearchReducer,
 } from '../../../reducers/schedule/search';
+import Url from '../../../utils/api';
 import AddButton from '../../atoms/AddButton';
 import SearchButton from '../../atoms/SeachIcon';
 import ContentHeader from '../../organisms/ContentHeader';
@@ -57,7 +58,7 @@ const IndexDish: React.FC = () => {
   const [reload, setReload] = useState<boolean>(false);
 
   useEffect(() => {
-    axios.get('http://localhost:3100/api/v1/dishes.json')
+    axios.get(Url('dishes.json'))
       .then((results) => {
         setDishes(results.data);
         setReload(false);

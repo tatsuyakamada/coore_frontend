@@ -17,6 +17,7 @@ import {
 import {
   SubCategoryAction, initialSubCategory, subCategoryReducer,
 } from '../../../reducers/stuff/subCategoryForm';
+import Url from '../../../utils/api';
 import AddButton from '../../atoms/AddButton';
 import ContentHeader from '../../organisms/ContentHeader';
 import CategoryForm from '../../organisms/stuffs/CategoryForm';
@@ -52,7 +53,7 @@ const IndexStuff: React.FC = () => {
   const [reload, setReload] = useState<boolean>(false);
 
   useEffect(() => {
-    axios.get('http://localhost:3100/api/v1/categories.json')
+    axios.get(Url('categories.json'))
       .then((results) => {
         setCategories(results.data);
         setReload(false);

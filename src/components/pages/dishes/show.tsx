@@ -12,6 +12,7 @@ import { ScheduledMenu } from '../../../interfaces/domains/schedule';
 import {
   SearchAction, SearchCondition, initialCondition, scheduleSearchReducer,
 } from '../../../reducers/schedule/search';
+import Url from '../../../utils/api';
 import { GenreColor, MenuCategoryColor } from '../../../utils/colors';
 import LabelBadge from '../../atoms/LabelBadge';
 import DishHistories from '../../organisms/dishes/DishHistories';
@@ -39,7 +40,7 @@ const ShowDish: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    axios.get(`http://localhost:3100/api/v1/dishes/${id}.json`)
+    axios.get(Url(['dishes', `${id}.json`]))
       .then((result) => {
         infoDispatch({ type: 'reset' });
         setDish(result.data.dish);

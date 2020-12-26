@@ -11,9 +11,11 @@ import MenuItem from '../../../molecules/MenuItem';
 import { ScheduledMenuContext } from '../../../pages/schedules';
 
 import MenuItemForm from './MenuItemForm';
+import { MenusContext } from './ScheduledMenuForm';
 
 const MenusForm: React.FC = () => {
   const { menus, menusDispatch } = useContext(ScheduledMenuContext);
+  const { dishListDispatch } = useContext(MenusContext);
 
   const [show, setShow] = useState<boolean>(false);
   const [draftMenu, setDraftMenu] = useState<DraftMenu | null>(null);
@@ -30,9 +32,10 @@ const MenusForm: React.FC = () => {
     setShow(true);
   };
 
-  const handleDelete = (event: React.MouseEvent<HTMLSpanElement>, index: number): void => {
-    menusDispatch({ type: 'delete', index, value: null });
-    const targetMenu: HTMLElement | null = event.currentTarget.closest(`#menu-${index}`);
+  const handleDelete = (event: React.MouseEvent<HTMLSpanElement>, menu: DraftMenu): void => {
+    menusDispatch({ type: 'delete', index: menu.index, value: null });
+    dishListDispatch({ type: 'delete', value: menu.dishId });
+    const targetMenu: HTMLElement | null = event.currentTarget.closest(`#menu-${menu.index}`);
     if (targetMenu !== null) targetMenu.hidden = true;
   };
 
@@ -60,7 +63,7 @@ const MenusForm: React.FC = () => {
                 )
               }
               <EditIcon onClick={() => handleEdit(menu)} />
-              <DeleteIcon onClick={(event) => handleDelete(event, menu.index)} />
+              <DeleteIcon onClick={(event) => handleDelete(event, menu)} />
             </MenuItemIcons>
           </MenuItem>
         ))

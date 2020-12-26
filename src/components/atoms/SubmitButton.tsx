@@ -19,7 +19,7 @@ const SubmitButton: React.FC<Props> = (props) => {
 };
 
 const Submit = styled(Button)`
-  margin-right: 16px,
+  margin-right: 16px;
 `;
 
 export default SubmitButton;
