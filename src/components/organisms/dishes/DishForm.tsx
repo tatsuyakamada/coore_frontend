@@ -1,17 +1,19 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import GenreOption from '../../../enum/genre';
 import { DraftDish, isGenre } from '../../../interfaces/domains/dish';
 import { MenuCategory } from '../../../interfaces/domains/menu';
+import DeleteButton from '../../atoms/DeleteButton';
+import SubmitButton from '../../atoms/SubmitButton';
 import FormAlert from '../../molecules/FormAlert';
 import FormInput from '../../molecules/FormInput';
 import MenuCategorySelector from '../../molecules/MenuCategorySelector';
 import ToggleSelector from '../../molecules/ToggleSelector';
 import { DishContext } from '../../pages/dishes/index';
-import { DeviceContext } from '../../pages/Layout';
+import { DeviceContext, InfoContext } from '../../pages/Layout';
 
 type ErrorMessages = {
   [key: string]: string[];
@@ -25,6 +27,7 @@ const DishForm: React.FC<Props> = (props) => {
   const { onCreate } = props;
 
   const { isMobile } = useContext(DeviceContext);
+  const { infoDispatch } = useContext(InfoContext);
 
   const {
     targetDish, dishDispatch, dishModal, dishModalDispatch,
@@ -54,12 +57,21 @@ const DishForm: React.FC<Props> = (props) => {
       url,
       data: { dish: draftDish },
     })
-      .then(() => {
+      .then((response) => {
+        infoDispatch({
+          type: 'set',
+          value: {
+            type: 'info',
+            status: response.status,
+            message: `${response.data.name}を登録しました`,
+          },
+        });
         onCreate();
         handleClose();
       })
       .catch((error) => {
-        setErrors(error.response.data.messages);
+        const { messages } = error.response.data;
+        setErrors([{ Dish: messages }]);
       });
   };
 
@@ -74,6 +86,36 @@ const DishForm: React.FC<Props> = (props) => {
   const handleCategorySelect = (value: MenuCategory): void => (
     setDraftDish({ ...draftDish, category: value })
   );
+
+  const handleDelete = (): void => {
+    axios.delete(`http://localhost:3100/api/v1/dishes/${draftDish.id}`)
+      .then((response) => {
+        infoDispatch(
+          {
+            type: 'set',
+            value: {
+              type: 'info',
+              status: response.status,
+              message: `${response.data.name}を削除しました`,
+            },
+          },
+        );
+        handleClose();
+        onCreate();
+      })
+      .catch((error) => (
+        error.response.data.messages.map((message: string) => (
+          infoDispatch({
+            type: 'set',
+            value: {
+              type: 'error',
+              status: error.response.status,
+              message,
+            },
+          })
+        ))
+      ));
+  };
 
   const formStyle: React.CSSProperties = { padding: isMobile ? '0' : '0 16px' };
 
@@ -106,12 +148,8 @@ const DishForm: React.FC<Props> = (props) => {
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          { draftDish.id ? 'Update' : 'Save' }
-        </Button>
+        <SubmitButton id={draftDish.id} onClick={handleSubmit} />
+        {draftDish.id && <DeleteButton onClick={handleDelete} />}
       </Modal.Footer>
     </Modal>
   );

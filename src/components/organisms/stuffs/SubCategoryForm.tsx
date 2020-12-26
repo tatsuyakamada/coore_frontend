@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import { DraftSubCategory, StuffRelations } from '../../../interfaces/domains/stuff';
+import SubmitButton from '../../atoms/SubmitButton';
 import AutoFillSelector from '../../molecules/AutoFillSelector';
 import FormAlert from '../../molecules/FormAlert';
 import FormInput from '../../molecules/FormInput';
+import { InfoContext } from '../../pages/Layout';
 import { StuffContext } from '../../pages/stuffs/index';
 
 type ErrorMessages = {
@@ -26,6 +28,7 @@ type SelectItem = {
 const SubCategoryForm: React.FC<Props> = (props) => {
   const { categories, onCreate } = props;
 
+  const { infoDispatch } = useContext(InfoContext);
   const {
     targetSubCategory, subCategoryDispatch, stuffRelationModal, stuffRelationModalDispatch,
   } = useContext(StuffContext);
@@ -84,6 +87,8 @@ const SubCategoryForm: React.FC<Props> = (props) => {
       const baseUrl = 'http://localhost:3100/api/v1/sub_categories';
       const url = draftSubCategory.id ? baseUrl.concat(`/${draftSubCategory.id}`) : baseUrl;
       const method = draftSubCategory.id ? 'put' : 'post';
+      const methodMessage = method === 'put' ? '更新' : '登録';
+
       axios.request({
         method,
         url,
@@ -95,7 +100,16 @@ const SubCategoryForm: React.FC<Props> = (props) => {
           },
         },
       })
-        .then(() => {
+        .then((response) => {
+          infoDispatch({
+            type: 'set',
+            value: {
+              type: 'info',
+              status: response.status,
+              message: `${response.data.name}を${methodMessage}しました`,
+            },
+          });
+
           onCreate();
           handleClose();
         })
@@ -126,13 +140,8 @@ const SubCategoryForm: React.FC<Props> = (props) => {
           onChange={handleChange}
         />
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          { draftSubCategory.id ? 'Update' : 'Save' }
-        </Button>
+      <Modal.Footer style={{ marginRight: 16 }}>
+        <SubmitButton id={draftSubCategory.id} onClick={handleSubmit} />
       </Modal.Footer>
     </Modal>
   );

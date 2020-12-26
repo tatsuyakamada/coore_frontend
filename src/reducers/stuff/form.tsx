@@ -3,7 +3,5 @@ export type StuffRelationModal = {
 };
 
 export const stuffModalReducer = (
-  state: StuffRelationModal, action: StuffRelationModal
-): StuffRelationModal => {
-  return { type: action.type }
-};
+  state: StuffRelationModal, action: StuffRelationModal,
+): StuffRelationModal => ({ type: action.type });

@@ -3,32 +3,32 @@ import { Container } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
-import { Error, ErrorAction, errorReducer } from '../../reducers/error';
+import { Info, InfoAction, infoReducer } from '../../reducers/information';
 import mobile from '../../utils/responsive';
-import Alert from '../organisms/Alert';
+import Information from '../organisms/Infomation';
 
 export const DeviceContext = createContext({} as {
   isMobile: boolean;
 });
 
-export const ErrorContext = createContext({} as {
-  errors: Error[];
-  errorDispatch: React.Dispatch<ErrorAction>;
+export const InfoContext = createContext({} as {
+  infos: Info[];
+  infoDispatch: React.Dispatch<InfoAction>;
 });
 
 const Layout: React.FC = (props) => {
   const { children } = props;
 
-  const [errors, errorDispatch] = useReducer(errorReducer, []);
+  const [infos, infoDispatch] = useReducer(infoReducer, []);
   const isMobile = useMediaQuery(mobile);
 
   return (
     <DeviceContext.Provider value={{ isMobile }}>
       <MainContent fluid>
-        <ErrorContext.Provider value={{ errors, errorDispatch }}>
-          <Alert />
+        <InfoContext.Provider value={{ infos, infoDispatch }}>
+          <Information />
           {children}
-        </ErrorContext.Provider>
+        </InfoContext.Provider>
       </MainContent>
     </DeviceContext.Provider>
   );
