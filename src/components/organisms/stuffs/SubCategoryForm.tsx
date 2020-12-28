@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import { DraftSubCategory, StuffRelations } from '../../../interfaces/domains/stuff';
+import Url from '../../../utils/api';
 import SubmitButton from '../../atoms/SubmitButton';
 import AutoFillSelector from '../../molecules/AutoFillSelector';
 import FormAlert from '../../molecules/FormAlert';
@@ -84,14 +85,13 @@ const SubCategoryForm: React.FC<Props> = (props) => {
 
   const handleSubmit = (): void => {
     if (validateSubCategory() && draftSubCategory.category) {
-      const baseUrl = 'http://localhost:3100/api/v1/sub_categories';
-      const url = draftSubCategory.id ? baseUrl.concat(`/${draftSubCategory.id}`) : baseUrl;
+      const paths = draftSubCategory.id ? ['sub_categories', draftSubCategory.id.toString()] : ['sub_categories'];
       const method = draftSubCategory.id ? 'put' : 'post';
-      const methodMessage = method === 'put' ? '更新' : '登録';
+      const context = method === 'put' ? '更新' : '登録';
 
       axios.request({
         method,
-        url,
+        url: Url(paths),
         data: {
           sub_category: {
             id: draftSubCategory.id,
@@ -106,7 +106,7 @@ const SubCategoryForm: React.FC<Props> = (props) => {
             value: {
               type: 'info',
               status: response.status,
-              message: `${response.data.name}を${methodMessage}しました`,
+              message: `${response.data.name}を${context}しました`,
             },
           });
 

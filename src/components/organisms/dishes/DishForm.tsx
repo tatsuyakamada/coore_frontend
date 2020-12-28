@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import GenreOption from '../../../enum/genre';
 import { DraftDish, isGenre } from '../../../interfaces/domains/dish';
 import { MenuCategory } from '../../../interfaces/domains/menu';
+import Url from '../../../utils/api';
 import DeleteButton from '../../atoms/DeleteButton';
 import SubmitButton from '../../atoms/SubmitButton';
 import FormAlert from '../../molecules/FormAlert';
@@ -49,14 +50,13 @@ const DishForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (): void => {
-    const baseUrl = 'http://localhost:3100/api/v1/dishes';
-    const url = draftDish.id ? baseUrl.concat(`/${draftDish.id}`) : baseUrl;
+    const paths = draftDish.id ? ['dishes', draftDish.id.toString()] : ['dishes'];
     const method = draftDish.id ? 'put' : 'post';
-    const methodMessage = method === 'put' ? '更新' : '登録';
+    const context = method === 'put' ? '更新' : '登録';
 
     axios.request({
       method,
-      url,
+      url: Url(paths),
       data: { dish: draftDish },
     })
       .then((response) => {
@@ -65,7 +65,7 @@ const DishForm: React.FC<Props> = (props) => {
           value: {
             type: 'info',
             status: response.status,
-            message: `${response.data.name}を${methodMessage}しました`,
+            message: `${response.data.name}を${context}しました`,
           },
         });
         onCreate();
@@ -90,7 +90,8 @@ const DishForm: React.FC<Props> = (props) => {
   );
 
   const handleDelete = (): void => {
-    axios.delete(`http://localhost:3100/api/v1/dishes/${draftDish.id}`)
+    if (!draftDish.id) return;
+    axios.delete(Url(['dishes', draftDish.id.toString()]))
       .then((response) => {
         infoDispatch(
           {

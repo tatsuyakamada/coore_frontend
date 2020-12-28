@@ -16,6 +16,7 @@ import {
 import {
   SearchAction, SearchCondition, initialCondition, scheduleSearchReducer,
 } from '../../../reducers/schedule/search';
+import Url from '../../../utils/api';
 import AddButton from '../../atoms/AddButton';
 import SearchButton from '../../atoms/SeachIcon';
 import ContentHeader from '../../organisms/ContentHeader';
@@ -52,7 +53,7 @@ const IndexSchedule: React.FC = () => {
   const [reload, setReload] = useState<boolean>(false);
 
   useEffect(() => {
-    axios.get('http://localhost:3100/api/v1/schedules.json')
+    axios.get(Url('schedules.json'))
       .then((results) => {
         setScheduledMenus(results.data);
         setReload(false);

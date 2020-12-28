@@ -42,7 +42,7 @@ export const initialSchedule: DraftSchedule = {
 export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): DraftSchedule => {
   switch (action.type) {
     case 'new':
-      return initialSchedule;
+      return { ...initialSchedule };
     case 'edit':
       if (action.schedule && isSchedule(action.schedule)) {
         const {
@@ -101,7 +101,7 @@ export const scheduleReducer = (state: DraftSchedule, action: ScheduleAction): D
       }
       return state;
     case 'reset':
-      return initialSchedule;
+      return { ...initialSchedule };
     default:
       return state;
   }

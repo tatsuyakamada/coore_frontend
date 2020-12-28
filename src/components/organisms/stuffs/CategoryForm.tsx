@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { DraftCategory } from '../../../interfaces/domains/stuff';
+import Url from '../../../utils/api';
 import SubmitButton from '../../atoms/SubmitButton';
 import FormAlert from '../../molecules/FormAlert';
 import FormInput from '../../molecules/FormInput';
@@ -52,14 +53,13 @@ const CategoryForm: React.FC<Props> = (props) => {
 
   const handleSubmit = (): void => {
     if (validateCategory()) {
-      const baseUrl = 'http://localhost:3100/api/v1/categories';
-      const url = draftCategory.id ? baseUrl.concat(`/${draftCategory.id}`) : baseUrl;
+      const paths = draftCategory.id ? ['categories', draftCategory.id.toString()] : ['categories'];
       const method = draftCategory.id ? 'put' : 'post';
-      const methodMessage = method === 'put' ? '更新' : '登録';
+      const context = method === 'put' ? '更新' : '登録';
 
       axios.request({
         method,
-        url,
+        url: Url(paths),
         data: {
           category: {
             id: draftCategory.id,
@@ -73,7 +73,7 @@ const CategoryForm: React.FC<Props> = (props) => {
             value: {
               type: 'info',
               status: response.status,
-              message: `${response.data.name}を${methodMessage}しました`,
+              message: `${response.data.name}を${context}しました`,
             },
           });
           onCreate();
