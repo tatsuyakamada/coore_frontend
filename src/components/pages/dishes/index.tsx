@@ -22,10 +22,10 @@ import Url from '../../../utils/api';
 import AddButton from '../../atoms/AddButton';
 import SearchButton from '../../atoms/SeachIcon';
 import ContentHeader from '../../organisms/ContentHeader';
-import DishForm from '../../organisms/dishes/DishForm';
 import DishList from '../../organisms/dishes/DishList';
 import DishSearchBar from '../../organisms/dishes/DishSearchBar';
 import DishSearchModal from '../../organisms/dishes/DishSearchModal';
+import DishStuffForm from '../../organisms/dishes/DishStuffForm';
 import { DeviceContext, InfoContext } from '../Layout';
 
 export const DishContext = createContext({} as {
@@ -106,7 +106,7 @@ const IndexDish: React.FC = () => {
           <AddButton onClick={handleNew} />
         </RightContent>
       </ContentHeader>
-      <DishForm onCreate={handleCreate} />
+      <DishStuffForm onCreate={handleCreate} />
       {isMobile ? <DishSearchModal /> : <DishSearchBar />}
       <DishList
         dishes={filteredDishes}

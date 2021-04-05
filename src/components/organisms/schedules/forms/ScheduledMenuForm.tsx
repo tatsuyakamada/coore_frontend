@@ -23,7 +23,7 @@ type Props = {
   onCreate: () => void;
 };
 
-type errorMessages = {
+type ErrorMessages = {
   [key: string]: string[];
 };
 
@@ -48,10 +48,10 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
 
   const [dishList, dishListDispatch] = useReducer(dishListReducer, []);
 
-  const [errors, setErrors] = useState<errorMessages[] | null>(null);
+  const [errors, setErrors] = useState<ErrorMessages[] | null>(null);
 
   useEffect(() => {
-    axios.get(Url(['dish_list.json']))
+    axios.get(Url(['dishes', 'dish_list.json']))
       .then((results) => {
         const selectedMenuIds = menus.filter((menu) => (menu.dishId)).map((menu) => (menu.dishId));
         const list: DishItem[] = results.data;

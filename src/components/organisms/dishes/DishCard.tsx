@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 import { Genres } from '../../../enum/genre';
-import { Dish } from '../../../interfaces/domains/dish';
+import { Dish, DraftDishStuff } from '../../../interfaces/domains/dish';
 import { GenreColor } from '../../../utils/colors';
 import EditIcon from '../../atoms/EditIcon';
 import LabelBadge from '../../atoms/LabelBadge';
@@ -26,9 +26,24 @@ const DishCard: React.FC<Props> = (props) => {
   };
 
   const handleEdit = (event: React.MouseEvent<HTMLInputElement>): void => {
-    dishDispatch({ type: 'edit', dish });
+    dishDispatch({ type: 'edit', dish: { ...dish, dishStuffs: translatedDishStuffs() } });
     dishModalDispatch({ type: 'open' });
     event.stopPropagation();
+  };
+
+  const translatedDishStuffs = (): DraftDishStuff[] => {
+    const newDishStuffs: DraftDishStuff[] = [];
+    dish.dishStuffs.forEach((dishStuff, index) => {
+      newDishStuffs.push({
+        id: dishStuff.id,
+        index,
+        stuffId: dishStuff.stuffId,
+        stuffName: dishStuff.stuffName,
+        category: dishStuff.category,
+        delete: false,
+      });
+    });
+    return newDishStuffs;
   };
 
   return (

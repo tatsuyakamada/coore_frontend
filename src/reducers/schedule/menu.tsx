@@ -1,4 +1,4 @@
-import { DraftMenu } from '../interfaces/domains/menu';
+import { DraftMenu } from '../../interfaces/domains/menu';
 
 export const initialMenu: DraftMenu = {
   id: null,

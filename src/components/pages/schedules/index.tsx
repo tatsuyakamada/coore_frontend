@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 import { DraftMenu } from '../../../interfaces/domains/menu';
 import { DraftSchedule, ScheduledMenu } from '../../../interfaces/domains/schedule';
-import { MenusAction, menusReducer } from '../../../reducers/menu';
+import { MenusAction, menusReducer } from '../../../reducers/schedule/menu';
 import {
   ScheduleAction, ScheduleModal, ScheduleModalAction,
   initialSchedule, scheduleModalReducer, scheduleReducer,
