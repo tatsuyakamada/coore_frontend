@@ -6,32 +6,39 @@ import styled from 'styled-components';
 import { DeviceContext } from '../pages/Layout';
 
 type Props = {
-  label: string;
+  label?: string;
   ref: React.RefObject<Typeahead<SelectItem>>;
-  onChange: (selected: SelectItem[]) => void;
+  onChange: (selected: SelectItem[], event?: React.MouseEvent<HTMLSpanElement>) => void;
   onInputChange: () => void;
   options: SelectItem[];
-  selected: SelectItem[];
+  selected?: SelectItem[];
+  placeholder?: string;
+  onFocus?: (event: Event) => void;
   style?: React.CSSProperties;
 }
 
 export type SelectItem = {
   id: number;
   name: string;
+  selectable?: boolean;
 }
 
 const AutoFillSelector: React.FC<Props> = (props) => {
   const {
-    label, ref, onChange, onInputChange, options, selected, style,
+    label, ref, onChange, onInputChange, options, selected, placeholder, onFocus, style,
   } = props;
 
   const { isMobile } = useContext(DeviceContext);
 
   const formStyle: React.CSSProperties = { padding: isMobile ? '0' : '0 16px', ...style };
 
+  const handleFocus = (event: Event): void => {
+    if (onFocus) onFocus(event);
+  };
+
   return (
     <Form.Group style={{ ...formStyle }}>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <Typeahead
         id="subCategory"
         ref={ref}
@@ -39,7 +46,8 @@ const AutoFillSelector: React.FC<Props> = (props) => {
         onInputChange={onInputChange}
         options={options}
         selected={selected}
-        placeholder={label}
+        onFocus={handleFocus}
+        placeholder={placeholder}
         labelKey="name"
       />
     </Form.Group>

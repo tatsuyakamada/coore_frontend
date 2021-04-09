@@ -24,6 +24,7 @@ export const initialDish: DraftDish = {
   name: '',
   genre: 'japanese',
   category: 'main',
+  dishStuffs: [],
 };
 
 export type DishAction = {

@@ -9,20 +9,21 @@ type Props = {
   height?: number;
   width?: number;
   style?: React.CSSProperties;
+  iconStyle?: React.CSSProperties;
 }
 
 const DeleteIcon: React.FC<Props> = (props) => {
   const {
-    onClick, height, width, style,
+    onClick, height, width, style, iconStyle,
   } = props;
 
-  const iconStyle: React.CSSProperties = (
+  const iconSize: React.CSSProperties = (
     { height: height || 20, width: width || 20 }
   );
 
   return (
-    <Delete onClick={onClick}>
-      <FiDelete style={{ ...iconStyle, ...style }} />
+    <Delete onClick={onClick} style={{ ...style }}>
+      <FiDelete style={{ ...iconSize, ...iconStyle }} />
     </Delete>
   );
 };

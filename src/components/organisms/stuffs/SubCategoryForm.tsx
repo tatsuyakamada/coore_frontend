@@ -62,9 +62,8 @@ const SubCategoryForm: React.FC<Props> = (props) => {
   const categoryRef: React.RefObject<Typeahead<SelectItem>> = React.createRef();
 
   const handleCategorySelect = (selected: SelectItem[]): void => {
-    if (selected[0] !== undefined) {
-      setDraftSubCategory({ ...draftSubCategory, category: selected[0] });
-    }
+    if (selected[0] === undefined) return;
+    setDraftSubCategory({ ...draftSubCategory, category: selected[0] });
   };
 
   const handleCategorySelectInput = (): void => (
