@@ -149,7 +149,7 @@ const ScheduledMenuForm: React.FC<Props> = (props) => {
 
   const handleDelete = (): void => {
     if (!schedule.id) return;
-    axios.delete(Url(['schedule', schedule.id.toString()]))
+    axios.delete(Url(['schedules', schedule.id.toString()]))
       .then((response) => {
         infoDispatch(
           {
