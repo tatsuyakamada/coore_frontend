@@ -112,7 +112,7 @@ const ShowSchedule: React.FC<Props> = (props) => {
           {
             displayImages().map((img) => (
               <Carousel.Item key={img.id}>
-                <ImageItem>
+                <ImageItem style={{ height: slideHeight() }}>
                   <FormedImage image={img} style={{ maxHeight: slideHeight() }} />
                 </ImageItem>
               </Carousel.Item>
