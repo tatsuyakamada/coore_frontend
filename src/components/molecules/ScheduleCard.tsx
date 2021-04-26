@@ -42,7 +42,7 @@ const ScheduleCard: React.FC<Props> = (props) => {
   };
 
   const menuImage = (): Image | null => {
-    const hasImageMenu = menus.find((menu) => (!menu.image));
+    const hasImageMenu = menus.find((menu) => (!!menu.image));
     return hasImageMenu ? hasImageMenu.image : null;
   };
 
