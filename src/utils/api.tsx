@@ -1,4 +1,4 @@
-const BaseURL = 'http://localhost:3100/api/v1';
+const BaseURL = 'http://localhost:3200/api/v1';
 
 const Url = (paths: string[] | string): string => {
   const addition = typeof paths === 'string'
